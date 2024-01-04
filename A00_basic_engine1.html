@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+  <title></title>
+  <meta http-equiv="content-type" content="text/html; charset=latin1">
+  <style type="text/css">
+td.linenos { background-color: #272822; padding-right: 10px; }
+span.lineno { background-color: #272822; padding: 0 5px 0 5px; }
+pre { line-height: 125%; }
+body .hll { background-color: #49483e }
+body  { background: #272822; color: #f8f8f2 }
+body .c { color: #75715e } /* Comment */
+body .err { color: #960050; background-color: #1e0010 } /* Error */
+body .k { color: #66d9ef } /* Keyword */
+body .l { color: #ae81ff } /* Literal */
+body .n { color: #f8f8f2 } /* Name */
+body .o { color: #f92672 } /* Operator */
+body .p { color: #f8f8f2 } /* Punctuation */
+body .cm { color: #75715e } /* Comment.Multiline */
+body .cp { color: #75715e } /* Comment.Preproc */
+body .c1 { color: #75715e } /* Comment.Single */
+body .cs { color: #75715e } /* Comment.Special */
+body .ge { font-style: italic } /* Generic.Emph */
+body .gs { font-weight: bold } /* Generic.Strong */
+body .kc { color: #66d9ef } /* Keyword.Constant */
+body .kd { color: #66d9ef } /* Keyword.Declaration */
+body .kn { color: #f92672 } /* Keyword.Namespace */
+body .kp { color: #66d9ef } /* Keyword.Pseudo */
+body .kr { color: #66d9ef } /* Keyword.Reserved */
+body .kt { color: #66d9ef } /* Keyword.Type */
+body .ld { color: #e6db74 } /* Literal.Date */
+body .m { color: #ae81ff } /* Literal.Number */
+body .s { color: #e6db74 } /* Literal.String */
+body .na { color: #a6e22e } /* Name.Attribute */
+body .nb { color: #f8f8f2 } /* Name.Builtin */
+body .nc { color: #a6e22e } /* Name.Class */
+body .no { color: #66d9ef } /* Name.Constant */
+body .nd { color: #a6e22e } /* Name.Decorator */
+body .ni { color: #f8f8f2 } /* Name.Entity */
+body .ne { color: #a6e22e } /* Name.Exception */
+body .nf { color: #a6e22e } /* Name.Function */
+body .nl { color: #f8f8f2 } /* Name.Label */
+body .nn { color: #f8f8f2 } /* Name.Namespace */
+body .nx { color: #a6e22e } /* Name.Other */
+body .py { color: #f8f8f2 } /* Name.Property */
+body .nt { color: #f92672 } /* Name.Tag */
+body .nv { color: #f8f8f2 } /* Name.Variable */
+body .ow { color: #f92672 } /* Operator.Word */
+body .w { color: #f8f8f2 } /* Text.Whitespace */
+body .mf { color: #ae81ff } /* Literal.Number.Float */
+body .mh { color: #ae81ff } /* Literal.Number.Hex */
+body .mi { color: #ae81ff } /* Literal.Number.Integer */
+body .mo { color: #ae81ff } /* Literal.Number.Oct */
+body .sb { color: #e6db74 } /* Literal.String.Backtick */
+body .sc { color: #e6db74 } /* Literal.String.Char */
+body .sd { color: #e6db74 } /* Literal.String.Doc */
+body .s2 { color: #e6db74 } /* Literal.String.Double */
+body .se { color: #ae81ff } /* Literal.String.Escape */
+body .sh { color: #e6db74 } /* Literal.String.Heredoc */
+body .si { color: #e6db74 } /* Literal.String.Interpol */
+body .sx { color: #e6db74 } /* Literal.String.Other */
+body .sr { color: #e6db74 } /* Literal.String.Regex */
+body .s1 { color: #e6db74 } /* Literal.String.Single */
+body .ss { color: #e6db74 } /* Literal.String.Symbol */
+body .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+body .vc { color: #f8f8f2 } /* Name.Variable.Class */
+body .vg { color: #f8f8f2 } /* Name.Variable.Global */
+body .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+
+  </style>
+</head>
+<body>
+<h2></h2>
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># Filename: A00_basic_engine.py</span>
+<span class="c"># Author: James D. Miller; Gustavus Adolphus College.</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">render_airtrack</span><span class="p">(</span><span class="n">x_px</span><span class="p">,</span> <span class="n">x_left_edge_px</span><span class="p">,</span> <span class="n">x_right_edge_px</span><span class="p">):</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="n">display_width_px</span> <span class="o">=</span> <span class="mi">125</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">display_width_px</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="n">x_px</span><span class="p">):</span>
+            <span class="n">string</span> <span class="o">+=</span> <span class="s">&#39;*&#39;</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">j</span><span class="o">==</span><span class="n">x_left_edge_px</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">j</span><span class="o">==</span><span class="n">x_right_edge_px</span><span class="p">):</span>
+            <span class="n">string</span> <span class="o">+=</span> <span class="s">&#39;|&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">+=</span> <span class="s">&#39; &#39;</span>
+    <span class="k">return</span> <span class="n">string</span>
+
+<span class="k">def</span> <span class="nf">m_to_px</span><span class="p">(</span><span class="n">x_m</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span> <span class="n">x_m</span> <span class="o">*</span> <span class="mf">7.0</span><span class="p">))</span>   <span class="c"># 5 pixels per meter.</span>
+    
+<span class="k">def</span> <span class="nf">x_fix_sticky</span><span class="p">(</span> <span class="n">x_m</span><span class="p">,</span> <span class="n">x_left_edge_m</span><span class="p">,</span> <span class="n">x_right_edge_m</span><span class="p">):</span>
+    <span class="c"># Simple stickiness correction. Move it back by the amount of the overlap.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x_m</span> <span class="o">&lt;</span> <span class="n">x_left_edge_m</span><span class="p">):</span> 
+        <span class="n">x_m</span> <span class="o">=</span> <span class="n">x_left_edge_m</span>  <span class="c">#+= 2 * (x_left_edge_m  - x_m)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">x_m</span> <span class="o">&gt;</span> <span class="n">x_right_edge_m</span><span class="p">):</span> 
+        <span class="n">x_m</span> <span class="o">=</span> <span class="n">x_right_edge_m</span>  <span class="c">#-= 2 * (x_m - x_right_edge_m)</span>
+    <span class="k">return</span> <span class="n">x_m</span>
+    
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span> 
+    <span class="n">x_left_edge_m</span>   <span class="o">=</span>  <span class="mf">1.5</span>
+    <span class="n">x_right_edge_m</span>  <span class="o">=</span> <span class="mf">17.5</span>
+    
+    <span class="n">dt_s</span>   <span class="o">=</span>  <span class="mf">0.015</span>
+    <span class="n">x_m</span>    <span class="o">=</span> <span class="mf">11.0</span>
+    <span class="n">v_mps</span>  <span class="o">=</span>  <span class="mf">17.0</span>   <span class="c">#  20/5 for stickiness</span>
+    <span class="n">a_mps2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>   <span class="c"># -10/5 for stickiness</span>
+    
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># Update the velocity and position.</span>
+            <span class="n">v_mps</span> <span class="o">+=</span>  <span class="n">a_mps2</span> <span class="o">*</span> <span class="n">dt_s</span>
+            <span class="n">x_m</span>   <span class="o">+=</span>  <span class="n">v_mps</span>  <span class="o">*</span> <span class="n">dt_s</span>
+            
+            <span class="c"># Check for wall collisions.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x_m</span> <span class="o">&lt;</span> <span class="n">x_left_edge_m</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x_m</span> <span class="o">&gt;</span> <span class="n">x_right_edge_m</span><span class="p">):</span> 
+                <span class="n">v_mps</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="mf">0.80</span>  <span class="c"># loss of 20% on each bounce.</span>
+                <span class="n">x_m</span> <span class="o">=</span> <span class="n">x_fix_sticky</span><span class="p">(</span> <span class="n">x_m</span><span class="p">,</span> <span class="n">x_left_edge_m</span><span class="p">,</span> <span class="n">x_right_edge_m</span><span class="p">)</span>
+                
+            <span class="n">display_string</span> <span class="o">=</span> <span class="n">render_airtrack</span><span class="p">(</span> <span class="n">m_to_px</span><span class="p">(</span> <span class="n">x_m</span><span class="p">),</span> <span class="n">m_to_px</span><span class="p">(</span> <span class="n">x_left_edge_m</span><span class="p">),</span> <span class="n">m_to_px</span><span class="p">(</span> <span class="n">x_right_edge_m</span><span class="p">))</span>
+            <span class="k">print</span> <span class="n">display_string</span> <span class="o">+</span> <span class="s">&#39; x =&#39;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">x_m</span> <span class="o">+</span> <span class="s">&quot;  &quot;</span> <span class="o">+</span> <span class="s">&#39; v = &#39;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">v_mps</span>
+            
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt_s</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></body>
+</html>

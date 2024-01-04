@@ -1,0 +1,153 @@
+﻿/*
+*/
+body {
+	font-family: Helvetica;
+	font-size: 100%;
+   background-color: #92a191; /**/
+}
+
+div.pageblock {   
+	min-width: 800px;
+	max-width: 1100px;
+	margin: 0 auto;
+   background-color: white;
+   
+   padding: 5px 20px 20px;
+   border-radius: 10px;
+}
+div.pageblock h1.maintitle { 
+	font-size: 175%;
+	color: black; 
+   /*       top R/L bottom  */
+   padding: 7px 0px  9px;
+   margin-bottom: 0px;   
+}
+div.pageblock a {
+	color: black;
+	text-decoration: underline;
+}
+div.pageblock a:hover {
+	color: white;
+	text-decoration: none;
+	background: black;
+}
+
+
+/*  The following div and span work together to float the return links to the right of the main title.  */
+div.title_line {
+   position:relative;
+}
+span.float_right {
+   position:absolute; 
+   top: 25%; /* vertical adjustment */
+   right:0%;
+}
+
+
+table{
+}
+td {
+	vertical-align: top;
+	text-align: left;
+}
+td.sectionbreak {
+   border-radius: 5px;
+   padding-left: 4px;
+	color: black;
+	background-color: #c8d0c8; /* */
+}
+td.minorsection {
+	color: black;
+	background-color: white;
+}
+td.indent {
+   padding-left: 15px;
+}
+
+
+/* These special anchor (a) classes are used in the section titles at the bottom of the RPi page. */
+a.hidden {
+	color: black;
+	text-decoration: none;
+}
+a.hidden:hover {
+	color: white;
+	text-decoration: none;
+	background: black;
+}
+
+
+/* All the links that don't have href attributes */
+a:not([href]) {
+   cursor: pointer;
+}
+
+img.rpi {
+   float: right; 
+   padding:10px;
+   /* Note the radius style only has effect at levels above the padding value. */
+   border-radius: 22px;
+}
+
+li {
+	font-family: Helvetica;
+	font-size: 100%;
+}
+
+div.vid {
+	border: 30px outset transparent;
+	float: right;
+}
+
+div.links {
+	float: right;
+}
+
+
+strong {
+	color: black;
+}
+strong.title_2 {
+	font-size: 130%;
+}
+
+
+.CodeWords_white {
+	color: #FFFFFF;
+	background-color: #333333;
+}
+.CodeWords_blue {
+	color: #33CCFF;
+	background-color: #333333;
+}
+.CodeWord_green {
+	color: #00FF00;
+	background-color: #333333;
+}
+.CodeWords_orange {
+	color: #FF9933;
+	background-color: #000000;
+}
+
+
+/* For YouTube load-on-demand. See youTubeLoadOnDemand.js */
+div.video-container {
+   margin: 15px;
+   border: 0px;
+   float: right;  
+   cursor: pointer; 
+   position: relative; 
+}      
+img.frameCapture {
+   top:0; left:0; 
+   margin: 0px; 
+   border: 0px; 
+}
+img.playButton {
+   position: absolute; 
+   top:50%; left:50%; 
+   width:15%; height:auto; 
+   transform: translate(-50%,-50%); 
+   opacity: 0.7;
+}
+

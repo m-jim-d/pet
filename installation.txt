@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Filename: installation.sh
+# Author: James D. Miller
+# 11:15 AM Sat January 23, 2016
+
+# This script installs the following python modules:
+#    pgu
+#    PodSixNet
+#    pybox2d
+
+# echo all commands
+#set -x
+
+reboot=false
+
+echo "=========================="
+echo "=========================="
+echo "Starting the installation."
+echo "=========================="
+echo "=========================="
+
+# pgu
+cd pgu-master
+pwd
+sudo python setup.py install
+
+
+# PodSixNet
+cd ..
+cd PodSixNet-master
+pwd
+sudo python setup.py install
+
+
+# Pybox2d
+cd ..
+cd pybox2d-2.3b0
+pwd
+
+sudo apt-get install build-essential 
+sudo apt-get install python-dev 
+sudo apt-get install swig 
+sudo apt-get install python-pygame 
+sudo apt-get install subversion
+
+python setup.py build
+sudo python setup.py install
+
+
+# Add color depth settings to the end of the config.txt file.
+if ! (grep 'Color depth' /boot/config.txt); then
+    
+    # First, add a blank line.
+    sudo echo -en '\n' >> /boot/config.txt
+    sudo echo '# Color depth settings:' >> /boot/config.txt
+    sudo echo 'framebuffer_depth=32' >> /boot/config.txt
+    sudo echo 'framebuffer_ignore_alpha=1' >> /boot/config.txt
+    
+    # Alternate way to append a line to the file.
+    #sudo sed -i '$ a framebuffer_ignore_alpha=1' /boot/config.txt
+    
+    reboot=true
+fi
+
+echo "========================"
+echo "========================"
+echo "That should do it. Done."
+echo "========================"
+echo "========================"
+
+if [ "$reboot" = true ]; then
+    # Restart to activate the color depth settings.
+    echo "Rebooting now..."   
+    echo "========================"
+    sudo shutdown -r
+fi
+

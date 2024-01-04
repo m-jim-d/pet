@@ -1,0 +1,190 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="jterm course for developing a simple physics engine in python">
+
+   <title>Game Physics with Pygame</title>   	
+
+   <link href="physics_engine.css" rel="stylesheet" type="text/css">  
+   <link href="dialog.css?v=2" rel="stylesheet" type="text/css">
+   
+   <style type="text/css">
+   div.pageblock {
+      min-width: 800px;
+      max-width: 950px;
+   }
+   </style>
+   
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=10" rel="stylesheet" type="text/css">   
+   <script src="jquery-3.6.1.min.js?v=3"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=45"></script>
+
+   <!-- The navigation menu -->
+   <script>      
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"PET: j-term", "dialogOptions":true});
+      });
+   </script>
+   
+</head>
+<body>
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<span class="menuicon" id="opener" style="font-size:19px; cursor:pointer;">&#9776;</span>
+
+<dialog id="cookieConsent" style="z-index:5; width:400px">
+  <h2 class="dialog" id="label">Cookies<span id="dialog-status" style="font-size:30px; color:black"></span></h2>
+  <p>
+    This page loads YouTube videos and related cookies.
+    <i>Accept</i> to view the videos as embedded on this page.
+    <i>Reject</i> to decline cookies and view in a new tab.
+  </p>
+  <form method="dialog">
+    <button class="dialog" id="firstDialogButton" value="accept">Accept</button>
+    <button class="dialog" value="reject">Reject</button>    
+    <button class="dialog" value="close" style="float: right;">Close (no change)</button>
+  </form>
+  <p>
+    If you accept, click a video to load; click again to play.
+  </p>
+</dialog>
+
+<div class='pageblock'>
+<div class="title_line">
+   <h1 class="maintitle">Introduction to Game Development with Pygame</h1>
+   <span class="float_right"><a href="index.html">(back to P.E.T.)</a></span>
+</div>
+<p>PHY-109-001, #28875,<strong> Python 2D Game Prog,</strong> J-term 2013. &nbsp;&nbsp;</p>
+<p><br />
+In effort to promote the course, these video clips were shown in 
+2012 to the General Physics and Cosmic Universe classes in Olin Hall at 
+Gustavus Adolphus. Here are links to the <a href="jterm_pygame_flyer.pdf">flyer</a>, 
+a <a href="Jterm_pygame_onepager_jdm.pdf">one-pager</a>, 
+course <a href="syllabus_jt-phy-109.pdf">syllabus</a>, 
+and the physics engine <a href="index.html">tutorial</a>.</p>
+<p>
+Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, click a video to load; click again to play.
+</p>
+<table>
+  <tr>
+  <td>
+   <!-- 1D-promo.png -->
+   <!--
+   <div class="video-container">
+      <iframe loading="lazy" width="550" height="250" src="https://www.youtube.com/embed/o1RUsLtvQwM?rel=0" frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
+   </div>
+   -->
+   <div class="video-container" data-videoID="o1RUsLtvQwM">
+      <img class="frameCapture" src="screenshots/hollow-cars-b.png" width="550" height="201">
+   </div>
+
+   <p><strong class='title_2'>1D-Physics Air Track</strong></p>
+   <p>
+   This first video demonstrates 1D collision detection, modeling of 
+   forces by gravity and mouse tethers, and user interactions. We use 
+   Pygame's capabilities to quickly draw polygons to the screen and listen 
+   for keyboard and mouse events. Try running the code on the <a href="index.html">tutorial</a> page for creamy-smooth rendering.
+   </p>
+   
+  </td>
+  </tr>
+  
+  <tr>
+  <td>
+  <!-- 2D-promo.png -->
+   <!--
+   <div class="video-container">
+      <iframe loading="lazy" width="550" height="565" src="https://www.youtube.com/embed/u6yTyjECvD8?rel=0" frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
+   </div>
+   -->
+   <div class="video-container" data-videoID="u6yTyjECvD8">
+      <img class="frameCapture" src="screenshots/2D-promo-550.png" width="550" height="564">
+   </div>
+  <p><strong class='title_2'>2D-Physics Air Table</strong></p>
+  
+  <p>
+   Much of the algorithmic content of the 1D exercise is extended here 
+   with a 2D vector class. Also object-object forces as modeled by springs 
+   and dampers are added. Collision detection and penetration corrections 
+   are developed for spherical shapes. Limitation of this simple home-brew 
+   physics engine are demonstrated with progressively smaller diameter 
+   ball-settling tests. Notice the popcorn effect of the smaller balls as 
+   they try to settle three balls deep. Finally a 2D grid of balls and 
+   springs shows how this basic physics engine can yield realistic results 
+   for non-spherical object collisions with walls (looks like a square 
+   piece of Jello).</p> 
+  </td>
+  </tr>
+  
+  <tr>
+  <td>
+   <!-- gunsAndStacking.png 
+   <div class="video-container">
+      <iframe loading="lazy" width="550" height="460" src="https://www.youtube.com/embed/DTHrmPV2wEw?rel=0" frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
+   </div>
+   -->
+   <div class="video-container" data-videoID="DTHrmPV2wEw">
+      <img class="frameCapture" src="screenshots/gunsAndStacking-550.png" width="550" height="461">
+   </div>
+  <p><strong class='title_2'>Pybox2d Guns and Stacking</strong></p>
+  <p>
+   Here, the pybox2d port of the Box2D physics engine (of Angry 
+   Birds fame) does the computational heavy lifting. This illustrates 
+   Box2D's capabilities for general modeling of non-spherical objects. This 
+   includes proper handling of contact forces, stacking, and settling 
+   behaviors.</p> 
+  </td>
+  </tr>
+  
+  <tr>
+  <td>
+  <!-- verticalBulletStream.png 
+   <div class="video-container">
+      <iframe loading="lazy" width="550" height="460" src="https://www.youtube.com/embed/FQ3gRdZNNgE?rel=0" frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
+   </div>
+   -->
+   <div class="video-container" data-videoID="FQ3gRdZNNgE">
+      <img class="frameCapture" src="screenshots/verticalBulletStream-550.png" width="550" height="461">
+   </div>
+  <p><strong class='title_2'>Vertical Bullet Stream</strong></p>
+  <p>
+   A short clip showing a vertical stream of rectangles collapsing onto 
+   itself. It acts like a fluid. Also a brief demo of a cursor gun.</p> 
+  </td>
+  </tr>
+  
+  <tr>
+  <td>
+   <!-- boxCutter.png 
+   <div class="video-container">
+      <iframe loading="lazy" width="550" height="460" src="https://www.youtube.com/embed/CoXPuyLHbgU?rel=0" frameborder="0" 
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
+   </div>
+   -->
+   <div class="video-container" data-videoID="CoXPuyLHbgU">
+      <img class="frameCapture" src="screenshots/boxCutter-550.png" width="550" height="461">
+   </div>
+  <p><strong class='title_2'>Box Cutter</strong></p>
+  <p>
+   This demo shows a laser box cutter based on the ray casting feature of 
+   Box2D. Polygons are segmented based on the intersection points of the 
+   ray cast.</p>
+  </td>
+  </tr>
+</table>
+
+<p><a href="index.html">(back to P.E.T.)</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,222 @@
+# Filename: A08_multiplayer_demo_server.py
+# Written by: James D. Miller
+
+import sys, os
+import pygame
+
+# PyGame Constants
+from pygame.locals import *
+from pygame.color import THECOLORS
+
+from PodSixNet.Server import Server
+from PodSixNet.Channel import Channel
+
+import socket
+
+#=======================================================================
+# Classes       
+#=======================================================================
+
+class ClientChannel(Channel):
+    def __init__(self, *args, **kwargs):
+        Channel.__init__(self, *args, **kwargs)
+    
+    def Network_CN(self, data):
+        global CND
+        
+        # This function runs when "CN" data is recieved from a client. I believe this
+        # runs once for each data "Send" by each client.
+        
+        # The naming of this function must correspond with the value of the 'action' key
+        # sent in the data dictionary from the client. All the clients are using
+        # an action key value of "CN", so this function must end with "CN".
+        
+        # "data" is a dictionary of state info sent by each client. 
+        # The "ID" value, in the dictionary, identifies who (which client) 
+        # this dictionary is coming from.
+        clientname = 'C' + str(data['ID'])
+        
+        # Update the client state in the CN_data dictionary based on the incoming data.
+        CND.CN_data[clientname]['state'] = data
+        
+        # Keep track of client activity.
+        CND.CN_data[clientname]['sendCount'] += 1
+        
+        # If the left mouse button was down, append the mouse location tuple to the FIFO list.
+        if data['mouseB1'] == 'D':
+            CND.CN_data[clientname]['historyXY'].append(data['mouseXY'])
+            # Displace the oldest part of the FIFO; pop it off.
+            if len(CND.CN_data[clientname]['historyXY']) > 200:
+                CND.CN_data[clientname]['historyXY'].pop(0)
+        
+        # You should be reluctant to print here. Printing can slow the server frame rate. It's
+        # tempting to try and observe this data flow through printing, but...
+        
+    def Close(self):
+        print "deleting player"
+     
+     
+class GameServer(Server):
+    channelClass = ClientChannel
+    
+    def __init__(self, *args, **kwargs):
+        Server.__init__(self, *args, **kwargs)
+        self.client_count = 0
+        
+    # This runs when each client connects.
+    def Connected(self, channel, addr):
+        print 'new connection (channel, addr):', channel, addr
+        
+        self.client_count += 1
+        if (self.client_count <= 10):
+            channel.Send({"action": "hello", "P_ID":self.client_count})
+        else:
+            channel.Send({"action": "hello", "P_ID":0})
+
+class ClientData:
+    def __init__(self):
+        # CN_data is a dictionary of dictionaries.
+        self.loopsSinceLastQuietCheck = 0
+        
+        self.CN_data = {}
+        for m in range(1,11):
+            # Set the player's Cm key value to a dictionary.
+            self.CN_data['C' + str(m)]  =  {'state':None, 'sendCount':0, 'previousSendCount':0, 'active':False, 'historyXY':[]}
+    
+    def checkForQuietClients(self):
+        self.loopsSinceLastQuietCheck += 1
+        if self.loopsSinceLastQuietCheck > 20:
+            self.loopsSinceLastQuietCheck = 0
+            for clientname in CND.CN_data:
+                # Check for the no change case (client is quiet).
+                countChange = CND.CN_data[clientname]['sendCount'] - CND.CN_data[clientname]['previousSendCount']
+                if countChange == 0:
+                    CND.CN_data[clientname]['active'] = False
+                else:
+                    CND.CN_data[clientname]['active'] = True
+                # Update the previous value for use in the next comparison.
+                CND.CN_data[clientname]['previousSendCount'] = CND.CN_data[clientname]['sendCount']
+
+
+#=======================================================================
+# Functions.        
+#=======================================================================
+        
+def checkforLocalUserInput():    
+    # Get all the events since the last call to get().
+    for event in pygame.event.get():
+        if (event.type == pygame.QUIT): 
+            sys.exit()
+        elif (event.type == pygame.KEYDOWN):
+            if (event.key == K_ESCAPE):
+                sys.exit()
+            elif (event.key==K_c):
+                server_display.fill(THECOLORS["blue"])  
+                
+def draw_cursor_histories( CN_data):
+    for player in CN_data:
+        if CND.CN_data[player]['active']:
+            draw_cursor_history( CN_data[player]['historyXY'], player_colors[player])
+                
+def draw_cursor_history( cursor_history, color):
+    for mouse_xy in cursor_history:
+        pygame.draw.circle(server_display, color,   mouse_xy, 10, 0)
+    
+def draw_server_cursors( CN_data):
+    for player in CN_data:
+        if CND.CN_data[player]['active']:
+            draw_fancy_server_cursor(CN_data[player]['state']['mouseXY'], player_colors[player])
+
+def draw_fancy_server_cursor( cursor_position, color):
+    draw_server_cursor( cursor_position, color, 0)
+    draw_server_cursor( cursor_position, THECOLORS["black"], 1)
+
+def draw_server_cursor( cursor_position, color, edge_px):
+    cursor_outline_vertices = []
+    cursor_outline_vertices.append(  cursor_position )
+    cursor_outline_vertices.append( (cursor_position[0] + 10,  cursor_position[1] + 10) )
+    cursor_outline_vertices.append( (cursor_position[0] +  0,  cursor_position[1] + 14) )
+    
+    pygame.draw.polygon(server_display, color, cursor_outline_vertices, edge_px)
+
+def render_all_player_keys( CN_data):
+    for player in CN_data:
+        if CND.CN_data[player]['active']:
+            render_keys( CN_data[player]['state'])  
+            
+def render_keys( user_state):
+    y_offset = 10 + (user_state['ID'] - 1) * 37
+    
+    # The W row...
+    pygame.draw.rect(server_display, THECOLORS["black"], pygame.Rect(20, y_offset    , 10, 20))
+    txt_string = user_state['w']
+    txt_surface = fnt.render(txt_string, 1, THECOLORS["yellow"])
+    server_display.blit(txt_surface, [20, y_offset])       
+    
+    # The ASD row...
+    pygame.draw.rect(server_display, THECOLORS["black"], pygame.Rect(10, y_offset + 20, 30, 20))
+    txt_string = user_state['a'] + user_state['s'] + user_state['d']
+    txt_surface = fnt.render(txt_string, 1, THECOLORS["yellow"])
+    server_display.blit(txt_surface, [10, y_offset + 20])   
+
+    
+#=======================================================================
+# Main Program statements   
+#=======================================================================
+        
+pygame.init()
+
+server_display = pygame.display.set_mode((600,400))
+pygame.display.set_caption("Server: Rendering Window.") 
+
+# Instantiate clock to help control the framerate.
+server_clock = pygame.time.Clock()
+framerate_limit = 100
+
+server_display.fill(THECOLORS["yellow"])
+
+# Font object for rendering text onto display surface.
+fnt = pygame.font.SysFont("Arial", 14)
+
+# Setup network server.
+local_ip = socket.gethostbyname(socket.gethostname())
+local_port = 4330
+print "Server IP address and port:", local_ip, local_port
+drawBoard_server = GameServer(localaddr=(local_ip, local_port))
+
+# Initialize the client states and mouse histories.
+CND = ClientData()
+
+# Colors
+player_colors = {'C1': THECOLORS["green"],'C2': THECOLORS["tan"],'C3': THECOLORS["black"],'C4': THECOLORS["blue"],'C5': THECOLORS["pink"],
+                 'C6': THECOLORS["red"],'C7': THECOLORS["coral"],'C8': THECOLORS["orangered1"],'C9': THECOLORS["grey80"],'C10': THECOLORS["rosybrown3"]}
+
+# Set a limit for the quietness demerits.
+qCount_limit = 100
+                 
+while True:
+    
+    server_display.fill(THECOLORS["yellow"])
+    
+    # Background for text
+    pygame.draw.rect(server_display, THECOLORS["black"], pygame.Rect(550, 9, 60, 20))
+    # Text
+    fps_string = "%.0f" % server_clock.get_fps()
+    txt_surface = fnt.render(fps_string, True, THECOLORS["white"])
+    server_display.blit(txt_surface, [550, 10])   
+    
+    drawBoard_server.Pump()
+    
+    dt_s = float(server_clock.tick(framerate_limit) * 1e-3)
+    
+    CND.checkForQuietClients()
+    
+    checkforLocalUserInput()
+    
+    draw_cursor_histories( CND.CN_data)
+    
+    draw_server_cursors( CND.CN_data)
+    
+    render_all_player_keys( CND.CN_data)
+    
+    pygame.display.flip()

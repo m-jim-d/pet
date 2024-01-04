@@ -1,0 +1,864 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="simple 1-D physics engine that displays on a command line">
+   
+   <title>P.E.T./String Rendering</title>
+
+   <script src="syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
+   <script src="syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
+   <link href="syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css">
+   <link href="syntaxhighlighter/styles/shThemeRDark.css" rel="stylesheet" type="text/css">
+
+   <script type="text/javascript">SyntaxHighlighter.all();</script>
+
+   <link href="physics_engine.css" rel="stylesheet" type="text/css">
+
+   <style type="text/css">
+   .syntaxhighlighter {
+      max-height: 650px;
+   }
+   </style>
+
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=10" rel="stylesheet" type="text/css">   
+   <script src="jquery-3.6.1.min.js?v=3"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=3"></script>
+
+   <!-- The navigation menu --> 
+   <script>      
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"PET: one pager"});
+      });
+   </script>
+
+</head>
+
+<body style="background-position: 0% 0%; font-family: Helvetica; background-image: none; background-repeat: repeat; background-attachment: scroll;">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<span class="menuicon" id="opener" style="font-size:19px; cursor:pointer;">&#9776;</span>
+
+<div class="pageblock">
+	<div class="title_line">
+      <h1 class="maintitle">Pure-Python Physics Engine (String Rendering)</h1>
+      <span class="float_right">(<a class="Jump" href="javascript:history.go(-1)">return</a>)&nbsp;&nbsp;(<a href="index.html?one-d">P.E.T.</a>)</span>
+   </div>
+	<img width="877" height="14" src="screenshots/air_track.gif" alt="1D movement and collisions"><p>
+	<strong class="title_2">Why do this? </strong></p>
+	<p>Why render the output from a physics engine to a string of characters and 
+	then print that string to the command line (see animated gif above)? And why 
+	are there two versions of this code?</p>
+	<ul>
+		<li><strong>It's a friendly start: </strong>The 1-D motion of a car is 
+		calculated in 2 of the 44 lines of code that are in the one-page version. 
+		There's more complexity later, 
+		but it comes in steps.<br />
+&nbsp;</li>
+		<li><strong>Detach the rendering:</strong> Rendering to a string makes it clear that rendering and the 
+		engine are distinct. An engine can drive rendering in whatever form a 
+		renderer 
+		might take. You can render a 1-D engine to a long row of students, or a 
+		row of LEDs, or as we are doing here, a row of characters (a string).<br />
+&nbsp;<br />
+		</li>
+		<li><strong>Provide the first of two looks at the basic engine: </strong>
+		The <a href="index.html?1D-FrameWork">next</a> assignment 
+		combines Pygame with the first elements of an engine and puts it all in 
+		classes to form the outline of the 1-D framework. That's a lot for 
+		someone new to coding. This one page of code serves to distill everything down to 
+		three main concepts: (1) the engine moves things, (2) the engine detects 
+		wall collisions and resolves them, and (3) the renderer 
+		presents the output from the engine.<br />
+&nbsp;</li>
+		<li><strong>Check the student's coding experience:</strong> If a student 
+		has no coding experience, this single page of code is a good place to start with 
+		functions and loops.<br />
+&nbsp;<br />
+		</li>
+		<li><strong>Make a transition to classes:</strong> The two versions of the 
+		code help to introduce the new programmer to the ideas behind classes. The 
+		#1 file (the one-pager) is procedural and with no grouping of data in any 
+		sort of object-oriented way. The #2 file takes a first step toward class-like 
+		structures and groups data in dictionaries that reflect objects in this 
+		application: the <strong>track</strong>, the <strong>car</strong> on the 
+		track, and the overall <strong>environment</strong> that both are in. 
+		This transition from procedural code to OOP code is continued in the 
+		next assignment 
+		on the main page (<a href="index.html?1D-FrameWork">1D-Framework</a>).<br />
+&nbsp;<br />
+		</li>
+		<li><strong>Show some interesting stuff in Python:</strong> Why learn everything 
+		in a strict linear pattern? There are some quirky (and somewhat random) 
+		little coding concepts used in the second file that are simple enough to 
+		be clear to the beginner but still fun to learn about.<br />
+&nbsp;</li>
+	</ul>
+	<p><strong class="title_2">The One-Pager</strong></p>
+	<p>At the center of this <a href="index.html?one-d">rendering approach</a> is the function,
+	<span class="CodeWords_white">render_airtrack</span><em>,</em> that 
+	constructs the <span class="CodeWord_green">125</span> character string (see 
+	embedded code below or view the
+	<a href="A02.1_string_rendering_v1.html" target="_blank">full page</a> in a new tab). 
+	This function uses a <span class="CodeWords_blue">for</span> 
+	loop which repeatedly adds to the string, one character at a time. Inside 
+	this loop, the<span class="CodeWords_blue"> if </span>statement compares the<span class="CodeWords_white"> 
+	j </span>loop index against the integer positions provided in the three 
+	inputs. The position of the left and right edges of the 
+	track are marked with the <span class="CodeWord_green">'|'</span> character. 
+	The position of the car (on the track) is marked using the
+	<span class="CodeWord_green">'*'</span> character. Everything
+	<span class="CodeWords_blue">else</span> (the empty space on the track that 
+	isn't occupied by the car) is represented with the
+	<span class="CodeWord_green">' '</span> character (a blank).</p>
+
+
+<pre class="brush:python; first-line:4; highlight: []">
+import time
+
+def render_airtrack(x_px, x_left_edge_px, x_right_edge_px):
+    string = ''
+    display_width_px = 125
+    for j in range(0, display_width_px + 1):
+        if (j == x_px):
+            string += '*'
+        elif (j==x_left_edge_px) or (j==x_right_edge_px):
+            string += '|'
+        else:
+            string += ' '
+    return string
+</pre>
+
+<p>The output of the physics engine, the position of the car, must be converted 
+to the discrete representation of the world offered by renderer (in our case, a 
+125 character string). This conversion from the world to the screen can be as 
+simple as applying a scaling factor (like the<span class="CodeWord_green"> 7
+</span>used in <span class="CodeWords_white">m_to_px</span>) and then converting 
+to an integer (using Python's<span class="CodeWords_orange"> int </span>
+function). This conversion is an opportunity to zoom-in or zoom-out before the 
+rendering (as illustrated in example 6 in the
+<a href="index.html?one-d">video</a>).</p>
+
+<pre class="brush:python; first-line:18; highlight: []">
+def m_to_px(x_m):
+    return int(round( x_m * 7.0))   # pixels per meter.	
+</pre>
+
+<p>The <span class="CodeWords_white">render_airtrack</span> function is called 
+inside the animation loop of the <span class="CodeWords_white">main</span> 
+script function (see code below). Here, in <span class="CodeWords_white">main</span>, the speed 
+and position of the car is 
+calculated (the physics engine) and supplied to the rendering function. The 
+motion calculations are in the highlighted lines, 41-42 (Euler's Method).</p>
+	<p>In lines 45-47, the position of the car is checked against the wall 
+	positions (or ends of the track). If the car has penetrated the wall, the 
+	direction of the motion is reversed (a bounce) and the penetration of the 
+	wall is resolved (stickiness correction). </p>
+	<p>Lines 39 and 53 put the primary block of code into a basic error-catching 
+	structure. This allows the user to cleanly stop the script by issuing a 
+	Ctrl-c from the keyboard. A more useful error-catching structure is shown below 
+	in the longer version of the code.</p>
+
+<pre class="brush:python; first-line:29; highlight: [41,42];">
+def main(): 
+    x_left_edge_m   =  1.5
+    x_right_edge_m  = 17.5
+    
+    dt_s   =  0.015
+    x_m    = 11.0
+    v_mps  =  17.0   
+    a_mps2 = -2.0   
+    
+    for j in range(5000):
+        try:
+            # Update the velocity and position.
+            v_mps +=  a_mps2 * dt_s
+            x_m   +=  v_mps  * dt_s
+            
+            # Check for wall collisions.
+            if (x_m &lt; x_left_edge_m) or (x_m > x_right_edge_m): 
+                v_mps *= -1 * 0.80  # loss of 20% on each bounce.
+                x_m = x_fix_sticky( x_m, x_left_edge_m, x_right_edge_m)
+                
+            display_string = render_airtrack( m_to_px( x_m), m_to_px( x_left_edge_m), m_to_px( x_right_edge_m))
+            print display_string + ' x =' + "%.3f" % x_m + "  " + ' v = ' + "%.1f" % v_mps
+            
+            time.sleep(dt_s)
+        except:
+            break
+
+main()
+</pre>
+
+<p>The function <span class="CodeWords_white">x_fix_sticky</span> is used to 
+resolve the penetration. The <a href="index.html?one-d">video</a> for the 
+long-version of this code shows a case where the car sticks to the wall. This 
+can happen when gravity and non-elastic collisions cause the penetrating motion 
+to be more than the recovering (rebounding) motion. The result can be that the 
+car remains stuck on the other side of the wall. The simple method used here brings the car back to the wall surface in the frame that the penetration is 
+observed.</p>	
+	
+<pre class="brush:python; first-line:21; highlight: [];">
+def x_fix_sticky( x_m, x_left_edge_m, x_right_edge_m):
+    # Simple stickiness correction. Move it back to the surface.
+    if (x_m &lt; x_left_edge_m): 
+        x_corrected_m = x_left_edge_m  
+    elif (x_m > x_right_edge_m): 
+        x_corrected_m = x_right_edge_m  
+    return x_corrected_m
+</pre>
+
+	<p>Note that there is no global scope in the one-pager version of the code. 
+	All variables are passed in as immutable objects. These are not changed 
+	inside the functions! Local results are returned at the end of each 
+	function. A different technique for modifying variables is used in the 
+	longer version of the code.<br />
+&nbsp;</p>
+	<p><strong class="title_2">The Longer Version</strong></p>
+	<p>Conceptually this longer version (#2) of the code is very similar to the 
+	one-pager described above: calculated motion, collision detection and 
+	resolution, and rendering to a string. Features have been added to 
+	facilitate the making of the <a href="index.html?one-d">video</a> and also serve as a stepping stone to the 
+	class structures used in the 
+	<a href="index.html?1D-FrameWork">next</a> section. The following animated gif is a 
+	screen capture from example #10. To see example #10 running in the command 
+	window, run the file from the command line with a
+	<span class="CodeWords_white">&nbsp;10</span> after the filename. To see the 
+	numeric-output details from the engine, run with
+	<span class="CodeWords_white">&nbsp;10 d</span> after the filename.</p>
+	<p><strong><img width="978" height="165" src="screenshots/elastic.gif" alt="elastic bouncing"></strong></p>
+	<p>At the end of this page is a scrollable window for the code (alternately, 
+	here's a <a href="A02.1_string_rendering_v2.html" target="_blank">full-page</a> view in a new tab). 
+	The comments below, intended to draw focus to the added features of this 
+	longer version, make reference to the line numbers in the code. The 
+	scrollable window has the first line, of a referenced range of lines, marked 
+	by a lighter background.</p>
+	<ul>
+		<li>510-524,<strong> dictionaries: </strong>These act to group similar 
+		variables together into mutable objects.</li>
+		<li>504,<strong> globals and mutable objects:</strong> Without 
+		explaining in detail here, this longer version of the code uses a 
+		completely different approach to name space and the issue of how-to-change-stuff 
+		inside the functions. (This is intentional and hopefully 
+		instructive.) Most of the 
+		dictionaries have been given <span class="CodeWords_blue">global</span> 
+		scope. This allows them (for better, or some would say, worse) to be 
+		modified inside functions without being passed in. In contrast, the<span class="CodeWords_white"> car 
+		</span>dictionary is 
+		not global and is passed into functions and is changeable there. Dictionaries are mutable Python 
+		objects and can be changed inside the function if they are passed in 
+		(even if they don't have global scope). Note that if a single immutable 
+		object, like a simple variable (or even a single key from a dictionary), 
+		is passed into a function, it cannot be changed inside.</li>
+		<li>492-501,<strong> </strong> 225-481;<strong> command-line input and the "canned" examples for the 
+		video:</strong> The example runs are initiated by adding a number after 
+		the filename on the command line. Each example initializes parameters 
+		that determine the starting state of the car and the computation 
+		options.</li>
+		<li>4, 178-179, 199-221,<strong> the headers and formatted paragraphs: </strong>
+		At the beginning of each run is a header with a parameter summary. This 
+		is followed by formatted paragraphs that are generated using Python's
+		<span class="CodeWords_white">dedent </span>and
+		<span class="CodeWords_white">fill </span>procedures from Python's
+		<span class="CodeWords_white">textwrap </span>module.</li>
+		<li>166,<strong> formatted numeric output:</strong>&nbsp;Sometimes it's nice 
+		to have numbers line up (vertically) based on a decimal point. Here's 
+		an example of how that can be done.</li>
+		<li>143-161,<strong> enhanced string rendering:</strong> This 
+		enhancement to the renderer has features for persistent marking of the 
+		start position of the car and also a mark for the position of the car 
+		at the point of collision detection.</li>
+		<li>19, 46-98; <strong>&nbsp;an exact calculation:</strong> The 
+		approximate Euler's method can be optionally replaced with an exact 
+		calculation of motion (see example runs 10, 11, and 12.</li>
+		<li>170-173, 483-490; <strong>auto-off:</strong> This little feature 
+		shuts down the script based on a comparison of the average car position 
+		(over the last 10 frames) and the position of the ends of the 
+		track.</li>
+	</ul>
+
+<pre class="brush:python; first-line:4; highlight: [510,504,492,225,4,178,199,166,143,19,46,170,483]">
+import time, sys, textwrap
+from timeit import default_timer
+
+def px_from_m( x_m):
+    return int(round( x_m * env['m_to_px']))
+        
+def move( car):
+    v_i = car['v_mps']
+    car['v_mps'] +=  car['a_mps2'] * dt_s
+    
+    if env['exact_solution']:
+        '''
+        Note that the following formulation is equivalent to the one being used below.
+        car['x_m'] += ((v_i + car['v_mps'])/2.0)  * dt_s
+        '''
+        car['x_m'] += v_i * dt_s + (car['a_mps2'] * (dt_s ** 2.0))/2.0
+    
+    else:
+        '''
+        Normal Euler's method (using v at the beginning of the frame).
+        car['x_m'] += v_i * dt_s
+        '''
+        
+        # Backward Euler's method (using v at the end of the frame).
+        car['x_m'] += car['v_mps'] * dt_s
+    
+def debug_print(name_string):
+    '''
+    Print out the values for a set of global names contained in a string 
+    and separated by commas. This isn't actually used, but cute enough to keep.
+    '''
+    
+    names = name_string.split(",")
+    print_string = ''
+    for name in names:
+        print_string += name + ":" + str(eval(name)) + ", "
+    print print_string
+
+def dp(variable, variable_name):
+    # dp is short for debug print.
+    print variable_name + "=" + str(variable)
+    
+def x_corrected_exact( car, x_overlap):
+    # Inputs are conditions at the time of collision detection. These
+    # values have signs. For example x_overlap is positive for penetration
+    # on the right end of the track.    
+    
+    if env['stickiness_correction']:
+        
+        x_coll_m = car['x_m']
+        v_coll_mps = car['v_mps']
+        '''
+        Determine the car state as it passes through the wall.
+        Solve the following equation for v_wall.
+        v_coll_mps**2 = v_wall_mps**2 + 2*a*x_overlap
+        '''
+        v_wall_mps = (v_coll_mps**2.0 - 2.0 * car['a_mps2'] * x_overlap)**0.5
+        if track['collision_state'] == 'left':
+            v_wall_mps = -1.0 * abs(v_wall_mps)                
+        '''
+        The time expended penetrating the wall.
+        Solve the following equation for t_pen.
+        x_coll_m = x_wall_m + ((v_wall_mps + v_coll_mps)/2.0) * t_pen   
+        '''
+        t_pen = 2.0 * x_overlap/(v_wall_mps + v_coll_mps)
+        
+        # The distance covered bouncing back from the wall in time t_pen. Change
+        # the sign (direction) of v_wall.
+        v_wall_afterbounce_mps = v_wall_mps * -1.0 * env['CR']
+        x_bounce_pen = v_wall_afterbounce_mps * t_pen + (car['a_mps2'] * t_pen**2.0)/2.0
+        if track['collision_state'] == 'left':
+            if x_bounce_pen &lt; 0.0: x_bounce_pen = 0.0
+        else:
+            if x_bounce_pen > 0.0: x_bounce_pen = 0.0
+        
+        # The corrected position, that is, where it would be if it had bounced off the wall.
+        car['x_m'] = (x_coll_m - x_overlap) + x_bounce_pen
+        
+        # Also need to determine the velocity at the corrected position.
+        car['v_mps'] = v_wall_afterbounce_mps + t_pen * car['a_mps2']
+    
+        # Change this to True to print these variables for debugging.
+        if False:
+            dp(x_coll_m, "x_coll_m")
+            dp(v_coll_mps, "v_coll_mps")
+            dp(t_pen, "t_pen")
+            dp(v_wall_mps, "v_wall_mps")
+            dp(v_wall_afterbounce_mps, "v_wall_afterbounce_mps")
+            dp(x_bounce_pen, "x_bounce_pen")
+            dp(car['x_m'], "car['x_m']")
+            dp(car['v_mps'], "car['v_mps']")
+        
+    else:
+        # If no position correction, simply reverse the direction of the car.
+        car['v_mps'] *= -1.0 * env['CR']
+    
+def check_for_wall_collisions( car):
+        
+    # Check for a collision.
+    if (car['x_m'] &lt; track['left_edge_m']):
+        x_overlap = car['x_m'] - track['left_edge_m']
+        track['collision_state'] = 'left'
+
+    elif (car['x_m'] > track['right_edge_m']): 
+        x_overlap = car['x_m'] - track['right_edge_m']
+        track['collision_state'] = 'right'
+    
+    else:
+        track['collision_state'] = 'none'
+                            
+    # Resolve the collision.
+    if track['collision_state'] != 'none':
+        track['collision_mark_px'] = px_from_m( car['x_m'])
+    
+        if env['exact_solution']:
+            x_corrected_exact( car, x_overlap)
+        
+        else:
+            if env['stickiness_correction']:
+            
+                if env['correction_version_2']:
+                    # Move the car back to the surface and then an additional
+                    # equal amount but reduced by the CR coefficient.
+                    car['x_m'] -= x_overlap * (1 + env['CR'])
+                
+                else:
+                    # Simple stickiness correction. Move it back by the amount of the overlap.
+                    # This puts the car at the surface.
+                    if track['collision_state'] == 'left': 
+                        car['x_m'] = track['left_edge_m']
+                    else:
+                        car['x_m'] = track['right_edge_m']
+                    
+            # Loss of (1-CR)*100% on each bounce.
+            car['v_mps'] *= -1 * env['CR']  
+    
+    else:
+        track['collision_mark_px'] = -999
+
+def build_airtrack_string( car):
+    left_edge_px  = px_from_m( track['left_edge_m'])
+    right_edge_px = px_from_m( track['right_edge_m'])
+    display_width_px = 135
+    car_location_px = px_from_m( car['x_m'])
+    
+    string = ''
+    for j in range(0, display_width_px + 1):
+        if (j == car_location_px):
+            string += '*'
+        elif ((j == left_edge_px) or (j == right_edge_px)):
+            string += '|'
+        elif (track['show_start_mark'] and (j == track['track_mark_px'])):
+            string += "."
+        elif (track['show_collision_mark'] and (j == track['collision_mark_px'])):
+            string += "0"
+        else:
+            string += ' '
+    return string
+            
+def render( car):   
+    display_string = build_airtrack_string( car)
+    if cl['details']:
+        print display_string + 'x=' + "%6.3f" % car['x_m'] + ', v=' + "% .2f" % car['v_mps'] + ", F=" + "%3.0f" % fps_observed
+    else:
+        print display_string
+
+def pos_avg_10( car):
+    x_list.append( car['x_m'])
+    if len(x_list) > 10: x_list.pop(0)
+    return sum(x_list)/float(len(x_list))
+    
+def pretty_paragraphs( text_string, n_blanklines):
+    paragraph_list = text_string.split('||')
+    for paragraph in paragraph_list:    
+        dedented_text = textwrap.dedent( paragraph).strip()
+        print textwrap.fill(dedented_text, initial_indent='    ', subsequent_indent=' ')
+        print ""
+    for j in range( n_blanklines): print "\n"
+  
+def print_delay( string):
+    print string
+    time.sleep( 0.10)
+  
+def try_sleep( seconds):
+    # If you don't want to wait. Press control-c to break out of the sleep.
+    try:
+        time.sleep( seconds)
+    except KeyboardInterrupt:
+        print_delay("               *      ")
+        print_delay("              * *     ")
+        print_delay("             *   *    ")
+        print_delay("              * *     ")
+        print_delay("               *      ")
+        print "\n\n\n"
+
+def print_header(car):
+    print "\n\n\n\n"
+    print " Example #" + str(cl['example_index'])
+    print " ---------------------"
+    print " Initial x = " + str(car['x_m'])
+    print " Initial v = " + str(car['v_mps'])
+    print " a = " + str(car['a_mps2'])
+    print " Coefficient of Restitution = " + str(env['CR'])
+    print ""
+    print " Stickiness correction = " + str(env['stickiness_correction'])
+    if env['stickiness_correction'] and not env['exact_solution']:
+        print " Correction (version 2) = " + str(env['correction_version_2'])
+    print " Exact solution = " + str(env['exact_solution'])
+    print " Use observed dt in next frame = " + str(env['use_observed_dt'])
+    print ""
+    print " Show starting mark (\".\") = " + str(track['show_start_mark'])
+    print " Show collision mark (\"0\") = " + str(track['show_collision_mark'])
+    print " Show physics-engine output = " + str(cl['details'])
+    print ""
+    print " FPS target = " + str(env['fps_target'])
+    print " Auto-Off = " + str(env['auto_off'])
+    print " Zoom (meters to px factor) = " + str(env['m_to_px'])
+    print " "
+        
+def modify( car, env):
+        
+    if cl['example_index'] == 1:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -1.5
+        track['show_collision_mark'] = False
+        env['CR'] = 0.7
+
+        print_header(car)
+        explaination = ''' 
+        This first example has the car (represented by a "*") starting from
+        rest and accelerating to the left. Stickiness correction is ON. There is
+        energy loss (fractional reduction in v) after each wall collision.
+        ||
+        Control-s pauses (and restarts) the run. Control-s can be used to give
+        additional time (pause) for reading the descriptions at the beginning.
+        Control-c stops the run. Control-c can also be used to skip the
+        reading-wait at the beginning.
+        ||
+        First, remember that this is 1-D motion! The history of this
+        motion moves vertically, one step at a time, as the program renders each
+        new single-line snapshot. An effective way to view this 1-D motion
+        (animation) is to focus your attention at the bottom row. The YouTube
+        video provides a visual aid (an annotation rectangle) to
+        help you do this. Another approach is to place a sheet of paper over
+        everything on the screen except the bottom row.
+        ||
+        If the "d" option is given at the command line, the details of the
+        physics calculation are printed with each frame. This outputs position,
+        velocity, and frame rate.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(5.0)
+        
+    elif cl['example_index'] == 2:
+        car['x_m'] = 1.65; car['v_mps'] = 2.7; car['a_mps2'] =  0.0
+        env['stickiness_correction'] = False
+        track['show_collision_mark'] = False
+        env['CR'] = 1.0
+        
+        print_header(car)
+        explaination = ''' 
+        Stickiness correction is turned off which allows the overlap
+        (penetration) to be seen. These are elastic collisions (CR=1), meaning
+        this will run until a keyboard stop or the loop counter hits its limit.
+        ||
+        Control-s pauses the run. Control-c stops the run.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+        
+    elif cl['example_index'] == 3:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -1.5
+        env['stickiness_correction'] = False
+        track['show_collision_mark'] = False
+        env['auto_off'] = False
+        env['fps_target'] = 30
+        env['CR'] = 0.6
+        
+        print_header(car)
+        explaination = ''' 
+        All parameters are identical to example 1 except that stickiness
+        correction is OFF.
+        ||
+        Watch the wall collision. With stickiness correction turned off, the
+        car will be allowed to render in the state of collision (on the other
+        side of the wall). But with the first bounce, due to gravity and the
+        collision-related energy losses, the car does not recover from the state
+        of penetration (the car sticks inside the wall), that is, the ball does not
+        bounce back far enough to get back to the other side. This leads to a
+        state of perpetual collisions, with gravity dragging the car to the
+        left.
+        ||
+        Control-s pauses the run. Control-c stops the run.      
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(4.0)        
+        
+    elif cl['example_index'] == 4:
+        car['x_m'] = 0.2; car['v_mps'] = 10.0; car['a_mps2'] =  -10.0
+        env['CR'] = 0.8
+        env['fps_target'] = 300
+        track['show_collision_mark'] = False
+
+        print_header(car)
+        explaination = ''' 
+        The target frame rate is set high to give an interesting display of the
+        time-series tail. The car loses speed from each wall collision.
+        Acceleration (set high) to the left (negative).
+        ||
+        Control-s pauses the run. Control-c stops the run.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+
+        
+    elif cl['example_index'] == 5:
+        car['x_m'] = 2.0; car['v_mps'] = 3.0; car['a_mps2'] =  2.0
+        env['CR'] = 0.7
+        
+        print_header(car)
+        explaination = ''' 
+        Acceleration is to the right (opposite direction from other examples).
+        ||
+        A collision mark (0) is displayed at the original collision
+        position (before stickiness correction).
+        ||
+        Control-s pauses the run. Control-c stops the run.      
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    elif cl['example_index'] == 6:
+        car['x_m'] = 2.0; car['v_mps'] = 3.0; car['a_mps2'] =  2.0
+        env['CR'] = 0.7
+        env['m_to_px'] = 30.0
+        
+        print_header(car)
+        explaination = ''' 
+        The scaling factor between the physics engine and the renderer has
+        decreased from the level used in example 5. This effectively zooms out
+        the view of the track and the car on it. The output from the physics
+        engine is unchanged by this; all characteristics of the movement are
+        identical to those in example 5.
+        ||
+        Control-s pauses the run. Control-c stops the run.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)   
+
+    elif cl['example_index'] == 7:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -2.0
+        env['CR'] = 1.0
+        env['fps_target'] = 240
+        track['show_start_mark'] = True
+        
+        print_header(car)
+        explaination = '''
+        The CR value of unity yields elastic collisions. The frame rate is set
+        high to give the highest precision in the physics predictions. Note
+        the car consistently returns to the initial starting point as marked by
+        the period symbol on the track.
+        ||
+        Control-s pauses the run. Control-c stops the run.    
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    elif cl['example_index'] == 8:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -2.0
+        env['CR'] = 1.0
+        env['fps_target'] = 10
+        track['show_start_mark'] = True
+        
+        print_header(car)
+        explaination = '''
+        This is like the previous example (7), except the target frame rate is
+        reduced to give the lower precision in the physics predictions.
+        Note the car does NOT return to the initial starting point (as marked
+        on the track by column of period symbols). 
+        ||
+        The "0"s are easy to see in this example. As mentioned before, these
+        are marks to indicate the position of the car at the time of collision
+        detection (before stickiness correction is applied to resolve the state
+        of overlap).
+        ||
+        Control-s pauses the run. Control-c stops the run.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    elif cl['example_index'] == 9:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -2.0
+        env['CR'] = 1.0
+        env['fps_target'] = 10
+        env['use_observed_dt'] = True
+        track['show_start_mark'] = True
+        
+        print_header(car)
+        explaination = '''
+        The observed dt is used in the subsequent frame to calculate the
+        physics engine motions. All other settings are identical to those in
+        example 8. Note the car, again, does NOT return to the initial starting
+        point (as marked on the track by column of period symbols). But here the
+        return behavior is more variable.
+        ||
+        Control-s pauses the run. Control-c stops the run.    
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    elif cl['example_index'] == 10:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -2.0
+        env['CR'] = 1.0
+        env['fps_target'] = 10
+        track['show_start_mark'] = True
+        env['exact_solution'] = True
+        
+        print_header(car)
+        explaination = '''
+        The Euler-method calculation has been replaced with an exact
+        calculation method in this example. The calculation uses physics
+        kinematics equations to model the motion between the ends of the track
+        and also the motion in the collision frames. The frame rate is set low
+        to give the most severe test for this exact method. Note the car
+        consistently returns to the initial starting point.
+        ||
+        Control-s pauses the run. Control-c stops the run.   
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    elif cl['example_index'] == 11:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -2.0
+        env['CR'] = 1.0
+        env['fps_target'] = 10
+        track['show_start_mark'] = True
+        env['exact_solution'] = True
+        env['use_observed_dt'] = True
+        
+        print_header(car)
+        explaination = '''
+        The observed dt is used in the calculations of subsequent frames. Note
+        that in contrast to example 9, the car consistently returns to the
+        initial starting point.
+        ||
+        Control-s pauses the run. Control-c stops the run.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    elif cl['example_index'] == 12:
+        car['x_m'] = 2.0; car['v_mps'] = 0.0; car['a_mps2'] = -2.0
+        env['CR'] = 0.8
+        env['fps_target'] = 10
+        track['show_start_mark'] = True
+        env['exact_solution'] = True
+        env['use_observed_dt'] = True
+        
+        print_header(car)
+        explaination = '''
+        Same as example 11 but with a CR of less than 1.0.
+        ||
+        Control-s pauses the run. Control-c stops the run.    
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)        
+        
+    else:
+        cl['example_index'] = "--> Defaults"
+        print_header(car)
+        explaination = ''' 
+        No command line arguments were supplied or there was no
+        match for the mode value. Default parameters will be used.
+        ||
+        Control-s pauses the run. Control-c stops the run.
+        '''
+        pretty_paragraphs( explaination, 1) 
+        try_sleep(3.0)
+        
+def at_rest( car):
+    avg_car_position = pos_avg_10( car)
+    rest_tolerance = 0.001
+    if  ( (abs(avg_car_position - track['left_edge_m'])  &lt; rest_tolerance) or
+          (abs(avg_car_position - track['right_edge_m']) &lt; rest_tolerance) ):
+        return True
+    else:
+        return False
+        
+def cl_args_init():
+    cl['n_args'] = len(sys.argv) - 1
+    
+    if cl['n_args'] >= 1:
+        cl['example_index'] = int(sys.argv[1])
+     
+    cl['details'] = False     
+    if cl['n_args'] == 2:
+        if sys.argv[2] == "d":
+            cl['details'] = True
+    
+def main():  
+    global env, dt_s, track, fps_observed, x_list, cl
+    
+    # A list to support calculating a running average of the position.
+    x_list = []
+    
+    # Initialize the general parameters that control the environment.
+    env = {'stickiness_correction':True, 'correction_version_2':True ,
+           'm_to_px':55.0, 'CR':0.80, 'auto_off':True, 'fps_target':30,
+           'exact_solution':False, 'use_observed_dt':False}
+    
+    # Characteristics of the air track (the 1-D range of space that the car moves along).
+    track = {'left_edge_m':0.25 , 'right_edge_m':2.2,
+             'show_start_mark':False, 
+             'collision_state':'none', 
+             'collision_mark_px':-999, 'show_collision_mark':True}
+    
+    car = {'x_m':1.1, 'v_mps':0.0, 'a_mps2':0.0}
+
+    # Use the command-line arguments if provided. Put them in a dictionary.
+    cl = {'details':False, 'n_args':0}
+    cl_args_init()
+    
+    # Modify the initial conditions for the car and environment if command line parameters 
+    # were provided.
+    if (cl['n_args'] > 0):
+        modify( car, env)  
+    
+    fps_observed = env['fps_target']
+    dt_target_s = 1.0/env['fps_target']
+    dt_s = dt_target_s
+    dt_observed_s = dt_target_s
+    
+    # A mark on the track where the car started at (optionally displayed)
+    track['track_mark_px'] = px_from_m(car['x_m'])
+    
+    t_now_s = default_timer()
+    
+    for j in range( 50000):
+        try:        
+            t_previous_s = t_now_s
+            
+            # This check stops the physics calculations if Python is paused by
+            # by a ctrl-s.
+            if (dt_observed_s &lt; 0.15):
+                move( car)
+                check_for_wall_collisions( car)
+                render( car)
+            
+            if env['auto_off']:
+                if at_rest( car):
+                    break
+          
+            time.sleep( dt_target_s)
+            
+            t_now_s = default_timer()
+            dt_observed_s = t_now_s - t_previous_s
+            
+            if env['use_observed_dt']:
+                dt_s = dt_observed_s
+            fps_observed = 1/dt_observed_s
+        
+        except KeyboardInterrupt:
+            print "Stopped by keyboard (Ctrl-c)."
+            break
+        
+        except:
+            print "There is a problem in the TRY block above: \n"
+            # The following "raise" will print out the traceback.
+            raise
+            break
+            
+main()
+</pre>
+</div>
+
+</body>
+
+</html>

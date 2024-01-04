@@ -1,0 +1,7 @@
+def add1(pos):
+    pos += 1
+
+position = {'x':1}
+add1(position['x'])
+
+print position['x']

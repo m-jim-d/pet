@@ -1,0 +1,140 @@
+﻿<!doctype html>
+
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="revision history for pet.timetocode.org">
+   
+   <title>P.E.T./Revision History</title>
+
+   <link href="physics_engine.css" rel="stylesheet" type="text/css">
+
+   <!-- The navigation menu -->
+   <link href="sitemap.css?v=10" rel="stylesheet" type="text/css">   
+   <script src="jquery-3.6.1.min.js?v=3"></script>
+   <script src="utilities.js?v=45"></script>
+   <script src="pageStuff.js?v=3"></script>
+
+   <!-- The navigation menu -->
+   <script>      
+      // After the page loads...
+      $(window).on('load', function() {
+         pS.init({"pageDesc":"PET: rev history"});
+      });
+   </script>
+</head>
+
+<body style="background-position: 0% 0%; font-family: Helvetica; background-image: none; background-repeat: repeat; background-attachment: scroll;">
+
+<!-- The navigation menu -->
+<div id="navDiv"></div>
+<span class="menuicon" id="opener" style="font-size:19px; cursor:pointer;">&#9776;</span>
+
+<div class="pageblock">
+	<div class="title_line">
+      <h1 class="maintitle">Scope and Revision History</h1>
+      <span class="float_right">(<a class="Jump" href="javascript:history.go(-1)">return</a>)&nbsp;&nbsp;(<a href="index.html">P.E.T.</a>)</span>
+   </div>
+	<p>The content, at pet.timetocode.org, is a bit 
+	much for a single J-term course. We did not cover everything. A regular semester might be a better container.</p>
+	<p><strong class="title_2">Scope</strong></p>
+	<p>Here's the pattern followed in the J-term course:</p>
+	<ol>
+		<li>Worked through most of the 1D assignments. Made the <em>Gui Controls</em> 
+		and the <em>Hollow Cars and Demos</em> assignments optional.</li>
+		<li>Presented the <em>Vector Class Module</em> and the <em>2D Framework</em>, but made the assignments optional. 
+		This makes a good 
+		weekend (or two or three) challenge for those students that have coding experience.</li>
+		<li>Presented the <em>Multiplayer Demo</em> (networking) assignment. This 
+		makes a very nice in-class demo where multiple students (with laptops) 
+		can connect their clients to the server which is rendering to a large 
+		projection screen in the room. But again, the development of the 
+		client/server files is a good overload assignment for students looking 
+		for more. However, this can be taken as a result and used by those that want 
+		multiplayer functionality in their game. </li>
+		<li>Then it was back to required assignments where the students learned 
+		techniques for embellishing their moving pucks to make them playable: 
+		rotating turrets, firing bullets (and the associated impulse forces), 
+		visual indicators of health, etc. All the assignments between the <em>
+		2D Framework</em> and the <em>Perfect Kiss</em> were required.</li>
+		<li>At this point, they started working on projects while I presented the 
+		material on Pybox2d. There are no required assignments here. A few 
+		students used this in the end for their projects, but most used our 
+		own <em>2D Framework</em>.</li>
+	</ol>
+	<p><strong class="title_2">Revisions</strong></p>
+	<ul>
+		<li>June, 2019<ul>
+			<li>Added topic on <a href="index.html?countpi" target="_blank">
+			calculating pi</a> with collision counting.</li>
+		</ul>
+		</li>
+		<li>May, 2019<ul>
+			<li>Added a second video on the reversibility of the
+			<a href="index.html?perfect-kiss">Perfect Kiss</a> algorithm.</li>
+			<li>Code changes for demonstrating the reversibility of Perfect 
+			Kiss:<ul>
+				<li>Refined the game loop to give the option to limit (clamp) 
+				the game loop FPS and set a corresponding fixed timestep for the 
+				physics engine calculations. "Shift-p" toggles in and out of 
+				fixed-timestep mode. The current FPS is used as the clamping 
+				limit and the associated fixed timestep. The clamped FPS is 
+				shown in parenthesis.</li>
+				<li>The "e" key sets all pucks to have elastic collisions.</li>
+				<li>The "z" key (as before) enables the perfect-kiss algorithm. 
+				Now it also sets all collisions to be elastic and displays a 
+				collision counter in the upper left corner.</li>
+				<li>The "r" key reverses the velocity of all pucks. "Shift-r" 
+				reverses the direction of time incrementation.</li>
+				<li>The "t" key starts and stops a general timer.</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+		<li>November, 2016<ul>
+			<li>Started translating the final assignment (A16c_2D_B2D_serverN) 
+			into JavaScript for running in a web browser using the HTML5 Canvas. 
+			See main page at <a href="https://www.timetocode.org">
+			www.timetocode.org</a>.</li>
+		</ul>
+		</li>
+		<li>January, 2016<ul>
+			<li>Added the <a href="raspberrypi.html">Raspberry Pi 2</a> page. 
+			Script revisions are discussed at the end of the RPi page.</li>
+		</ul>
+		</li>
+		<li>October, 2015<ul>
+			<li>Added the <a href="index.html?one-d">pure-Python</a> 
+			physics engine (a.k.a. string rendering; a.k.a. the one-pager).</li>
+			<li>Added this revision-history page.<br />
+			</li>
+		</ul>
+		</li>
+		<li>August, 2014<ul>
+			<li>Updated the <a href="index.html?pygame">installation</a> files in the zip.<br />
+			</li>
+		</ul>
+		</li>
+		<li>July, 2013<ul>
+			<li>Added <a href="index.html?vector-sandbox">Vector 
+			Sandbox</a>.<br />
+			</li>
+		</ul>
+		<ul>
+			<li>Added <a href="index.html?perfect-kiss">Perfect 
+			Kiss</a>.<br /></li>
+		</ul>
+		</li>
+		<li>June, 2013<ul>
+			<li>Added conceptual drawings for the content in the PDFs.</li>
+			<li>Improved the documentation for the 2D framework and 
+			multiplayer-networking code.</li>
+		</ul>
+		</li>
+	</ul>
+</div>
+
+</body>
+
+</html>

@@ -44,7 +44,7 @@ window.pS = (function() {
    var m_keyMap;
    
    function scroll( targetID, pars={}) {
-      let mode = uT.setDefault( pars.mode, 'jump');      
+      let mode = uT.setDefault( pars.mode, 'jump');
       let addToHistory = uT.setDefault( pars.addToHistory, true);
       let scrollDuration = uT.setDefault( pars.scrollDuration, 300);
       let toPageTop = false;
@@ -195,7 +195,7 @@ window.pS = (function() {
    function checkForAbsoluteLinks() {
       let finalHref;
       
-      // check for absolute links...  https://www.triquence.org
+      // check for absolute links...  https://triquence.org
       $('a').each( function( index, value) {
          let href = $(this).attr("href");
          
@@ -203,8 +203,8 @@ window.pS = (function() {
             
             // local server
             if (window.location.href.includes("192.168.1.106")) {
-               if (href.includes("www.triquence")) {
-                  finalHref = href.replace( "https://www.triquence.org", "http://192.168.1.106/ttc-root");
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "http://192.168.1.106/ttc-root");
                   $(this).attr("href", finalHref);
                   
                } else if (href.includes("pet.triquence")) {
@@ -221,8 +221,8 @@ window.pS = (function() {
                         
             // springphysics test site
             } else if (window.location.href.includes("springphysics")) {
-               if (href.includes("www.triquence")) {
-                  finalHref = href.replace( "https://www.triquence.org", "https://www.springphysics.org");
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://springphysics.org");
                   $(this).attr("href", finalHref);
                
                } else if (href.includes("pet.triquence")) {
@@ -239,8 +239,8 @@ window.pS = (function() {
                
             // timetocode test site
             } else if (window.location.href.includes("timetocode")) {
-               if (href.includes("www.triquence")) {
-                  finalHref = href.replace( "https://www.triquence.org", "https://www.timetocode.org");
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://timetocode.org");
                   $(this).attr("href", finalHref);
                
                } else if (href.includes("pet.triquence")) {
@@ -257,8 +257,8 @@ window.pS = (function() {
                
             // github server
             } else if (window.location.href.includes("m-jim-d")) {
-               if (href.includes("www.triquence")) {
-                  finalHref = href.replace( "https://www.triquence.org", "https://m-jim-d.github.io/springsandpucks");
+               if (href.includes("https://triquence.org")) {
+                  finalHref = href.replace( "https://triquence.org", "https://m-jim-d.github.io/springsandpucks");
                   $(this).attr("href", finalHref);
                
                } else if (href.includes("pet.triquence")) {
@@ -369,7 +369,7 @@ window.pS = (function() {
             // Bailed on using hash parameter in URL. Native jumps to anchors are confusing. So sidestepping that mess by using query parameters.
             //var hashID = window.location.hash;
             
-            // Discard everything after the "&".
+            // Discard everything after the "&". Don't usually need this unless something (unwanted) gets appended to the URL by a server.
             var queryStringInURL = window.location.search.split("&")[0];
             // Then use the part after the "?".
             var queryID = queryStringInURL.slice(1);

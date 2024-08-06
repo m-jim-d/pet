@@ -11,7 +11,7 @@
    <link rel="canonical" href="https://pet.triquence.org/index.html" />
 
    <link href="physics_engine.css?v=2" rel="stylesheet" type="text/css">
-   <link href="dialog.css?v=2" rel="stylesheet" type="text/css">
+   <link href="dialog.css?v=4" rel="stylesheet" type="text/css">
 
    <!-- The navigation menu -->
    <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">   
@@ -42,14 +42,15 @@
     <i>Accept</i> to view the videos as embedded on this page.
     <i>Reject</i> to decline cookies and view in a new tab.
   </p>
-  <form method="dialog">
-    <button class="dialog" id="firstDialogButton" value="accept">Accept</button>
-    <button class="dialog-cancel" value="reject">Reject</button>    
-    <button class="dialog-cancel" value="close" style="float: right;">Close (no change)</button>
-  </form>
   <p>
     If you accept, click a video to load; click again to play.
-  </p>
+  </p>  
+  <form method="dialog">
+    <button class="dialog-cancel-x" id="firstDialogButton" value="close" title="close">&times;</button>
+    <button class="dialog" style="float:right;" value="accept">Accept</button>
+    <button class="dialog-cancel" style="float:right;" value="reject">Reject</button>    
+    <!-- <button class="dialog-cancel" value="close" style="float: right;">Close (no change)</button> -->
+  </form>
 </dialog>
 
 <div class="pageblock">

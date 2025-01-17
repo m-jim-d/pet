@@ -1,450 +1,380 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
+
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="simple physics engines for raspberry pi">
-   
-   <title>P.E.T./Raspberry Pi</title>
-   
-   <link rel="canonical" href="https://pet.triquence.org/raspberrypi.html" />
-   
-   <script src="syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
-   <script src="syntaxhighlighter/scripts/shBrushPython.js" type="text/javascript"></script>
-   <link href="syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css">
-   <link href="syntaxhighlighter/styles/shThemeRDark.css" rel="stylesheet" type="text/css">
-   <script type="text/javascript">SyntaxHighlighter.all();</script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="simple physics engines for raspberry pi">
 
-   <link href="physics_engine.css" rel="stylesheet" type="text/css">
-   <link href="dialog.css?v=4" rel="stylesheet" type="text/css">
+	<title>P.E.T./Raspberry Pi</title>
 
-   <style type="text/css">
-   .syntaxhighlighter {
-      max-height: 650px;
-   }
-   .auto-style2 {
-      background-color: #222222; <!-- #666666 -->
-      font-weight: bold;
-      color: white; <!-- #FFCC00 -->
-   }
-   .auto-style4 {
-      color: #000000;
-   }
-   .auto-style5 {
-      margin-left: 40px;
-   }
-   .newStyle1 {
-      font-weight: bold;
-      color: #000000;
-   }
-   </style>
+	<link rel="canonical" href="https://pet.triquence.org/raspberrypi.html" />
 
-   <!-- The navigation menu -->
-   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
-   <script src="jquery-3.7.1.min.js?v=3"></script>
-   <script src="utilities.js?v=45"></script>
-   <script src="pageStuff.js?v=3"></script>
+	<link href="physics_engine.css" rel="stylesheet" type="text/css">
+	<link href="dialog.css?v=4" rel="stylesheet" type="text/css">
 
-   <!-- The navigation menu --> 
-   <script>      
-      // After the page loads...
-      $(window).on('load', function() {
-         pS.init({"pageDesc":"PET: Rpi", "scrollAdjust":-10, "dialogOptions":true});
-      });
-   </script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
+
+	<style type="text/css">
+		.bold1 {
+			font-weight: bold;
+			color: #000000;
+		}
+
+		.note {
+			background: #f8f9fa;
+			border-left: 4px solid #007bff;
+			padding: 10px 0px;
+			margin: 0px 0px;
+			max-width: 800px;
+		}
+
+		/* for new installation section */
+		ul.install {
+			padding-left: 35px;
+			margin: 0px 0px;
+		}
+	</style>
+
+	<!-- The navigation menu -->
+	<link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
+	<script src="jquery-3.7.1.min.js?v=3"></script>
+	<script src="utilities.js?v=45"></script>
+	<script src="pageStuff.js?v=3"></script>
+
+	<!-- The navigation menu -->
+	<script>
+		// After the page loads...
+		$(window).on('load', function () {
+			pS.init({ "pageDesc": "PET: Rpi", "scrollAdjust": -10, "dialogOptions": true });
+		});
+	</script>
 
 </head>
 
-<body style="background-position: 0% 0%; font-family: Helvetica; background-image: none; background-repeat: repeat; background-attachment: scroll;">
+<body
+	style="background-position: 0% 0%; font-family: Helvetica; background-image: none; background-repeat: repeat; background-attachment: scroll;">
 
-<!-- The navigation menu -->
-<div id="navDiv"></div>
-<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+	<!-- The navigation menu -->
+	<div id="navDiv"></div>
+	<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
 
-<dialog id="cookieConsent" style="z-index:5; width:400px">
-  <h2 class="dialog" id="label">Cookies<span id="dialog-status" style="font-size:30px; color:black"></span></h2>
-  <p>
-    This page loads YouTube videos and related cookies.
-    <i>Accept</i> to view the videos as embedded on this page.
-    <i>Reject</i> to decline cookies and view in a new tab.
-  </p>
-  <p>
-    If you accept, click a video to load; click again to play.
-  </p>  
-  <form method="dialog">
-    <button class="dialog-cancel-x" id="firstDialogButton" value="close" title="close">&times;</button>
-    <button class="dialog" style="float:right;" value="accept">Accept</button>
-    <button class="dialog-cancel" style="float:right;" value="reject">Reject</button>    
-    <!-- <button class="dialog-cancel" value="close" style="float: right;">Close (no change)</button> -->
-  </form>
-</dialog>
+	<dialog id="cookieConsent" style="z-index:5; width:400px">
+		<h2 class="dialog" id="label">Cookies<span id="dialog-status" style="font-size:30px; color:black"></span></h2>
+		<p>
+			This page loads YouTube videos and related cookies.
+			<i>Accept</i> to view the videos as embedded on this page.
+			<i>Reject</i> to decline cookies and view in a new tab.
+		</p>
+		<p>
+			If you accept, click a video to load; click again to play.
+		</p>
+		<form method="dialog">
+			<button class="dialog-cancel-x" id="firstDialogButton" value="close" title="close">&times;</button>
+			<button class="dialog" style="float:right;" value="accept">Accept</button>
+			<button class="dialog-cancel" style="float:right;" value="reject">Reject</button>
+			<!-- <button class="dialog-cancel" value="close" style="float: right;">Close (no change)</button> -->
+		</form>
+	</dialog>
 
-<div class="pageblock">
-	<div class="title_line">
-      <h1 class="maintitle">Music, Physics Engines, and the Raspberry Pi</h1>
-      <span class="float_right">(<a class="Jump" href="javascript:history.go(-1)">return</a>)&nbsp;&nbsp;(<a href="index.html?pygame">P.E.T.</a>)</span>
-   </div>
-	<p>You're welcome to scroll down to the <a class="scroll-link" data-scroll-target="physics" href="#">physics-engine</a> section if you 
-	like. There you will find a video and&nbsp;<a class="scroll-link" data-scroll-target="installation" href="#">installation</a> 
-	instructions for the Raspberry Pi (RPi).
-	(This tale is related to the 
-	scripts and videos presented on the
-	<a href="index.html">main tutorial</a> page.)</p>
-   <p>
-   Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, click a video to load; click again to play.
-   </p>
-	<p>
-	<img class="rpi" alt="RPi" width="600" height="385" src="screenshots/P1218165_cropped-b.png" />
-   <strong class="title_2">First, some music</strong></p>
-	<p>From need to revitalize my stereo system came incentive to buy a first Raspberry Pi 
-	(RPi). My college-age sons had introduced me to Spotify. This amazing music 
-	resource needed to somehow get connected to a Bryston amplifier and 
-	Magneplanars that had been too quiet in recent years.</p>
-	<p>A web search yielded several solutions to this "connection" challenge 
-	where new meets old. The Pi MusicBox seemed like a nice approach: 
-	headless, and with control from my laptop or Android device. The overall 
-	cost of the project was about $100: </p>
-	<ul>
-		<li>Raspberry Pi 1 Model B+ and power supply</li>
-		<li><a href="https://www.hifiberry.com/">HiFiBerry DAC</a> board 
-		(digital to analog)<br /></li>
-		<li>Edimax WiFi adapter<br />
-		</li>
-		<li>SD Card<br />
-		</li>
-		<li>
-		<a href="http://www.amazon.com/GeauxRobot-Clear-Raspberry-Enclosure-Shape/dp/B00BR1IJUO">Dog Bone</a> case 
-         <ul>
-            <li>Corner-post extensions (a couple bucks extra)</li>
-         </ul>
-		</li>
-		<li>The <a href="http://www.woutervanwijk.nl/pimusicbox/">Pi MusicBox</a> 
-		webclient/server (a modification of Mopidy) running on Raspbian (this 
-		also works on the RPi 2)<br />
-		</li>
-		<li>Premium Spotify account (about $10 per month).</li>
-	</ul>
-	<p>The photo shows the DAC board stacked on top of the RPi (in the shadow 
-	underneath). Both are housed in the Dog Bone case. If you look carefully, 
-	you can see the little extensions to the case's corner posts that I ordered 
-	to accommodate the added height of the DAC board.</p>
-	<p>The instructions for imaging the RPi can be found at the Pi MusicBox 
-	site. I followed the
-	<a href="http://www.codeproject.com/Articles/838501/Raspberry-Pi-as-low-cost-audio-streaming-box">
-	English howto</a>. Basically, you write the Pi MusicBox image to an SD 
-	card and edit the settings.ini file to configure a Wi-Fi connection to your 
-	router (SSID and password). Put the card in the RPi and power it up. Then 
-	connect any browser to its little webserver and start playing music 
-	out of the analog outputs of the DAC board.</p>
-	<p>It works well and with a significant step up from Bluetooth audio 
-	quality. I like to make playlists using the Spotify client on my laptop and 
-	then access the playlists from the Pi MusicBox client. But you can also 
-	search for music directly on the Pi MusicBox client. An endless supply of 
-	new tunes...</p>
-	
-   <p>Update note, April 26, 2017:&nbsp; Recently tried
-	<a href="https://volumio.org/">Volumio</a> and like it as an alternate for 
-	the Pi MusicBox software. Found the Spotify Connect plugin for Volumio to 
-	be very good. Playlists are accessible via a Spotify client running on a 
-	laptop, tablet, phone, etc. You do this by using the "Connect to a device" 
-	feature in the Spotify client. This renders (casts) your choices (e.g. pick a song, 
-	start a playlist,...), in the Spotify client, onto to your Raspberry Pi 
-	which is the hardware host for Volumio. Get the   
-	<a href="https://github.com/balbuze/volumio-plugins/tree/master/plugins/music_service/volspotconnect2">plugin</a> (volspotconnect2.zip), 
-   then follow the installation instructions there.</p> 
-   
-   <p>Another update, September 15, 2023: Volumio has integrated the functionality of
-   the Spotify Connect plugin into the main Spotify plugin. So, it's much easier to setup now, only need one plugin, just install the main Spotify plugin that is available in Volumio.</p>
-   <!--
-	<iframe width="600" height="400" src="https://www.youtube.com/embed/DjifBSJNLBI?rel=0" allowfullscreen style="float:right; padding:10px; border:0px">
-   </iframe>
-   -->
-   <div class="video-container" data-videoID="DjifBSJNLBI">
-      <img class="frameCapture" src="screenshots/RPi-cropped.png" width="600" height="425">
-   </div>
-	<p><strong class="title_2"><a name="physics"></a>Fast enough for a physics engine?</strong></p>
-	
-   <p>It seemed like only seconds after I put down my cash on the RPi-1-B+ that 
-	the new and improved RPi-2 was announced. Wow, a promising six-fold 
-	improvement in performance and a new incentive to buy. Instead of 
-	encouraging me to listen to new tunes, this RPi-2 would be making objects 
-	move on its screen and hopefully at frame rates that provide a smooth and 
-	stable rendering.</p>
-	<p>The video here shows that, yes, its 900MHz ARMv7 CPU and VideoCore IV GPU 
-	are enough for the job. This was taken using a 
-	camera aimed at the RPi's display (note that software-based screen-capture 
-	methods burden the RPi and reduce framerates). The script file running here 
-	is A16c_2D_B2D_serverN.py (see corresponding 
-	topic on <a href="index.html?in-our-framework">Using 
-	Pybox2d in Our Framework</a> from the main page). The <a class="scroll-link" data-scroll-target="examples" href="#">last section</a> 
-   on this page has discussion on the example scripts included with the Linux-installation 
-	zip file.</p>
-	<p>Try running this script on your RPi and interact with 
-	the objects in the Pygame window. First, you'll need to run the installation 
-	script described in the next section. Then, from a command line on your RPi, 
-	type the following two commands:</p>
-	<p class="auto-style5"><span class="auto-style2">cd ~/Downloads/Linux-install/example-scripts<br />
-	python A16c_2D_B2D_serverN.py</span></p>
-	<p>Note that a wildcard character (*) is helpful for typing these long filenames. For example, the second 
-	line can be typed using the much shorter command:</p>
-	<p class="auto-style5"><span class="auto-style2">python A16c*</span></p>
-	<p>You'll notice that when this script starts, a second (practice) puck is active 
-	and firing. When it comes time to play with real-people clients, you might 
-	not want the practice puck. In that case, start the script with a 
-	command-line parameter of "off."</p>
-	<p class="auto-style5"><span class="auto-style2">python A16c* off</span></p>
-	<p><a name="controlsSummary"></a>Now it's time to use your keyboard and mouse to interact with objects in 
-	the Pygame window. These commands were used in the video and 
-	are summarized here:</p>
-	<ul>
-		<li><span class="newStyle1">Select and Move</span>: Click and drag (grab) an 
-		object using the mouse. Each of the three mouse buttons 
-		has a differing mouse-tether spring strength. Try it. Normally this will 
-		auto-select the object's center, but if the "Shift" key is down, any 
-		point on the object can be selected.</li>
-		<li><span class="newStyle1">Toggle gravity</span>:<span>
-		</span>The "g" key acts to toggle gravity ON and OFF. This particular 
-		script changes the background color to blue if gravity is ON. When 
-		gravity is OFF, most collisions are modeled as elastic.</li>
-		<li><span class="newStyle1">Stop all translation</span>: The 
-		"f" key momentarily freezes the translation of all objects. They will 
-		start to move again under the effects of gravity or cursor-tether 
-		forces.</li>
-		<li><span class="newStyle1">Apply torque</span>: The "t" key will 
-		torque a selected object. Shift-"t" will torque it the other way. Try 
-		spinning one of the squares.</li>
-		<li><span class="newStyle1">Stop all rotation</span>: The "r" 
-		key momentarily stops all rotational motion for al<span class="auto-style4">l objects.</span></li>
-		<li><span class="newStyle1">Pause the Physics Engine</span>: The "p" 
-		key will toggle the physics engine ON and OFF. This stops everything, 
-		physics and rendering. Just hit the "p" key again to wake it up. 
-		This is useful if you're playing the Jello Madness game. You tangle the 
-		jello, hit the "p" key, then give the keyboard and mouse to your 
-		opponent. Your opponent hits the "p" key when ready to start de-tangling 
-		(that also resets the jello timer). When the jello is de-tangled, the 
-		timer will stop. That's the score (sorry, you have to write it down). 
-		Now exchange rolls (your turn). Low score (time) wins.</li>
-		<li class="auto-style4"><span class="newStyle1">Drive and shoot</span>:
-		If you see a circular object with two rectangles anchored to its center, 
-		that's a puck, and it has a jet and a gun. The "a," "d," and "w" keys 
-		point and fire the jet; the "j," "l," and "i" keys point and fire the 
-		gun. The "s" and "k" keys are used to flip the tube directions into an 
-		orientation opposing the current motion of the puck; this can be useful 
-		in breaking (stopping). Holding down the spacebar turns on a shield that protects you 
-		from the bullets of an opponent (or the test puck). </li>
-		<li><span class="newStyle1">Zoom in an out</span>: The "h" and "n" keys 
-		zoom the view in and out. If the left "Ctrl" key is down, mouse 
-		movem<span class="auto-style4">ent acts to pan the view.</span></li>
-		<li class="auto-style4"><span class="newStyle1">Pick a different demo</span>:<em> </em>
-		Try pressing each of the number keys above the letters on your keyboard 
-		(not the number pad). 
-		The "7" key starts up the Jello-Madness 
-		demo. The "8" key starts the Puck-Popper demo. If your puck gets popped 
-		and you want to play again, just press the "8" key again. </li>
-		<li class="auto-style4"><span class="newStyle1">Connect a client to the server</span>: From another computer (either Windows or Linux) that 
-		has all the modules installed, type the following in a command line:
-		<br />
-		<span class="auto-style2">python A10_2D_baseline_client.py 192.168.1.197</span><br />
-		The parameter at the end of the command is an example IP address. You'll 
-		need to provide the actual address of the computer hosting the 
-		A16c_2D_B2D_serverN.py script. It will print its IP address in the 
-		command window immediately after starting. In the video, you'll see a 
-		second cursor acting to manipulate objects. That's a client computer 
-		which has connected to the RPi server. I'm working both mice, left and 
-		right hands... <br />
-		<br />
-		The network-client user must have line-of-sight to the server's screen. 
-		A projector would be best for games involving more than a few players.<br />
-		<br />
-		If you're playing Puck-Popper and the clients get popped (their game pad 
-		has vanished) you can start a new game by first having the clients 
-		reconnect to the server. Do this by re-entering the client startup 
-		command. Just hit the up-arrow key on the client computer; that will 
-		pull up the command from the command-line history; then hit the "Enter" 
-		key. Once the clients have reconnected, press the "8" key on the server 
-		to initialize the game.<br />
-		<br />
-		If you're having trouble connecting a client to the server computer, it 
-		may be a Windows firewall issue. Please refer to the PDF for the <a href="index.html?multiplayerdemo">
-		Multiplayer-Demo</a> topic (search in it for "firewall"). There you will find tips for cleaning out 
-		firewall rules. Note that the server and client scripts both assume a 
-		port value of 4330. If all else fails, try temporarily disabling the 
-		Windows firewall. Raspbian has no firewall, so if server and client are 
-		both on RPis, connection attempts should succeed if both computers have 
-		network access.</li>
-	</ul>
-	<p>So again, yes, the little RPi-2 has enough muscle to host a Python 
-	physics engine. Its low cost opens all this to teaching/learning 
-	environments that are not as well funded as a college J-term course: a high 
-	school, a community center, or even a church looking for a way to share its 
-	message and give the gift of learning to its parishioners and neighbors in 
-	its area.</p>
-	<p><strong class="title_2"><a name="installation"></a>Installation</strong></p>
-	<p>The list of Python modules needed for the Linux installation of the 
-	working environment is the same as for the Windows installation:</p>
-	<ul>
-		<li>Python 2.7
-         <ul>
-            <li>PodSixNet</li>
-            <li>pgu</li>
-            <li>Pygame
-               <ul>
-                  <li>pybox2d</li>
-               </ul>
-            </li>
-         </ul>
-		</li>
-	</ul>
-	<p>Of course the details for Linux will differ from the Window's process described on the main page. Python and Pygame are already on Raspbian, 
-	so only three module sets are needed. The Linux installation will involve 
-	building from source code (no .exe executable files like those used for part of the Windows 
-	installation). But in the end, the Linux installation is easier because of 
-	an installation script that does most of the work.</p>
-	<p>But first, do these two things: (1) check that your keyboard 
-	settings match your keyboard, and (2) expand the file system. Both can be done from&nbsp;the RPi configuration interface (Menu / Preferences / 
-	Raspberry Pi Configuration). From there, click on the "Localisation" tab, 
-	then the "Set Keyboard" button and set the country and variant (e.g. 
-	"United States" and "English (US)"), then click "OK." Next, click on the 
-	"System" tab and then the "Expand Filesystem" button. Then click "OK," 
-	then "OK" again, and then "Yes" when asked if you want to reboot. If you're 
-	not prompted for the reboot, just do a reboot from the main menu (Menu / 
-	Shutdown / Reboot).</p>
-	<p>The Linux installation procedure is base on a
-	<a href="installation.html" target="_blank">script</a> of mine that 
-	installs these modules: PodSixNet, pgu, and pybox2d. So basically you download the zip file, unzip it, 
-	and run the installation script. The following outline gives step-by-step 
-	instructions. Commands typed at the terminal command line 
-	are shown in a bold yellow font.</p>
-	<ol>
-		<li>Use the RPi's web browser to go to the
-		<a href="https://drive.google.com/folderview?id=0ByxaBWklPKdjQWJaX0tNOVdMRms&amp;usp=sharing" target="_blank">Google Drive share</a> and download the Linux-install.zip file.<br />
-		</li>
-		<li>Open a terminal window on the RPi and then change to the Downloads folder:<br />
-		<span class="auto-style2">cd ~<br />
-		cd Downloads</span><br />
-		</li>
-		<li>Unzip the file:<br />
-		<span class="auto-style2">unzip Linux-install.zip</span><br />
-		</li>
-		<li>Change to the Linux-install folder:<br />
-		<span class="auto-style2">cd Linux-install</span><br />
-		</li>
-		<li>Make the installation file executable:<br />
-		<span class="auto-style2">chmod +x installation.sh</span><br />
-		</li>
-		<li>Run the installation file:<br />
-		<span class="auto-style2">sudo ./installation.sh</span></li>
-	</ol>
-	<p>The installation.sh file takes about 6 minutes to finish. You'll be 
-	prompted a few times and will need to respond and say "yes." There will be many warning messages, especially during the build 
-	for the pybox2d module. That's normal. The final act of the installation script is to add a few lines to the end 
-	of your config.txt file. This sets the color depth to be compatible with the 
-	pybox2d scripts. When it completes, you may notice this message:
-	"That should do it. Done." If the config.txt file was modified, the script 
-	will reboot the RPi; this serves to activate these color-depth 
-	changes.</p>
-	<p>An alternative approach to installation is to use the Raspbian-Jessie-withPET.zip 
-	file on the Google Drive share. This zip contains an image which is based on 
-	Raspbian-Jessie and has made use of the installation.sh script to install 
-	the working environment. Uncompress the file and then write the image to 
-	your RPi's micro SD card (16 GB or larger), using Win32DiskImager or 
-	similar, then boot your RPi from it. You'll find the example scripts in 
-	~/Downloads/Linux-install/example-scripts. Oops, just noticed that the 
-	image is set up for left-handed mouse buttons (sorry I'm a lefty). It's easy 
-	to change this: go to Menu / Preferences / Mouse and Keyboard Settings and 
-	uncheck the "Left handed..." box.</p>
-	<p><strong class="title_2"><a name="examples"></a>Example scripts and tweaks 
-	to the code</strong></p>
-	<p>Included with the zip file are a handful of example scripts in the 
-	example-scripts folder. These are identical to the corresponding scripts from the
-	<a href="index.html">main page</a>. They represent the end 
-	of the three sequences presented there: 1D, 2D, and Box2D. The discussion 
-	below describes recent code changes that were made to improve the performance 
-	of these scripts on the RPi.</p>
-	<ul>
-		<li><strong>
-		<a class="hidden" href="A07_air_track_hollow_cars.html" target="_blank">A07_air_track_hollow_cars.py</a></strong><br />
-		The air-track script ran well without modification. This is partly 
-		because 1D-collisions don't involve square roots. In a more general 
-		sense, 1D is less complex and less work for the RPi. Note that some of the keyboard and 
-		mouse commands listed above apply to this script (gravity, translational freezing, demo 
-		selection, and mouse drags).<br /></li>
-		<li><strong><a class="hidden" href="vec2d_jdm.html" target="_blank">vec2d_jdm.py</a></strong><br />This vector-class file is needed 
-		by the following 3 files. It must be in their directory 
-		when they run.</li>
-		<li><strong>
-		<a class="hidden" href="A09b_2D_vector_sandbox.html" target="_blank">A09b_2D_vector_sandbox.py</a></strong><br />
-		If you've ever wanted to interact with vectors, here's your chance. Refer 
-		to the description of the
-		<a href="index.html?vector-sandbox">vector sandbox</a> 
-		on the main page.<br /></li>
-		<li><strong>
-		<a class="hidden" href="A15c_2D_perfect_kiss_serverN.html" target="_blank">A15c_2D_perfect_kiss_serverN.py</a></strong><br />
-		This is the final script in the progression of the pure-python 2D 
-		scripts (without pybox2d). There is jittery behavior here, especially when the 
-		ball grids are settling under the influence of gravity. I think it's useful 
-		to see this struggle on the RPi. The physics calculations are at script 
-		level (no compiled physics-engine code like that behind the pybox2d 
-		module that supports the A16c example). This A15c script makes the RPi 
-		work harder than any of the other scripts.</li>
-		<li><strong>
-		<a class="hidden" href="A16c_2D_B2D_serverN.html" target="_blank">A16c_2D_B2D_serverN.py</a></strong> &nbsp;<br />
-		This A16c 
-		file (see video above) has recent RPi-inspired changes. Some of 
-		these are an attempt to reduce instability related to 
-		excessive acceleration of objects under low frame-rate conditions. For example, a high-strength 
-		spring when connected to a low-mass object can produce large acceleration 
-		(try it; use the strongest cursor tether to grab a small 
-		ball). 
-         <ul>
-            <li>Added operating system detection so that the IP address could be 
-            determined when running on Linux. This allows the code to fork in 
-            places where accommodation is needed for the RPi.</li>
-            <li>Made the CR (coefficient of restitution) an attribute for each 
-            object on the air-table instead of a general air-table attribute. 
-            This gives more control of CR when toggling gravity on/off.</li>
-            <li>Tested variations in CR, mass, and spring constant parameters for 
-            both the jello and the triangle-of-balls examples. Reduce the number of balls in the grid 
-            examples when running on the RPi.</li>
-            <li>Added several server/client features. Server now sends a shutdown 
-            command to the client after a puck pops. The client closes with some 
-            fanfare.</li>
-            <li>Added running-average functionality that makes the frame-rate 
-            value more readable.</li>
-            <li>Added a practice puck that keeps shooting. This can be turned 
-            off by providing an "off" parameter (without quotes) at 
-            the command line.</li>
-            <li>Improved the rendering of the puck shields and the hit flashes. 
-            The shields flash when hit. All hit-flashes are timed so 
-            that they render consistently independent of frame rate.</li>
-            <li>Improved the rotational controls for the gun and jet. The 
-            rotation-per-frame is now based on the frame's timestep. This yields 
-            rotation behavior that is independent of the frame rate.<br /></li>
-         </ul>
-		</li>
-		<li>
-      <strong><a class="hidden" href="A10_2D_baseline_client.html" target="_blank">A10_2D_baseline_client.py</a></strong><br />
-      This is the client that connects to the server in the video. 
-		It sends mouse and keyboard events and presents a Pygame 
-		window showing the mouse position. This runs well on 
-		the RPi and without performance loss when compared to Intel I5 processors. A multi-player configuration that works 
-		best involves running the server on an I5-level processor and using RPi's for all the clients. The RPi 
-		can host the server scripts, but not for more than a few players.</li>
-      <li><strong><a class="hidden" href="A16a_BodyTypes.html" target="_blank">A16a_BodyTypes.py</a></strong><br />
-      This file must run in the pybox2d examples folder. You will find a copy 
-		of it there.<br />
-		<span class="auto-style2">cd ~/Downloads/Linux*/pybox2d*/examples</span><br />It runs well on the RPi, 
-		but it's best if you toggle the menu off ("F1" key) and avoid creating too 
-		many bodies. This is generally the case for all the examples in this 
-		folder; as the body count goes up, the framerate will drop.</li>
-   </ul>
-   .
-   <br>.
-   <br>.
-	<p>
-	(<a class="Jump" href="javascript:history.go(-1)">return</a>)&nbsp;&nbsp;(<a href="index.html?pygame">P.E.T.</a>)</p>
-</div>
+	<div class="pageblock">
+		<div class="title_line">
+			<h1>Music, Physics Engines, and the Raspberry Pi</h1>
+			<span class="float_right">(<a class="Jump" href="javascript:history.go(-1)">return</a>)&nbsp;&nbsp;(<a
+					href="index.html?pygame">P.E.T.</a>)</span>
+		</div>
+		<p>You're welcome to scroll down to the <a class="scroll-link" data-scroll-target="physics"
+				href="#">physics-engine</a> section if you
+			like. There you will find a video and&nbsp;<a class="scroll-link" data-scroll-target="installation"
+				href="#">installation</a>
+			instructions for the Raspberry Pi (RPi).
+			(This tale is related to the
+			scripts and videos presented on the
+			<a href="index.html">main tutorial</a> page.)
+		</p>
+		<p>
+			Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, click a video to load; click
+			again to play.
+		</p>
+		<p>
+			<img class="rpi" alt="RPi" width="600" height="385" src="screenshots/P1218165_cropped-b.png" />
+			<h2>First, some music</h2>
+		</p>
+		<p>(Written in 2015, updated 2025; much has changed.)</p>
+		<p>From need to revitalize my stereo system came incentive to buy a first Raspberry Pi
+			(RPi). My college-age sons had introduced me to Spotify. This amazing music
+			resource needed to somehow get connected to a Bryston amplifier and
+			Magneplanars that had been too quiet in recent years.</p>
+		<p>A web search yielded several solutions to this &quot;connection&quot; challenge
+			where new meets old. <a href="https://volumio.com/">Volumio</a> seemed like a nice approach:
+			headless, and with control from my laptop or Android device. The overall
+			cost of the project was about $100: </p>
+		<ul>
+			<li>Raspberry Pi 3 and power supply</li>
+			<li><a href="https://www.hifiberry.com/">HiFiBerry DAC</a> board
+				(digital to analog)<br /></li>
+			<li>Edimax WiFi adapter<br />
+			</li>
+			<li>SD Card<br />
+			</li>
+			<li>
+				<a href="http://www.amazon.com/GeauxRobot-Clear-Raspberry-Enclosure-Shape/dp/B00BR1IJUO">Dog Bone</a>
+				case
+				(picture of it; no longer an option)
+				<ul>
+					<li>Corner-post extensions (a couple bucks extra)</li>
+				</ul>
+			</li>
+			<li><a href="https://volumio.com/">Volumio</a></li>
+			<li>Premium Spotify account (about $10 per month).</li>
+		</ul>
+		<p>The photo shows the DAC board stacked (on the glowing pastic post) on top of the RPi (in the shadow
+			underneath). Both are housed in the Dog Bone case. If you look carefully,
+			you can see the little extensions to the case's corner metal posts that I ordered
+			to accommodate the added height of the DAC board.</p>
+		<p>It works well and with a significant step up from Bluetooth audio
+			quality (of 2015). I like to make playlists using the Spotify client on my
+			laptop and then access the playlists from the Volumio client. But you can also
+			search for music directly on the Volumio client. An endless supply of
+			new tunes...</p>
+
+		<p>Volumio has integrated the functionality of
+			the old Spotify Connect plugin into the main Spotify plugin. So, it's much easier to setup now, only need
+			one plugin, just install the main Spotify plugin that is available in Volumio.
+			Playlists are accessible via a Spotify client running on a laptop, tablet,
+			phone, etc. You do this by using the &quot;Connect to a device&quot; feature in the
+			Spotify client. This renders (casts) your choices (e.g. pick a song, start a
+			playlist,...), in the Spotify client, onto to your Raspberry Pi which is the
+			hardware host for Volumio.</p>
+
+		<div class="video-container" data-videoID="DjifBSJNLBI">
+			<img class="frameCapture" src="screenshots/RPi-cropped.png" width="600" height="425">
+		</div>
+		<p><h2><a name="physics"></a>Fast enough for a physics engine?</h2></p>
+
+		<p>It seemed like only seconds after I put down my cash on the RPi-1-B+ that
+			the new and improved RPi-2 was announced. Wow, a promising six-fold
+			improvement in performance and a new incentive to buy. Instead of
+			encouraging me to listen to new tunes, this RPi-2 would be making objects
+			move on its screen and hopefully at frame rates that provide a smooth and
+			stable rendering.</p>
+		<p>The video here shows that, yes, RPi-2 and its 900MHz ARMv7 CPU and VideoCore IV GPU
+			are enough for the job. This was taken using a
+			camera aimed at the RPi's display (note that software-based screen-capture
+			methods burden the RPi-2 and reduce framerates). The script file running here
+			is A16c_2D_B2D_serverN.py (see corresponding
+			topic on <a href="index.html?in-our-framework">Using
+				Pybox2d in Our Framework</a> from the main page).</p>
+		<p>Most recently,&nbsp; upgraded to a RPi-5 featuring a 64-bit quad-core Arm
+			Cortex-A76 processor running at 2.4GHz, along with an 800MHz VideoCore VII
+			GPU.</p>
+		<p>First, I'll ask you to run a script on your RPi-5 and interact with the objects in the
+			Pygame window. Most of these scripts will work with only Python and Pygame
+			installed.
+			(Note: to run the A06, A07, or A16 scripts, you'll need to
+			follow the <a class="scroll-link" data-scroll-target="installation"
+			href="#">installation</a> instructions for the Conda environment in the following
+			section.)</p>
+		<p>From a web browser on your RPi, download a copy of the github
+			repository for these python files. Look for the green &quot;code&quot; button, click
+			it and use the &quot;Download ZIP&quot; option.</p>
+		
+		<p>Code repository: <a href="https://github.com/m-jim-d/pet-code" target="_blank">https://github.com/m-jim-d/pet-code</a></p>
+		
+		<p>From the RPi file manage, naviagate to the downloaded file and right
+			click it and use the &quot;Extract Here&quot; option.</p>
+		<p>Then from a terminal window on the RPi-5: </p>
+		
+		<pre><code class="language-bash">
+		cd ~/Downloads/pet-code-main
+		python A15a_2D_finished_game.py
+		</code></pre>
+		
+		<p>Note that a wildcard character (*) is helpful for typing these long filenames. For example, the second
+			line can be typed using the much shorter command:</p>
+		<pre><code class="language-bash">python A15a*</code></pre>
+		<p><a name="controlsSummary"></a>Now it's time to use your keyboard and mouse to interact with objects in
+			the Pygame window.</p>
+		
+		<details>
+			<summary title="click to open">The commands used in the video are summarized here:</summary>
+			<div style="background-color: #c8d0c8; padding: 1px 10px 5px 10px; border-radius: 5px">
+				<ul>
+				<li><span class="bold1">Select and Move</span>: Click and drag (grab) an
+					object using the mouse. Each of the three mouse buttons
+					has a differing mouse-tether spring strength. Try it. Normally this will
+					auto-select the object's center, but if the "Shift" key is down, any
+					point on the object can be selected.</li>
+				<li><span class="bold1">Toggle gravity</span>:<span>
+					</span>The "g" key acts to toggle gravity ON and OFF. This particular
+					script changes the background color to blue if gravity is ON. When
+					gravity is OFF, most collisions are modeled as elastic.</li>
+				<li><span class="bold1">Stop all translation</span>: The
+					"f" key momentarily freezes the translation of all objects. They will
+					start to move again under the effects of gravity or cursor-tether
+					forces.</li>
+				<li><span class="bold1">Apply torque</span>: The "t" key will
+					torque a selected object. Shift-"t" will torque it the other way. Try
+					spinning one of the squares.</li>
+				<li><span class="bold1">Stop all rotation</span>: The "r"
+					key momentarily stops all rotational motion for all objects.</li>
+				<li><span class="bold1">Pause the Physics Engine</span>: The "p"
+					key will toggle the physics engine ON and OFF. This stops everything,
+					physics and rendering. Just hit the "p" key again to wake it up.
+					This is useful if you're playing the Jello Madness game. You tangle the
+					jello, hit the "p" key, then give the keyboard and mouse to your
+					opponent. Your opponent hits the "p" key when ready to start de-tangling
+					(that also resets the jello timer). When the jello is de-tangled, the
+					timer will stop. That's the score (sorry, you have to write it down).
+					Now exchange rolls (your turn). Low score (time) wins.</li>
+				<li class="auto-style4"><span class="bold1">Drive and shoot</span>:
+					If you see a circular object with two rectangles anchored to its center,
+					that's a puck, and it has a jet and a gun. The "a," "d," and "w" keys
+					point and fire the jet; the "j," "l," and "i" keys point and fire the
+					gun. The "s" and "k" keys are used to flip the tube directions into an
+					orientation opposing the current motion of the puck; this can be useful
+					in breaking (stopping). Holding down the spacebar turns on a shield that protects you
+					from the bullets of an opponent (or the test puck). </li>
+				<li><span class="bold1">Zoom in an out</span>: The "h" and "n" keys
+					zoom the view in and out at the cursor position. If the left "Ctrl" key is down, mouse
+					movem<span class="auto-style4">ent acts to pan the view.</span></li>
+				<li class="auto-style4"><span class="bold1">Pick a different demo</span>:<em> </em>
+					Try pressing each of the number keys above the letters on your keyboard
+					(not the number pad).
+					The "7" key starts up the Jello-Madness
+					demo. The "8" key starts the Puck-Popper demo. If your puck gets popped
+					and you want to play again, just press the "8" key again. </li>
+				<li class="auto-style4"><span class="bold1">Connect a client to the server</span>: From another computer
+					(either Windows or Linux) that
+					has Python installed, type the following in a command line:
+					<pre><code class="language-bash">python A10_2D_baseline_client.py 192.168.1.197</code></pre>
+					The parameter at the end of the command is an example IP address. You'll
+					need to provide the actual address of the computer hosting the
+					A15a_2D_finished_game.py script (or any of the server scripts). It will print its IP address in the
+					command window immediately after starting. In the video, you'll see a
+					second cursor acting to manipulate objects. That's a client computer
+					which has connected to the RPi server. In the video, I'm working both mice, left and
+					right hands... <br />
+					<br />
+					The network-client user must have line-of-sight to the server's screen.
+					A projector would be best for games involving more than a few players.<br />
+					<br />
+					If you're playing Puck-Popper and all the client's pucks have popped, you can always start a new game by pressing the "7" key. Each
+					connected client will get a new puck.<br />
+					<br />
+					Connection difficulty, client to server, might
+					be a Windows firewall issue. If all else fails, try temporarily disabling the
+					firewall.
+				</li>
+			</ul>
+			</div>
+		</details>
+		<p>The RPi-5 has plenty of muscle to host a Python
+			physics engine. Its modest cost opens all this to teaching/learning
+			environments that are not as well funded as a college J-term course: a high
+			school, a community center, or even a church looking for a way to share its
+			message and give the gift of learning to its parishioners and neighbors in
+			its area.</p>
+		
+		<h2><a name="installation"></a>Installation</h2>
+		<p>This guide walks through installing Miniconda and the physics/graphics packages on a Raspberry Pi 5:</p>
+		<ul>
+			<li>Python 3.11
+				<ul>
+					<li>Pygame</li>
+					<li>pgu (needed for A06 and A07 scripts)</li>
+					<li>pybox2d (needed for A16 scripts)</li>
+			</ul>
+			</li>
+		</ul>
+		<p>Python and Pygame may already be on your RPi. Installing this Conda environment is optional, only needed if you are running the A06, A07, or A16 scripts.</p>
+
+		<h3>Installing Miniconda</h3>
+
+		<ol>
+			<li>Download the ARM64 Miniconda installer:
+				<pre><code class="language-bash">wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh</code></pre>
+			</li>
+
+			<li>Make the installer executable:
+				<pre><code class="language-bash">chmod +x Miniconda3-latest-Linux-aarch64.sh</code></pre>
+			</li>
+
+			<li>Run the installer:
+				<pre><code class="language-bash">./Miniconda3-latest-Linux-aarch64.sh</code></pre>
+			</li>
+
+			<li>During installation:
+				<ul class="install">
+					<li>Review the license agreement (use spacebar to scroll)</li>
+					<li>Type "yes" to accept the license when prompted</li>
+					<li>Accept the default installation location when prompted</li>
+					<li>Type "yes" when asked to initialize Miniconda</li>
+					<li>Select "yes" to auto-start the base conda environment in new terminals</li>
+				</ul>
+			</li>
+
+			<li>Close and reopen your terminal window</li>
+		</ol>
+
+		<h3>Installing Physics and Graphics Packages</h3>
+
+		<p>Create a new conda environment with Python 3.11 (recommended for best compatibility). Run these commands, one by one:</p>
+
+		<pre><code class="language-bash">
+		conda create -n physics -c conda-forge python=3.11 pygame box2d-py
+		conda activate physics
+		pip install pygame-pgu
+		</code></pre>
+
+		<p>This installs:</p>
+		<ul class="install">
+			<li>Python 3.11</li>
+			<li>Pygame for graphics</li>
+			<li>Box2D for physics simulation</li>
+			<li>PGU for GUI elements</li>
+		</ul>
+
+		<h3>Verifying the Installation</h3>
+
+		<p>After installation, you can verify the packages are installed correctly:</p>
+
+		<pre><code class="language-bash">
+		conda list
+		</code></pre>
+
+		<p>Now, try running the A06 or A07 scripts from the box2d-pgu environment. These have a gui
+			interface and depend on pgu.</p>
+
+		<pre><code class="language-bash">
+		python A07*
+		</code></pre>
+
+		<p>Next, try running one of the A16 scripts. These use Box2D and depend on box2d-py. For example, A16c is the Box2D version
+			of the final game script.</p>
+
+		<pre><code class="language-bash">
+		python A16c_2D_B2D_serverN.py
+		</code></pre>
+
+		<h3>Notes</h3>
+		<div class="note">
+			<ul class="install">
+				<li>box2d-py works with Python 3.12, but pgu has compatibility issues.</li>
+				<li>Installation uses conda-forge channel for best ARM compatibility</li>
+				<li>The box2d-py distribution of Box2D does not support the framework or the example files in the
+					pybox2d_framework_P3 directory of the repository.
+					To try the example files (and A16a_BodyTypes.py), use Windows. Follow the installation for pybox2d on the
+					main PET page.
+				</li>
+			</ul>
+		</div>
+		<p>
+			(<a class="Jump" href="javascript:history.go(-1)">return</a>)&nbsp;&nbsp;(<a
+				href="index.html?pygame">P.E.T.</a>)</p>
+	</div>
 
 </body>
 

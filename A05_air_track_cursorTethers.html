@@ -107,8 +107,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A05_air_track_cursorTethers.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Filename: A05_air_track_cursorTethers.py</span>
 
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
@@ -209,7 +210,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="bp">self</span><span class="o">.</span><span class="n">width_px</span>  <span class="o">=</span> <span class="n">width_px</span>
         
         <span class="c1"># Use y midpoint for drawing the cursor line.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">center_y_px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">height_px</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height_px</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height_px</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_y_px</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">game_window</span><span class="o">.</span><span class="n">height_px</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height_px</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">height_px</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
         <span class="c1"># For use with cursor-tethers selection.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="kc">False</span>
         
@@ -235,7 +236,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">air_track</span><span class="o">.</span><span class="n">carCount</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1"># Name this car based on this air_track attribute.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">air_track</span><span class="o">.</span><span class="n">carCount</span>
-        <span class="nb">print</span> <span class="s2">&quot;New car name =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;New car name =&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         
         <span class="c1"># Create a rectangle object based on these dimensions</span>
         <span class="c1"># Left: distance from the left edge of the screen in px.</span>
@@ -412,19 +413,19 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
 <span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_px</span><span class="p">,</span> <span class="n">length_m</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">=</span> <span class="n">length_m</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">length_px</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">length_px</span><span class="p">)</span><span class="o">/</span><span class="n">length_m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">=</span> <span class="n">length_m</span><span class="o">/</span><span class="n">length_px</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">=</span> <span class="n">length_px</span><span class="o">/</span><span class="n">length_m</span>
         
         <span class="c1"># Add a local (non-network) client to the client dictionary.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clients</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;local&#39;</span><span class="p">:</span><span class="n">Client</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">])}</span>
     
     <span class="c1"># Convert from meters to pixels</span>
     <span class="k">def</span> <span class="nf">px_from_m</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_m</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">dx_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">dx_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span><span class="p">)</span>
     
     <span class="c1"># Convert from pixels to meters</span>
     <span class="k">def</span> <span class="nf">m_from_px</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_px</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">dx_px</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span>
+        <span class="k">return</span> <span class="n">dx_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span>
         
     <span class="k">def</span> <span class="nf">get_local_user_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
@@ -436,7 +437,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                 <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">):</span>
                     <span class="k">return</span> <span class="s1">&#39;quit&#39;</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_1</span><span class="p">):</span>            
-                    <span class="k">return</span> <span class="mi">1</span>           
+                    <span class="k">return</span> <span class="mi">1</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_2</span><span class="p">):</span>                          
                     <span class="k">return</span> <span class="mi">2</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_3</span><span class="p">):</span>                          
@@ -517,12 +518,12 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">])</span>
 
         <span class="c1"># Get the delta t for one frame (this changes depending on system load).</span>
-        <span class="n">dt_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
+        <span class="n">dt_s</span> <span class="o">=</span> <span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>
         
         <span class="c1"># Check for user initiated stop or demo change.</span>
         <span class="n">resetmode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_local_user_input</span><span class="p">()</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">resetmode</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]):</span>
-            <span class="nb">print</span> <span class="s2">&quot;reset mode =&quot;</span><span class="p">,</span> <span class="n">resetmode</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reset mode =&quot;</span><span class="p">,</span> <span class="n">resetmode</span><span class="p">)</span>
             
             <span class="c1"># This should remove all references to the cars and effectively deletes them.</span>
             <span class="n">air_track</span><span class="o">.</span><span class="n">cars</span> <span class="o">=</span> <span class="p">[]</span>
@@ -537,7 +538,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">user_done</span> <span class="o">=</span> <span class="kc">True</span>
             
         <span class="k">elif</span> <span class="p">(</span><span class="n">resetmode</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="nb">print</span> <span class="n">resetmode</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">resetmode</span><span class="p">)</span>
         
         <span class="c1"># Calculate client related forces.</span>
         <span class="k">for</span> <span class="n">client_name</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">clients</span><span class="p">:</span>
@@ -550,7 +551,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="c1"># Check for collisions and apply collision physics to determine resulting</span>
         <span class="c1"># velocities.</span>
         <span class="n">air_track</span><span class="o">.</span><span class="n">check_for_collisions</span><span class="p">()</span>
-        <span class="nb">print</span> <span class="s2">&quot;Collision count =&quot;</span><span class="p">,</span> <span class="n">air_track</span><span class="o">.</span><span class="n">collision_count</span><span class="p">,</span> <span class="n">air_track</span><span class="o">.</span><span class="n">fix_wall_stickiness</span><span class="p">,</span> <span class="n">air_track</span><span class="o">.</span><span class="n">fix_car_stickiness</span>
+        <span class="c1">#print(&quot;Collision count =&quot;, air_track.collision_count, air_track.fix_wall_stickiness, air_track.fix_car_stickiness)</span>
         
         <span class="c1"># Draw the car at the new position.</span>
         <span class="k">for</span> <span class="n">car</span> <span class="ow">in</span> <span class="n">air_track</span><span class="o">.</span><span class="n">cars</span><span class="p">:</span>

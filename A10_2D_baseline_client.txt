@@ -1,90 +1,25 @@
+#!/usr/bin/env python3
+
 # Filename: A10_2D_baseline_client.py
-# Written by: James D. Miller
-# 6:42 PM Wed January 20, 2016
 
 import sys, os, time
 import pygame
 
 # PyGame Constants
-from pygame.locals import *
+from pygame.locals import (
+    K_ESCAPE,
+    K_c, K_1, K_2, K_3,
+    K_a, K_s, K_d, K_w,
+    K_j, K_k, K_l, K_i, K_SPACE,
+    K_LSHIFT, K_t
+)
 from pygame.color import THECOLORS
-
-# Network stuff. Note "connection" is a single instantiation.
-from PodSixNet.Connection import connection, ConnectionListener
 
 # Argument parsing...
 import argparse
 
-#=======================================================================
-# Classes       
-#=======================================================================
+from A08_network import GameClient, RunningAvg, setClientColors
 
-class NetworkListener( ConnectionListener):
-    def __init__(self, (host, port)):
-        self.Connect((host, port))
-        
-        self.client_colors = {'C1': THECOLORS["orangered1"],'C2': THECOLORS["tan"],'C3': THECOLORS["cyan"],'C4': THECOLORS["blue"],
-                              'C5': THECOLORS["pink"], 'C6': THECOLORS["red"],'C7': THECOLORS["coral"],'C8': THECOLORS["green"],
-                              'C9': THECOLORS["grey80"],'C10': THECOLORS["rosybrown3"]}
-        
-        self.background_color = THECOLORS["white"]
-        self.client_name = 'C0'
-        self.client_color = THECOLORS["black"]
-        
-    def Network(self, data):
-        #print 'network data:', data
-        pass
-        
-    # def Network_connected(self, data):
-        # print "connected to the server", data
-
-    def Network_hello(self, data):
-        global client_ID, client_state
-        
-        print "Network_hello:", data
-        
-        client_ID = data['P_ID']
-        
-        if client_ID == 0:
-            print "The server new-client count exceeds the limit. Restart the server."
-            signoff(client_state)
-        
-        self.client_name = 'C' + str(client_ID)
-
-        self.background_color = THECOLORS["black"]
-        self.client_color = self.client_colors[self.client_name]
-        
-        # Initialize user state dictionary.
-        client_state = {'action': 'CN',
-                      'ID': client_ID,
-                      'mXY':(0,0), 'mBd':False, 'mB':1,
-                      'a':'U', 's':'U', 'd':'U', 'w':'U', 
-                      'j':'U', 'k':'U', 'l':'U', 'i':'U', ' ':'U',
-                      'm':'U',
-                      'f':'U',
-                      't':'U', 'ls':'U'}
-
-        pygame.display.set_caption("Air Table GamePad V.3:  Player C" + str(client_ID)) 
-        
-    # def Network_error(self, data):
-        # print "error:", data['error'][1]
-
-    # def Network_disconnected(self, data):
-        # print "Disconnected from the server."
-        
-    def Network_badhealth(self, data):
-        global start_shutdown
-        
-        start_shutdown = True
-        print "The message I'm getting from the server is: " + data['message'] + "."
-        print "I'm really not feeling very well."
-        self.background_color = THECOLORS["white"]
-        
-        #signoff(client_state)
-
-    # def Network_myaction(self, data):
-        # print "myaction:", data
-        
 #=======================================================================
 # Functions       
 #=======================================================================
@@ -106,7 +41,7 @@ def checkforUserInput(client_state):
                 mydisplay.fill(THECOLORS["yellow"])  
             
             elif (event.key==K_1):            
-                return 1           
+                return 1
             elif (event.key==K_2):                          
                 return 2
             elif (event.key==K_3):
@@ -137,11 +72,6 @@ def checkforUserInput(client_state):
             elif (event.key==K_t):
                 client_state['t'] = 'D'
             
-            elif (event.key==K_BACKSLASH):
-                print "Trying to start a new connection."
-                connection.DoConnect((args.serverIP, 4330))
-                #network_listener = NetworkListener((args.serverIP, 4330))
-                
         elif (event.type == pygame.KEYUP):
             if (event.key==K_a):
                 client_state['a'] = 'U'
@@ -193,88 +123,75 @@ def checkforUserInput(client_state):
 # Main program statements       
 #=======================================================================
 
-# Parse parameters provided in the command line.
-# This description string (and parameter help) gets displayed if help is requested (-h added after the filename).
-parser = argparse.ArgumentParser(description='Please add optional client parameters after the file name. For example: \n' + 
-                                             'A10_2D_baseline_client.py 111.222.22.22')
-# A required positional argument.
-parser.add_argument('serverIP', type=str, help='Use the IP address that is reported by the server when it starts.')
-# An optional positional argument.
-#parser.add_argument('someString', type=str, nargs='?', default='string1', help='Just enter a string value in the second position.')                              
-# An optional argument.
-#parser.add_argument('--test', '-t', type=str, help='Example: -t teststring OR --test teststring')
-                                
-args = parser.parse_args()
-print "Server IP Address:", args.serverIP
-#print "someString:", args.someString
-#print "test:", args.test
+def main():
+    global mydisplay
 
-pygame.init()
+    # Parse parameters provided in the command line.
+    # This description string (and parameter help) gets displayed if help is requested (-h added after the filename).
+    parser = argparse.ArgumentParser(description='Please add optional client parameters after the file name. For example: \n' + 
+                                                 'A10_2D_baseline_client.py 111.222.22.22')
+    # A required positional argument.
+    parser.add_argument('serverIP', type=str, help='Use the IP address that is reported by the server when it starts.')
+                                    
+    args = parser.parse_args()
+    print("Server IP Address:", args.serverIP)
 
-mydisplay = pygame.display.set_mode((800, 700))
+    pygame.init()
 
-# Instantiate clock to help control the framerate.
-myclock = pygame.time.Clock()
+    mydisplay = pygame.display.set_mode((800, 700))
+    client_colors = setClientColors()
 
-# Font object for rendering text onto display surface.
-fnt = pygame.font.SysFont("Arial", 14)
+    # Clock to control the framerate.
+    myclock = pygame.time.Clock()
 
-client_ID = 0
+    client_ID = 0
 
-# Initialize the state dictionary
-client_state = {}
-
-# Note, the connection can take place in the NetworkListener or here.
-# This "connection" is an instantiation of the EndPoint class that is done in the Connection.py file.
-# Note, if you do this here, you have to call the "DoConnect" method, not the "Connect" method that 
-# is indicated on the web site.
-#connection.DoConnect((args.serverIP, 4330))
-
-network_listener = NetworkListener((args.serverIP, 4330))
+    client = GameClient( host=args.serverIP, port=5000)
+    client.connect()
     
-framerate_limit = 120
-flip_timer = 0.0
+    if client.running and client.client_name is not None:
+        pygame.display.set_caption( "Client: " + client.client_name)
 
-start_shutdown = False
-shutdown_timer = 0.0
-
-while True:
-    
-    dt_s = float(myclock.tick(framerate_limit) * 1e-3)
-    #myclock.tick(framerate_limit)
-    
-    try:
-        connection.Pump()
-    except:
-        signoff(client_state)
-    network_listener.Pump()
-    
-    checkforUserInput(client_state)
-    if client_ID != 0:
-        #print "client_state", client_state
-        connection.Send(client_state)
-    
-    if start_shutdown:
-        shutdown_timer += dt_s
-        if shutdown_timer > 0.5:
-            network_listener.background_color = THECOLORS["red"]
-        if shutdown_timer > 1.0:
-            signoff(client_state)
-    
-    flip_timer += dt_s
-    if (flip_timer > 0.2):
-        # Background
-        mydisplay.fill( network_listener.background_color)
+    # Initialize client state dictionary.
+    client_state = {'ID': client.id,
+                    'mXY':(0,0), 'mBd':False, 'mB':1,
+                    'a':'U', 's':'U', 'd':'U', 'w':'U', 
+                    'j':'U', 'k':'U', 'l':'U', 'i':'U', ' ':'U',
+                    'm':'U',
+                    'f':'U',
+                    't':'U', 'ls':'U'}
         
-        # Small rectangle to illustrate the client color that will appear on the server screen.
-        pygame.draw.rect(mydisplay, network_listener.client_color, pygame.Rect(50, 50, 60, 20), 3)
+    framerate_limit = 120
+    fr_avg = RunningAvg(100, pygame, colorScheme='light')
+    
+    flip_timer = 0.0
+
+    while True:
+        dt_s = myclock.tick(framerate_limit) * 1e-3
         
-        # Small background rectangle for text
-        pygame.draw.rect(mydisplay, THECOLORS["white"], pygame.Rect(150, 50, 35, 20))
-        # Text
-        fps_string = "%.0f" % myclock.get_fps()
-        txt_surface = fnt.render(fps_string, True, THECOLORS["black"])
-        mydisplay.blit(txt_surface, [158, 51])
+        checkforUserInput( client_state)
         
-        pygame.display.flip()
-        flip_timer = 0.0
+        client.send_state( client_state)
+                
+        flip_timer += dt_s
+        
+        fr_avg.update( myclock.get_fps())
+        
+        if (flip_timer > 0.2):
+            # Background
+            mydisplay.fill( THECOLORS["black"])
+            
+            fr_avg.draw( mydisplay, 150, 50)
+                        
+            if client.running and client.client_name is not None:
+                # Small rectangle to illustrate the client color that will be used for the cursor on the server screen.
+                pygame.draw.rect( mydisplay, client_colors[ client.client_name], pygame.Rect(50, 50, 60, 20), 5)
+            
+            pygame.display.flip()
+            flip_timer = 0.0
+        
+#============================================================
+# Run the main program.    
+#============================================================
+        
+main()

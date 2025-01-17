@@ -1,6 +1,7 @@
 <!doctype html>
 
-<html lang="en"  id="helpScroller">
+<html lang="en" id="helpScroller">
+
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,17 +14,20 @@
    <link href="physics_engine.css?v=2" rel="stylesheet" type="text/css">
    <link href="dialog.css?v=4" rel="stylesheet" type="text/css">
 
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
+   
    <!-- The navigation menu -->
-   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">   
+   <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
    <script src="jquery-3.7.1.min.js?v=3"></script>
    <script src="utilities.js?v=45"></script>
    <script src="pageStuff.js?v=45"></script>
 
    <!-- The navigation menu -->
-   <script>      
+   <script>
       // After the page loads...
-      $(window).on('load', function() {
-         pS.init({"pageDesc":"PET: main page", "scrollAdjust":-13, "dialogOptions":true});
+      $(window).on('load', function () {
+         pS.init({ "pageDesc": "PET: main page", "scrollAdjust": -13, "dialogOptions": true });
       });
    </script>
 
@@ -31,1014 +35,1104 @@
 
 <body>
 
-<!-- The navigation menu -->
-<div id="navDiv"></div>
-<img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
+   <!-- The navigation menu -->
+   <div id="navDiv"></div>
+   <img class="menuicon" id="opener" src="images/menu.svg" alt="" style="cursor:pointer;">
 
-<dialog id="cookieConsent" style="z-index:5; width:400px">
-  <h2 class="dialog" id="label">Cookies<span id="dialog-status" style="font-size:30px; color:black"></span></h2>
-  <p>
-    This page loads YouTube videos and related cookies.
-    <i>Accept</i> to view the videos as embedded on this page.
-    <i>Reject</i> to decline cookies and view in a new tab.
-  </p>
-  <p>
-    If you accept, click a video to load; click again to play.
-  </p>  
-  <form method="dialog">
-    <button class="dialog-cancel-x" id="firstDialogButton" value="close" title="close">&times;</button>
-    <button class="dialog" style="float:right;" value="accept">Accept</button>
-    <button class="dialog-cancel" style="float:right;" value="reject">Reject</button>    
-    <!-- <button class="dialog-cancel" value="close" style="float: right;">Close (no change)</button> -->
-  </form>
-</dialog>
-
-<div class="pageblock">
-	<div class="title_line">
-      <h1 class="maintitle">Introduction to 2D Game Physics with Pygame</h1>
-      <span class="float_right">
-      	(<a class="jump" href="pe_tutorial_revhistory.html">revisions</a>)
-         (<a href="https://triquence.org" title="Springs &amp; Pucks">S&amp;P</a>)
-      </span>
-   </div>
-   
-	<table border="0" width="100%">
-   <tr>
-   <td colspan="2" class="indent">
-      <!--
-      <div class="video-container">
-         <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/u2-8P7MKbNo?rel=0" frameborder="0" 
-         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-      </div>
-      -->
-      <div class="video-container" data-videoID="u2-8P7MKbNo">
-         <img class="frameCapture" src="screenshots/firstVideo_550w.png" width="550" height="498">
-      </div>
-      <!-- this next hidden element is used for logging the video usage -->
-      <p style="display:none"><strong class="title_2">Using Pybox2d in Our Framework (1st on PET)</strong></p>
-      
-      <p>This sequence of topics reflects a J-term course given at
-      <a href="https://gustavus.edu/" target="_blank">Gustavus Adolphus</a> College 
-      in 2013. </p>
-	  <p>Much of this content is demonstrated on the
-	  <a href="https://triquence.org" target="_blank">Springs &amp; Pucks</a> 
-	  page using a live HTML5 
-	  Canvas. Here are links to the corresponding
-	  video <a href="https://triquence.org/videos.html" target="_blank">walkthrough</a> 
-	  and the games:
-	  <a href="https://triquence.org/?8c" target="_blank">puck popper</a>, 
-	  <a href="https://triquence.org/?4e.monkeyhunt" target="_blank">monkey hunt</a>,<br> 
-	  <a href="https://triquence.org/?6" target="_blank">jello madness</a>,
-	  <a href="https://triquence.org/?3d" target="_blank">ghost-ball pool</a>, and 
-	  <a href="https://triquence.org/?5e.basketball" target="_blank">bipartisan hoops</a>.
-     </p>
-	  <p>This was originally presented in a classroom with a mixture of lecture and 
-      lab; most of this had verbal explanation. The <a href="pe_tutorial_revhistory.html">revision history</a> 
-      has a discussion on the scope of the J-term
-	  <a href="pygame.html" target="_blank">course</a>.</p>
-	  <p>It's posted here in support of any that wish to offer the course 
-	  and for the curious out there who want to play with this 
-      on their own. It's a great way to gain useful coding experience and learn the 
-      Python language.</p>
-      
-      <p>This tutorial emphasizes the following:</p>
-      <ul>
-         <li>This is a progression starting from very basic <a class="scroll-link" data-scroll-target="pygame" href="#">Pygame</a>
-         ideas, through <a class="scroll-link" data-scroll-target="one-d" href="#">1D</a> and <a class="scroll-link" data-scroll-target="two-d" href="#">2D</a> (pure 
-         Python) physics engines, ending with an application of the
-         <a class="scroll-link" data-scroll-target="box2d" href="#">Box2D</a> physics engine.</li>
-         <li>There is a physics instructor behind this. So, there are 
-         references to things like:
-         <a href="http://en.wikipedia.org/wiki/Air_track" target="_blank">air tracks</a> 
-         and <a href="http://en.wikipedia.org/wiki/Air_hockey" target="_blank">air 
-         tables</a>, separation of rendering from floating-point calculation 
-         engines, Euler's method, impulse and non-impulse collision calculations, 
-         and object-penetration correction (anti-stickiness). Students need only 
-         have experience with vectors.</li>
-         <li><a class="scroll-link" data-scroll-target="multiplayerdemo" href="#">Multiplayer</a> networking supports tournament play.</li>
-         <li>This content is aimed at students of a January-term class.
-         <a href="pe_tutorial_revhistory.html">Much</a> has to be absorbed in 
-         about 2.5 weeks (two lectures and a lab each day), leaving about a week for team-based project work.</li>
-      </ul>
-      <p>Each topic below has the following:</p>
-      <ul>
-         <li>An assignment in PDF form that includes a problem statement, reference 
-         material, algorithms, conceptual drawings, and (sometimes obfuscated) code 
-         hints. The good stuff is in the PDFs.</li>
-         <li>Source code</li>
-         <li>A screen-capture video of the code running and rendering in a Pygame 
-         window (the videos can also be viewed from this
-         <a href="https://www.youtube.com/watch?v=RyZaQYYgglw&amp;list=PLTMmJ3C3RoL9hQK9Dr95wSD91y_askNyX" target="_blank">
-         playlist</a>).</li>
-      </ul>
-     
-      <p>Finally, some thanks directed at sites that sparked this one:
-      <ul>
-         <li>Peter Collingridge's Pygame physics
-         <a href="http://www.petercollingridge.co.uk/pygame-physics-simulation" target="_blank">
-         tutorial</a></li>
-         <li>Phil Hassey's
-         <a href="https://github.com/parogers/pgu" target="_blank">pgu module</a> on 
-         GUI controls for Pygame</li>
-         <li>Chris McCormick's
-         <a href="http://mccormick.cx/projects/PodSixNet/" target="_blank">PodSixNet</a> 
-         module on multiplayer for Pygame</li>
-         <li>The <a href="https://github.com/pybox2d/pybox2d" target="_blank">pybox2d</a> 
-         project</li>
-      </ul>
-      Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, click a video to load; click again to play.
+   <dialog id="cookieConsent" style="z-index:5; width:400px">
+      <h2 class="dialog" id="label">Cookies<span id="dialog-status" style="font-size:30px; color:black"></span></h2>
+      <p>
+         This page loads YouTube videos and related cookies.
+         <i>Accept</i> to view the videos as embedded on this page.
+         <i>Reject</i> to decline cookies and view in a new tab.
       </p>
-   </td>
-   </tr>
-   
-   <tr>
-      <td class="sectionbreak" colspan="2"><a name="pygame"></a><strong>First steps</strong></td>
-   </tr>
-   <tr>
-      <td bgcolor="#ffffff" colspan="2" class="indent">
-         <p><strong class="title_2">Installation of the Working Environment:
-         <br></strong>
-         <a href="installation_instructions_public.pdf" target="_blank">PDF</a> 
-         / (No code)</p>
-         <p>The
-         <a href="https://drive.google.com/folderview?id=0ByxaBWklPKdjQWJaX0tNOVdMRms&amp;usp=sharing" target="_blank">Windows-install.zip</a> file contains the installation files that are used for the 
-         course. More recent versions can be found, but this set is certain 
-         to work. These have been tested on XP, Win7, Win8, and 
-         Win10.</p>
-         <ul>
-            <li>Notepad++</li>
-            <li>Python 2.7
+      <p>
+         If you accept, click a video to load; click again to play.
+      </p>
+      <form method="dialog">
+         <button class="dialog-cancel-x" id="firstDialogButton" value="close" title="close">&times;</button>
+         <button class="dialog" style="float:right;" value="accept">Accept</button>
+         <button class="dialog-cancel" style="float:right;" value="reject">Reject</button>
+         <!-- <button class="dialog-cancel" value="close" style="float: right;">Close (no change)</button> -->
+      </form>
+   </dialog>
+
+   <div class="pageblock">
+      <div class="title_line">
+         <h1 class="maintitle">Introduction to 2D Game Physics with Pygame</h1>
+         <span class="float_right">
+            (<a class="jump" href="pe_tutorial_revhistory.html">revisions</a>)
+            (<a href="https://triquence.org" title="Springs &amp; Pucks">S&amp;P</a>)
+         </span>
+      </div>
+
+      <table border="0" width="100%">
+         <tr>
+            <td colspan="2" class="indent">
+               <div class="video-container" data-videoID="u2-8P7MKbNo">
+                  <img class="frameCapture" src="screenshots/firstVideo_550w.png" width="550" height="498">
+               </div>
+               <!-- this next hidden element is used for logging the video usage -->
+               <p style="display:none"><strong class="title_2">Using Pybox2d in Our Framework (1st on PET)</strong></p>
+
+               <p>This sequence of topics reflects a J-term course given at
+                  <a href="https://gustavus.edu/" target="_blank">Gustavus Adolphus</a> College.
+               </p>
+               <p>Much of this content is demonstrated on the
+                  <a href="https://triquence.org" target="_blank">Springs &amp; Pucks</a>
+                  page using a live HTML5
+                  Canvas. Here are links to the corresponding
+                  video <a href="https://triquence.org/videos.html" target="_blank">walkthrough</a>
+                  and the games:
+                  <a href="https://triquence.org/?8c" target="_blank">puck popper</a>,
+                  <a href="https://triquence.org/?4e.monkeyhunt" target="_blank">monkey hunt</a>,<br>
+                  <a href="https://triquence.org/?6" target="_blank">jello madness</a>,
+                  <a href="https://triquence.org/?3d" target="_blank">ghost-ball pool</a>, and
+                  <a href="https://triquence.org/?5e.basketball" target="_blank">bipartisan hoops</a>.
+               </p>
+               <p>This was originally presented in a classroom with a mixture of lecture and
+                  lab; most of this had verbal explanation. The <a href="pe_tutorial_revhistory.html">revision
+                     history</a>
+                  has a discussion on the scope of the J-term
+                  <a href="pygame.html" target="_blank">course</a>.
+               </p>
+               <p>It's posted here in support of any that wish to offer the course
+                  and for the curious out there who want to play with this
+                  on their own. It's a great way to gain useful coding experience and learn the
+                  Python language.</p>
+
+               <p>This tutorial emphasizes the following:</p>
                <ul>
-                  <li>Pygame
+                  <li>This is a progression starting from very basic <a class="scroll-link" data-scroll-target="pygame"
+                        href="#">Pygame</a>
+                     ideas, through <a class="scroll-link" data-scroll-target="one-d" href="#">1D</a> and <a
+                        class="scroll-link" data-scroll-target="two-d" href="#">2D</a> (pure
+                     Python) physics engines, ending with an application of the
+                     <a class="scroll-link" data-scroll-target="box2d" href="#">Box2D</a> physics engine.
+                  </li>
+                  <li>There is a physics instructor behind this. So, there are
+                     references to things like:
+                     <a href="http://en.wikipedia.org/wiki/Air_track" target="_blank">air tracks</a>
+                     and <a href="http://en.wikipedia.org/wiki/Air_hockey" target="_blank">air
+                        tables</a>, separation of rendering from floating-point calculation
+                     engines, Euler's method, impulse and non-impulse collision calculations,
+                     and object-penetration correction (anti-stickiness). Students need only
+                     have experience with vectors.
+                  </li>
+                  <li><a class="scroll-link" data-scroll-target="multiplayerdemo" href="#">Multiplayer</a> networking
+                     supports tournament play.</li>
+                  <li>This content is aimed at students of a January-term class.
+                     <a href="pe_tutorial_revhistory.html">Much</a> has to be absorbed in
+                     about 2.5 weeks (two lectures and a lab each day), leaving about a week for team-based project
+                     work.
+                  </li>
+               </ul>
+               <p>Each topic below has the following:</p>
+               <ul>
+                  <li>An assignment in PDF form that includes a problem statement, reference
+                     material, algorithms, conceptual drawings, and (sometimes obfuscated) code
+                     hints. The good stuff is in the PDFs.</li>
+                  <li>Source code</li>
+                  <li>A screen-capture video of the code running and rendering in a Pygame
+                     window (the videos can also be viewed from this
+                     <a href="https://www.youtube.com/watch?v=RyZaQYYgglw&amp;list=PLTMmJ3C3RoL9hQK9Dr95wSD91y_askNyX"
+                        target="_blank">
+                        playlist</a>).
+                  </li>
+               </ul>
+
+               <p>Finally, some thanks directed at sites that sparked this one:
+               <ul>
+                  <li>Peter Collingridge's Pygame physics
+                     <a href="http://www.petercollingridge.co.uk/pygame-physics-simulation" target="_blank">
+                        tutorial</a>
+                  </li>
+                  <li>Ken Lauer's <a href="https://github.com/pybox2d/pybox2d" target="_blank">pybox2d</a>, Python interface to Box2D
+                  </li>
+                  <li>Phil Hassey's
+                     <a href="https://github.com/parogers/pgu" target="_blank">pgu</a>,
+                     GUI module for Pygame
+                  </li>
+               </ul>
+               Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, click a video to load; click
+               again to play.
+               </p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="sectionbreak" colspan="2"><a name="pygame"></a><strong>First steps</strong></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" colspan="2" class="indent">
+               <p><strong class="title_2">Installation of the Working Environment:</strong>
+               </p>
+
+               <p>From a web browser, download a copy of the github
+                  repository for these python files. Look for the green &quot;code&quot; button, click
+                  it and use the &quot;Download ZIP&quot; option.</p>
+
+               <p>Code repository: <a href="https://github.com/m-jim-d/pet-code" target="_blank">https://github.com/m-jim-d/pet-code</a></p>
+               
+               <p>Many of these scripts will run if you have Python and Pygame installed. 
+                  If you have Pygame, you can test by running one of the scripts from the repository. 
+                  Change to the directory where the files are unzipped and type:
+
+               <pre><code class="language-bash">
+                  python A15a_2D_finished_game.py
+               </code></pre>
+
+               <p>To run all the scripts, including A06, A07, and A16, you'll need to
+                  install Conda. Conda is a package manager for Python.
+               </p>
+
+               <p>Download the Miniconda installer here: <a href="https://www.anaconda.com/download/success#miniconda" target="_blank">
+                  https://www.anaconda.com/download/success#miniconda </a>
+               </p>
+
+               <details>
+                  <summary title="click to open">(Another option is to run a silent installer.)</summary>
+                  <div style="background-color: #c8d0c8; padding: 1px 10px 5px 10px; border-radius: 5px">
+                  <p>Their page on this: <a href="https://docs.anaconda.com/miniconda/install/" target="_blank">
+                     https://docs.anaconda.com/miniconda/install/ </a></p>
+
+                  <p>Run the following commands from a command prompt, one by one:</p>
+                     
+                  <pre><code class="language-bash">
+                  curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe -o miniconda.exe
+                  start /wait "" .\miniconda.exe /S
+                  del miniconda.exe
+                  </code></pre>
+                  </div>
+               </details>
+
+               <p>
+                  Now, after installing Miniconda, create and activate a new conda environment:
+               </p>
+               <ul>
+                  <li>Python 3.11
                      <ul>
-                        <li>pybox2d</li>
+                        <li>Pygame</li>
+                        <li>pgu (needed for A06 and A07 scripts)</li>
+                        <li>pybox2d (needed for A16 scripts)</li>
                      </ul>
                   </li>
-                  <li>pgu</li>
-                  <li>PodSixNet</li>
                </ul>
-            </li>
-         </ul>
-      </td>
-   </tr>
-   
-   <tr>
-   <td bgcolor="#ffffff" colspan="2" class="indent">
-      <p><strong class="title_2">Window's Command Window (cmd) and the 
-      Notepad++ Editor:<br></strong>
-      <a href="A00_editor_cmd.pdf" target="_blank">PDF</a> / (No code)</p>
-      <p>This is a small collection of useful Windows and Notepad++ tips 
-      for the beginner and/or those new to Windows.<br><br></p>
-      <p><strong class="title_2"><a name="RPi"></a>Installation on Linux and the Raspberry 
-      Pi:<br></strong><a href="raspberrypi.html">RPi and Code</a><br>
-      </p>
-      <p>This <a href="raspberrypi.html">page</a> describes a couple 
-      of my adventures 
-      with the RPi: python-physics engines (of course) and a few words 
-      on setting up a music server. You'll find details on the Linux 
-      installation of the working environment and discussion on the 
-      changes made to these scripts to get them running well on the RPi. 
-      There's a video that shows the surprisingly good performance of 
-      these scripts on the RPi-2. If you watch it to the end, you'll 
-      see my wife getting the best of me in Puck Popper. This page 
-      also has a good <a href="raspberrypi.html?controlsSummary">
-      summary</a> of the keyboard and mouse controls that are used in 
-      most of the scripts.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
-      <div class="video-container">
-         <iframe loading="lazy" width="550" height="390" src="https://www.youtube.com/embed/RyZaQYYgglw?rel=0" frameborder="0" 
-         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-      </div>
-      -->   
-      <div class="video-container" data-videoID="RyZaQYYgglw">
-         <img class="frameCapture" src="screenshots/pygameDrawing_550w.png" width="550" height="336">
-      </div>
-      <p><strong class="title_2">Pygame</strong><br>
-      
-      <a href="A01_game_loop_and_events.pdf" target="_blank">PDF</a> /
-      <a href="A01_game_loop_and_events.html" target="_blank">Code</a></p>
-      <p>This first assignment illustrates the display window and event-handling 
-      features that are used from Pygame. Drawing, erasing, and screen 
-      updating are viewed in the Pygame window. Keyboard and mouse events 
-      are interpreted and used to control the drawing algorithms. A game 
-      loop keeps repeating the process: erase, draw, update the screen. 
-      Holding down the "e" key enables screen erasing every time through 
-      the game loop. Holding down the "f" inhibits the flip operation 
-      that is use to update the screen at the end of the game loop. The 
-      two mouse buttons are used to change the color of the circle.
-      </p>
-      <p>The video starts with the erase feature. With erasing enabled, 
-      the ball seems animated (the drawing tail does not persist). Later 
-      the flip (screen update) operation is inhibited (these are drawn 
-      in memory but not to the screen). Finally a combination of erasing 
-      and flip inhibiting cause the ball to lag behind and then catch 
-      up to the cursor.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="sectionbreak" colspan="2"><a name="one-d"></a><strong>1D</strong></td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+
+               <p>
+                  You must use the "Anaconda Prompt." Find this in the Windows start menu (in the alphabetical list, under Anaconda).
+                  Run these commands, one by one.
+               </p>
+               
+               <pre><code class="language-bash">
+                  conda create -n physics -c conda-forge python=3.11 pygame pybox2d
+                  conda activate physics
+                  pip install pygame-pgu
+               </code></pre>
+                           
+               <p>
+                  To test the pybox2d installation, type:
+               </p>
+               <pre><code class="language-bash">
+                  python A16c_2D_B2D_serverN.py
+               </code></pre>
+                           
+               <p>
+                  To test the pygame-pgu installation, type:
+               </p>
+               <pre><code class="language-bash">
+                  python A07_air_track_hollow_cars.py
+               </code></pre>
+                           
+               <p>
+                  To test the pybox2d framework (in a subdirectory of the repository), type:
+               </p>
+               <pre><code class="language-bash">
+                  cd pybox2d_framework_P3
+                  python A16a_BodyTypes.py
+               </code></pre>
+            </td>
+         </tr>
+
+         <tr>
+            <td bgcolor="#ffffff" colspan="2" class="indent">
+               <p><strong class="title_2">Window's Command Window (cmd) and the
+                     Notepad++ Editor:<br></strong>
+                  <a href="A00_editor_cmd.pdf" target="_blank">PDF</a> / (No code)
+               </p>
+               <p>This pdf is a small collection of useful Windows and Notepad++ tips
+                  for the beginner and/or those new to Windows. Written in 2015 (updated in 2025), it's still a useful start.</p>
+               <p>Years later, there are many new options for editing Python. Most of my 2025 revisions to this site, 
+                  Python and HTML, were done in the
+                  <a href="https://codeium.com/windsurf">Windsurf</a>
+                  editor, AI assisted by Claude.<br><br></p>
+               <p><strong class="title_2"><a name="RPi"></a>Installation on Linux and the Raspberry
+                     Pi:<br></strong><a href="raspberrypi.html">RPi story and install</a><br>
+               </p>
+               <p>This <a href="raspberrypi.html">page</a> describes my adventures
+                  with the RPi: python-physics engines (of course) and a few words
+                  on setting up a music server. You'll find details on the Linux
+                  installation of the working environment.
+                  There's a video that shows the surprisingly good performance of
+                  these scripts on the RPi-2. If you watch it to the end, you'll
+                  see my wife getting the best of me in Puck Popper. This page
+                  also has a good <a href="raspberrypi.html?controlsSummary">
+                     summary</a> of the keyboard and mouse controls that are used in
+                  most of the scripts.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <div class="video-container" data-videoID="RyZaQYYgglw">
+                  <img class="frameCapture" src="screenshots/pygameDrawing_550w.png" width="550" height="336">
+               </div>
+               <p><strong class="title_2">Pygame</strong><br>
+
+                  <a href="A01_game_loop_and_events.pdf" target="_blank">PDF</a> /
+                  <a href="A01_game_loop_and_events.html" target="_blank">Code</a>
+               </p>
+               <p>This first assignment illustrates the display window and event-handling
+                  features that are used from Pygame. Drawing, erasing, and screen
+                  updating are viewed in the Pygame window. Keyboard and mouse events
+                  are interpreted and used to control the drawing algorithms. A game
+                  loop keeps repeating the process: erase, draw, update the screen.
+                  Holding down the "e" key enables screen erasing every time through
+                  the game loop. Holding down the "f" inhibits the flip operation
+                  that is use to update the screen at the end of the game loop. The
+                  two mouse buttons are used to change the color of the circle.
+               </p>
+               <p>The video starts with the erase feature. With erasing enabled,
+                  the ball seems animated (the drawing tail does not persist). Later
+                  the flip (screen update) operation is inhibited (these are drawn
+                  in memory but not to the screen). Finally a combination of erasing
+                  and flip inhibiting cause the ball to lag behind and then catch
+                  up to the cursor.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="sectionbreak" colspan="2"><a name="one-d"></a><strong>1D</strong></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="462" src="https://www.youtube.com/embed/sLDOgXG27No?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="sLDOgXG27No">
-         <img class="frameCapture" src="screenshots/purePython_550w.png" width="550" height="462">
-      </div>
-      <p><strong class="title_2">A Pure-Python Physics Engine</strong>
-      
-      <br><a href="A02.1_sr_walkthrough.html">Code discussion</a> 
-      / <a href="A02.1_string_rendering_v1.html" target="_blank">Code 
-      #1</a> 
-      / <a href="A02.1_string_rendering_v2.html" target="_blank">Code 
-      #2</a></p>
-      <p>This first look at a 1D-physics engine does so without any rendering 
-      in the Pygame display window. Instead, this outputs to a simple text string that is 
-      printed to the command line. The #1 version is fully functional 
-      with only one page of Python code. The #2 version can be executed 
-      with command-line parameters and facilitates running the various 
-      examples in the video.<br></p>
-      <p>The video is best viewed in full-screen mode so that the preliminary 
-      text, before each example run, can be read. Near the beginning of 
-      the video, an annotation block is used to help the viewer direct 
-      (and keep) his gaze on the first row of output. This first row yields 
-      the intended animation effect: move, draw, erase, repeat. There 
-      is an animated-gif capture of the "first row" displayed at the top 
-      of the <a href="A02.1_sr_walkthrough.html">code discussion</a> page.
-      </p>
-      <p>This rendering approach has the added advantage of preserving 
-      the frame history. As the viewer looks up to higher rows on the 
-      screen he is looking back in time, frame by frame (row by row). 
-      This can help in visualizing and understanding wall collisions and 
-      the associated position corrections that are made.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="sLDOgXG27No">
+                  <img class="frameCapture" src="screenshots/purePython_550w.png" width="550" height="462">
+               </div>
+               <p><strong class="title_2">A Pure-Python Physics Engine</strong>
+
+                  <br><a href="A02.1_sr_walkthrough.html">Code discussion</a>
+                  / <a href="A02.1_string_rendering_v1.html" target="_blank">Code
+                     #1</a>
+                  / <a href="A02.1_string_rendering_v2.html" target="_blank">Code
+                     #2</a>
+               </p>
+               <p>This first look at a 1D-physics engine does so without any rendering
+                  in the Pygame display window. Instead, this outputs to a simple text string that is
+                  printed to the command line. The #1 version is fully functional
+                  with only one page of Python code. The #2 version can be executed
+                  with command-line parameters and facilitates running the various
+                  examples in the video.<br></p>
+               <p>The video is best viewed in full-screen mode so that the preliminary
+                  text, before each example run, can be read. Near the beginning of
+                  the video, an annotation block is used to help the viewer direct
+                  (and keep) his gaze on the first row of output. This first row yields
+                  the intended animation effect: move, draw, erase, repeat. There
+                  is an animated-gif capture of the "first row" displayed at the top
+                  of the <a href="A02.1_sr_walkthrough.html">code discussion</a> page.
+               </p>
+               <p>This rendering approach has the added advantage of preserving
+                  the frame history. As the viewer looks up to higher rows on the
+                  screen he is looking back in time, frame by frame (row by row).
+                  This can help in visualizing and understanding wall collisions and
+                  the associated position corrections that are made.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="300" src="https://www.youtube.com/embed/53NsBPRrHUk?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="53NsBPRrHUk">
-         <img class="frameCapture" src="screenshots/1d-framework.png" width="550" height="286">
-      </div>
-      <p><a name="1D-FrameWork"></a><strong class="title_2">1D-Physics Engine Framework</strong><br>
-      
-      <a href="A02_air_track_framework.pdf" target="_blank">PDF</a> /
-      <a href="A02_air_track_framework.html" target="_blank">Code</a></p>
-      <p>The 1D framework introduces the relationship between the screen 
-      and the physics world. It also brings in the first taste of Euler's 
-      method in animating the motion. There are no car-wall or car-car 
-      collisions here; no gravity. Cars just pass through each other (and 
-      walls) and no acceleration from gravity. OOP classes are used here 
-      to organize the code and prepare for the object nature of the games 
-      to follow.</p>
-      <p>The video shows five short demos (press keyboard numbers 1 through 
-      5). The first two are two-car animations. The last three show stacks 
-      of cars spreading out due to the differences in their velocities. 
-      The car in the middle of the stack has zero velocity. At any point 
-      in time, the relative velocity of any pair of cars is proportional 
-      to the separation distance between them (kind of like Hubble's law).</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="53NsBPRrHUk">
+                  <img class="frameCapture" src="screenshots/1d-framework.png" width="550" height="286">
+               </div>
+               <p><a name="1D-FrameWork"></a><strong class="title_2">1D-Physics Engine Framework</strong><br>
+
+                  <a href="A02_air_track_framework.pdf" target="_blank">PDF</a> /
+                  <a href="A02_air_track_framework.html" target="_blank">Code</a>
+               </p>
+               <p>The 1D framework introduces the relationship between the screen
+                  and the physics world. It also brings in the first taste of Euler's
+                  method in animating the motion. There are no car-wall or car-car
+                  collisions here; no gravity. Cars just pass through each other (and
+                  walls) and no acceleration from gravity. OOP classes are used here
+                  to organize the code and prepare for the object nature of the games
+                  to follow.</p>
+               <p>The video shows five short demos (press keyboard numbers 1 through
+                  5). The first two are two-car animations. The last three show stacks
+                  of cars spreading out due to the differences in their velocities.
+                  The car in the middle of the stack has zero velocity. At any point
+                  in time, the relative velocity of any pair of cars is proportional
+                  to the separation distance between them (kind of like Hubble's law).</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="300" src="https://www.youtube.com/embed/4WrtW3DBfZM?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="4WrtW3DBfZM">
-         <img class="frameCapture" src="screenshots/wall-collisions.png" width="550" height="286">
-      </div>
-      <p><strong class="title_2">Wall Collisions, Gravity, and Stickiness</strong><br>
-      
-      <a href="A03_air_track_g_wallCollisions.pdf" target="_blank">PDF</a> 
-      / <a href="A03_air_track_g_wallCollisions.html" target="_blank">
-      Code</a></p>
-      <p>Euler's method comes to life here. Velocities are changing under 
-      the accelerating influence of gravity. There is a drawing in the 
-      PDF that illustrates the idea of penetration/stickiness correction. 
-      (Note that the drawings in the PDFs display with varying quality 
-      depending on the browser; Chrome: great, IE: OK, Firefox: not so 
-      hot.) For now, we'll just do the stickiness correction; later there 
-      will be several video demos of this issue. A coefficient of restitution 
-      is used to model the energy loss in the wall collisions. Notice 
-      the apparent settling of the cars at the end of the video.</p>
-      <p>(Note: You can watch in full-screen mode using the YouTube controls 
-      in the lower right corner of each video. Esc to get back to this 
-      page.)</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="4WrtW3DBfZM">
+                  <img class="frameCapture" src="screenshots/wall-collisions.png" width="550" height="286">
+               </div>
+               <p><strong class="title_2">Wall Collisions, Gravity, and Stickiness</strong><br>
+
+                  <a href="A03_air_track_g_wallCollisions.pdf" target="_blank">PDF</a>
+                  / <a href="A03_air_track_g_wallCollisions.html" target="_blank">
+                     Code</a>
+               </p>
+               <p>Euler's method comes to life here. Velocities are changing under
+                  the accelerating influence of gravity. There is a drawing in the
+                  PDF that illustrates the idea of penetration/stickiness correction.
+                  (Note that the drawings in the PDFs display with varying quality
+                  depending on the browser; Chrome: great, IE: OK, Firefox: not so
+                  hot.) For now, we'll just do the stickiness correction; later there
+                  will be several video demos of this issue. A coefficient of restitution
+                  is used to model the energy loss in the wall collisions. Notice
+                  the apparent settling of the cars at the end of the video.</p>
+               <p>(Note: You can watch in full-screen mode using the YouTube controls
+                  in the lower right corner of each video. Esc to get back to this
+                  page.)</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="300" src="https://www.youtube.com/embed/8cJDiRcHsLo?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="8cJDiRcHsLo">
-         <img class="frameCapture" src="screenshots/car-car-collisions.png" width="550" height="286">
-      </div>
-      <p><strong class="title_2">Car-Car Collisions and Stickiness<br>
-      
-      </strong>
-      <a href="A04_air_track_carCollisions.pdf" target="_blank">PDF</a> 
-      / <a href="A04_air_track_carCollisions.html" target="_blank">Code</a></p>
-      <p>Car-car collision physics and car-car stickiness correction are 
-      added here. This script uses the "c" and the "s" keys to toggle 
-      two algorithmic features that help to illustrate the collisions 
-      and stickiness. The "c" key toggles the "color-transfer" feature 
-      which, when enabled, causes the colors of two colliding cars to 
-      swap. So when two cars start to settle near a wall under the influence 
-      of gravity, they collide frequently and the colors will swap quickly 
-      to show the cars are still colliding. If this feature is off the 
-      cars will appear to settle, but the cars really don't settle in 
-      our basic physic engine! (Later with Box2D we will show true settling.) 
-      The "s" toggles the stickiness correction on and off. So if you 
-      turn off the correction, the cars will be pulled into each other 
-      as they settle. Hit the "s" key again and they will unstick with 
-      a little pop. A combination of the "c" and "s" key is used at the 
-      tail end of the video. Sorry, this one runs a little long (kind 
-      of like watching paint dry).<br><br></p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="8cJDiRcHsLo">
+                  <img class="frameCapture" src="screenshots/car-car-collisions.png" width="550" height="286">
+               </div>
+               <p><strong class="title_2">Car-Car Collisions and Stickiness<br>
+
+                  </strong>
+                  <a href="A04_air_track_carCollisions.pdf" target="_blank">PDF</a>
+                  / <a href="A04_air_track_carCollisions.html" target="_blank">Code</a>
+               </p>
+               <p>Car-car collision physics and car-car stickiness correction are
+                  added here. This script uses the "c" and the "s" keys to toggle
+                  two algorithmic features that help to illustrate the collisions
+                  and stickiness. The "c" key toggles the "color-transfer" feature
+                  which, when enabled, causes the colors of two colliding cars to
+                  swap. So when two cars start to settle near a wall under the influence
+                  of gravity, they collide frequently and the colors will swap quickly
+                  to show the cars are still colliding. If this feature is off the
+                  cars will appear to settle, but the cars really don't settle in
+                  our basic physic engine! (Later with Box2D we will show true settling.)
+                  The "s" toggles the stickiness correction on and off. So if you
+                  turn off the correction, the cars will be pulled into each other
+                  as they settle. Hit the "s" key again and they will unstick with
+                  a little pop. A combination of the "c" and "s" key is used at the
+                  tail end of the video. Sorry, this one runs a little long (kind
+                  of like watching paint dry).<br><br></p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="300" src="https://www.youtube.com/embed/r-ihjKNH86U?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="r-ihjKNH86U">
-         <img class="frameCapture" src="screenshots/cursor-tethers.png" width="550" height="295">
-      </div>
-      <p><strong class="title_2">Cursor Tethers</strong><br>
-      
-      <a href="A05_air_track_cursorTethers.pdf" target="_blank">PDF</a> 
-      / <a href="A05_air_track_cursorTethers.html" target="_blank">Code</a></p>
-      <p>The user gets to interact with the objects on the screen. Cursor 
-      spring and drag forces are calculated based on the separation distance 
-      between the cursor and the selected car (and the velocity of the 
-      car). Cars are selected by clicking on the car or holding down the 
-      mouse button and letting the car run over the cursor. Cursors attach 
-      at the center of the car. Each mouse button invokes a different 
-      cursor tether (with a different spring constant and car drag coefficient). 
-      The left mouse button is medium, the right mouse button is stiff, 
-      and the center (roller) button has the softest spring. The video 
-      closes with me trying to pull the car into the wall. The color transfer 
-      ("c") is turned on so the frequent collisions are illustrated. Note 
-      you can again turn off the stickiness correction here ("s") and 
-      pull the cars into the wall; then toggle it off and watch them pop 
-      out (not so much "paint drying" here since you can pull them in 
-      pretty quickly, especially with the stiffer of the three cursor 
-      tethers).</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="r-ihjKNH86U">
+                  <img class="frameCapture" src="screenshots/cursor-tethers.png" width="550" height="295">
+               </div>
+               <p><strong class="title_2">Cursor Tethers</strong><br>
+
+                  <a href="A05_air_track_cursorTethers.pdf" target="_blank">PDF</a>
+                  / <a href="A05_air_track_cursorTethers.html" target="_blank">Code</a>
+               </p>
+               <p>The user gets to interact with the objects on the screen. Cursor
+                  spring and drag forces are calculated based on the separation distance
+                  between the cursor and the selected car (and the velocity of the
+                  car). Cars are selected by clicking on the car or holding down the
+                  mouse button and letting the car run over the cursor. Cursors attach
+                  at the center of the car. Each mouse button invokes a different
+                  cursor tether (with a different spring constant and car drag coefficient).
+                  The left mouse button is medium, the right mouse button is stiff,
+                  and the center (roller) button has the softest spring. The video
+                  closes with me trying to pull the car into the wall. The color transfer
+                  ("c") is turned on so the frequent collisions are illustrated. Note
+                  you can again turn off the stickiness correction here ("s") and
+                  pull the cars into the wall; then toggle it off and watch them pop
+                  out (not so much "paint drying" here since you can pull them in
+                  pretty quickly, especially with the stiffer of the three cursor
+                  tethers).</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="300" src="https://www.youtube.com/embed/hImkAaGWQ-4?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="hImkAaGWQ-4">
-         <img class="frameCapture" src="screenshots/1d-with-gui.png" width="550" height="280">
-      </div>
-      <p><strong class="title_2">Gui Controls</strong><br>
-      
-      <a href="A06_air_track_gui_controls.pdf" target="_blank">PDF</a> 
-      / <a href="A06_air_track_gui_controls.html" target="_blank">Code</a></p>
-      <p>Gui here, not just sticky (ha ha). Controls have been added for 
-      stickiness and color-transfer toggles as well as a gravity slider 
-      (for simulating that bad cruise-liner experience) and a button to 
-      freeze the cars. If gravity is set to zero, a freeze operation will 
-      stop the cars and they will stay that way until...</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="hImkAaGWQ-4">
+                  <img class="frameCapture" src="screenshots/1d-with-gui.png" width="550" height="280">
+               </div>
+               <p><strong class="title_2">Gui Controls</strong><br>
+
+                  <a href="A06_air_track_gui_controls.pdf" target="_blank">PDF</a>
+                  / <a href="A06_air_track_gui_controls.html" target="_blank">Code</a>
+               </p>
+               <p>Gui here, not just sticky (ha ha). Controls have been added for
+                  stickiness and color-transfer toggles as well as a gravity slider
+                  (for simulating that bad cruise-liner experience) and a button to
+                  freeze the cars. If gravity is set to zero, a freeze operation will
+                  stop the cars and they will stay that way until...</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="300" src="https://www.youtube.com/embed/oBJlfGduAZA?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="oBJlfGduAZA">
-         <img class="frameCapture" src="screenshots/hollow-cars.png" width="550" height="303">
-      </div>
-      <p><a name="hollow-cars"></a><strong class="title_2">Hollow Cars and Demos</strong><br>
-      
-      <a href="A07_air_track_hollow_cars.pdf" target="_blank">PDF</a> 
-      / <a href="A07_air_track_hollow_cars.html" target="_blank">Code</a></p>
-      <p>Car mass is visualized here by hollowing out the lighter cars. 
-      The video shows 10 of the 13 demos. The demo number is indicated 
-      in the window title (upper part of the Pygame window frame). Demo 
-      #4 shows the inelastic collisions between a set of cars where the 
-      total momentum of the set is zero before and after the collision 
-      (a reverse explosion). Most of the other demos make use of the color-transfer 
-      feature to highlight the transfer of momentum through cars (like 
-      Newton's cradle). A description of each demo is in the PDF.</p>
-   </td>
-   </tr>
-   
-   <tr id="countpi">
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="oBJlfGduAZA">
+                  <img class="frameCapture" src="screenshots/hollow-cars.png" width="550" height="303">
+               </div>
+               <p><a name="hollow-cars"></a><strong class="title_2">Hollow Cars and Demos</strong><br>
+
+                  <a href="A07_air_track_hollow_cars.pdf" target="_blank">PDF</a>
+                  / <a href="A07_air_track_hollow_cars.html" target="_blank">Code</a>
+               </p>
+               <p>Car mass is visualized here by hollowing out the lighter cars.
+                  The video shows 10 of the 13 demos. The demo number is indicated
+                  in the window title (upper part of the Pygame window frame). Demo
+                  #4 shows the inelastic collisions between a set of cars where the
+                  total momentum of the set is zero before and after the collision
+                  (a reverse explosion). Most of the other demos make use of the color-transfer
+                  feature to highlight the transfer of momentum through cars (like
+                  Newton's cradle). A description of each demo is in the PDF.</p>
+            </td>
+         </tr>
+
+         <tr id="countpi">
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="400" src="https://www.youtube.com/embed/YmVOG8uD4pg?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="YmVOG8uD4pg">
-         <img class="frameCapture" src="screenshots/pi-2-cropped.png" width="550" height="403">
-      </div>
-      <p><strong class="title_2">Counting to pi</strong><br>
-      
-      <a href="A07_air_track_hollow_cars.html" target="_blank">Code</a></p>
-      
-      <p>This counting method, documented in Galperin's 2003 
-      <a href="https://www.maths.tcd.ie/~lebed/Galperin.%20Playing%20pool%20with%20pi.pdf" target="_blank">paper</a>, 
-      is beautifully described in this 3Blue1Brown <a href="https://www.youtube.com/watch?v=jsYwFizhncE" target="_blank">video</a>.
-      Our 1D engine is modified here to facilitate the counting of the elastic collisions in this method. 
-      A mass ratio of 100 to the 4th power is used in the video here (surface area ratio of 100, density ratio of 100^3) and yields the first 5 digits of pi.
-      Play this video fullscreen to see the blue counter on the far right. Or try this <a href="https://triquence.org/?1c" target="_blank">interactive</a> 2-digit version using Box2D.</p>
-      
-      <p>A secondary loop runs the physics calculations 1000 times per rendering frame. The collision sound (the clack) plays at most once per frame. 
-      Alternating collisions (block-block, then block-wall) are enforced in the code and the large block is not allowed to collide with the walls.</p>
-      
-      <p>This is an addition to the <a href="A07_air_track_hollow_cars.html" target="_blank">code</a> of the "Hollow Cars and Demos" topic above. Just scrape the code from there if you'd like to try this.
-      To run it press the 4 key on a number pad or use shift and the 4 key on the main keyboard.
-      You'll need the <a href="clack_long.wav">clack_long.wav</a> file in the same directory as your python file. To try different mass ratios, edit
-      the parameters in the 4p block of the make_some_cars method.
-      </p>
-   </td>
-   </tr>
-   
-   <tr>
-      <td class="sectionbreak" colspan="2"><a name="multiplayerdemo"></a><strong>Multiplayer</strong></td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
-      <div class="video-container">
-         <iframe loading="lazy" width="550" height="350" src="https://www.youtube.com/embed/8qi1EQs9USU?rel=0" frameborder="0" 
-         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-      </div>
-      -->
-      <div class="video-container" data-videoID="8qi1EQs9USU">
-         <img class="frameCapture" src="screenshots/multiplayer-demo.png" width="550" height="332">
-      </div>
-      <p><a name="multi"></a><strong class="title_2">PodSixNet Demo</strong><br>
-      
-      <a href="A08_multiplayer_demo.pdf" target="_blank">PDF</a> /
-      <a href="A08_multiplayer_demo_server.html" target="_blank">Server 
-      code</a> /
-      <a href="A08_multiplayer_demo_client.html" target="_blank">Client 
-      code</a></p>
-      <p>The video shows the server window and one client's game-pad window 
-      (also running on the server's computer). Another client (running 
-      on a networked laptop) is connected but not visible in the video. 
-      The state (U:up or D:down) of the a-s-d-w keys of each client are 
-      also rendered on the server screen. Please note that this client 
-      works only for this assignment.</p>
-      <p>The last 200 mouse locations (when mouse button is down) are 
-      drawn each game loop. This causes the dynamic tails effect.</p>
-      <p>One Friday we ran this server on the computer that hosts the 
-      projector in the lecture room. Many students connected using the 
-      client. For a while we tried this with no verbal communication. 
-      It was interesting to see how cooperative this became in spite of 
-      the silence.</p>
-      <p>The multiplayer techniques introduced here are applied in the 
-      <a class="scroll-link" data-scroll-target="2D-framework" href="#">2D-Physics</a> Engine Framework topic below.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="sectionbreak" colspan="2">
-   <a name="two-d"></a>
-   <a name="vector-sandbox"></a>
-   <strong>2D</strong>
-   </td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="YmVOG8uD4pg">
+                  <img class="frameCapture" src="screenshots/pi-2-cropped.png" width="550" height="403">
+               </div>
+               <p><strong class="title_2">Counting to pi</strong><br>
+
+                  <a href="A07_air_track_hollow_cars.html" target="_blank">Code</a>
+               </p>
+
+               <p>This counting method, documented in Galperin's 2003
+                  <a href="https://www.maths.tcd.ie/~lebed/Galperin.%20Playing%20pool%20with%20pi.pdf"
+                     target="_blank">paper</a>,
+                  is beautifully described in this 3Blue1Brown <a href="https://www.youtube.com/watch?v=jsYwFizhncE"
+                     target="_blank">video</a>.
+                  Our 1D engine is modified here to facilitate the counting of the elastic collisions in this method.
+                  A mass ratio of 100 to the 4th power is used in the video here (surface area ratio of 100, density
+                  ratio of 100^3) and yields the first 5 digits of pi.
+                  Play this video fullscreen to see the blue counter on the far right. Or try this <a
+                     href="https://triquence.org/?1c" target="_blank">interactive</a> 2-digit version using Box2D.
+               </p>
+
+               <p>A secondary loop runs the physics calculations 1000 times per rendering frame. The collision sound
+                  (the clack) plays at most once per frame.
+                  Alternating collisions (block-block, then block-wall) are enforced in the code and the large block is
+                  not allowed to collide with the walls.</p>
+
+               <p>This is an addition to the <a href="A07_air_track_hollow_cars.html" target="_blank">code</a> of the
+                  "Hollow Cars and Demos" topic above. Just scrape the code from there if you'd like to try this.
+                  To run it press the 4 key on a number pad or use shift and the 4 key on the main keyboard.
+                  You'll need the <a href="clack_long.wav">clack_long.wav</a> file in the same directory as your python
+                  file. To try different mass ratios, edit
+                  the parameters in the 4p block of the make_some_cars method.
+               </p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="sectionbreak" colspan="2"><a name="multiplayerdemo"></a><strong>Multiplayer</strong></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <div class="video-container" data-videoID="8qi1EQs9USU">
+                  <img class="frameCapture" src="screenshots/multiplayer-demo.png" width="550" height="332">
+               </div>
+               <p><a name="multi"></a><strong class="title_2">Server (host) and Clients</strong><br>
+
+                  <a href="A08_multiplayer_demo_server.html" target="_blank">Server code</a> /
+                  <a href="A08_multiplayer_demo_client.html" target="_blank">Client code</a> /
+                  <a href="A08_network.html" target="_blank">Network module code</a>
+                  </p>
+               <p>The video shows the server window and one client's game-pad window
+                  (also running on the server's computer). Another client (running
+                  on a networked laptop) is connected but not visible in the video.
+                  The state (U:up or D:down) of the a-s-d-w keys of each client are
+                  also rendered on the server screen.</p>
+               <p>The last 200 mouse locations (when mouse button is down) are
+                  drawn each game loop. This causes the dynamic tails effect.</p>
+               <p>One Friday we ran this server on the computer that hosts the
+                  projector in the lecture room. Many students connected using the
+                  client. For a while we tried this with no verbal communication.
+                  It was interesting to see how cooperative this became in spite of
+                  the silence.</p>
+               <p>Please note that this particular client script works only for this demo.
+                  The network module developed here is used (required) by all the server and client scripts.</p>
+               <p>The multiplayer techniques introduced here are applied in the
+                  <a class="scroll-link" data-scroll-target="2D-framework" href="#">2D-Physics</a> Engine Framework
+                  topic below.
+               </p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="sectionbreak" colspan="2">
+               <a name="two-d"></a>
+               <a name="vector-sandbox"></a>
+               <strong>2D</strong>
+            </td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/d54VGC95sjQ?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="d54VGC95sjQ">
-         <img class="frameCapture" src="screenshots/vectorSandBox_550w.png" width="550" height="499">
-      </div>
-      <p><strong class="title_2">The Vector Class Module</strong><br>
-      
-      <a href="A09_2D_vector_class.pdf" target="_blank">PDF</a> /
-      <a href="vec2d_jdm.html" target="_blank">Class module code</a> 
-      / <a href="A09_2D_vector_class_testing.html" target="_blank">Test 
-      code</a></p>
-      <p>This vector class is used in all the 2D assignments that follow. 
-      The test code illustrates most of the features that will be used.</p>
-      <p><a href="A09b_2D_vector_sandbox.html" target="_blank">Vector 
-      sandbox code</a></p>
-      <p>The video shows a vector sandbox that is based on the vector 
-      class. There are seven demos that are run (start these using the 
-      number keys above the letters on the keyboard). Each demo uses a 
-      set of vectors ranging in set size from 2 to 140. Vectors can be 
-      selected with the mouse (click and drag over the arrow head). Components 
-      of selected vectors can be displayed ("c" key toggles this on/off). 
-      Components include x, y, unit normal (red), unit perpendicular (red), 
-      and the projection of the selected vector onto a second vector. 
-      Vector rotation can be toggled on/off with the "f" key. The "a" 
-      key toggles the display of the add vector (grand total), which is 
-      shown in green. In "add" mode each vector in the sum series is rendered 
-      head to tail. The "t" key toggles on/off the display of a tail drawn 
-      from the head of the total vector. The tail is represented with 
-      a 350 point FIFO list of the most recent points. The tail can be 
-      shown as points or lines (toggle back and forth with the "l" key). 
-      Zoom in/out with the "h" and "n" keys.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;
-   <a name="2D-framework"></a>
-   <a name="2D-physics"></a>
-   </td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="d54VGC95sjQ">
+                  <img class="frameCapture" src="screenshots/vectorSandBox_550w.png" width="550" height="499">
+               </div>
+               <p><strong class="title_2">The Vector Class Module</strong><br>
+
+                  <a href="A09_2D_vector_class.pdf" target="_blank">PDF</a> /
+                  <a href="A09_vec2d.html" target="_blank">Class module code</a>
+                  / <a href="A09_2D_vector_class_testing.html" target="_blank">Test
+                     code</a>
+               </p>
+               <p>This vector class is used in all the 2D assignments that follow.
+                  The test code illustrates most of the features that will be used.</p>
+               <p><a href="A09b_2D_vector_sandbox.html" target="_blank">Vector
+                     sandbox code</a></p>
+               <p>The video shows a vector sandbox that is based on the vector
+                  class. There are seven demos that are run (start these using the
+                  number keys above the letters on the keyboard). Each demo uses a
+                  set of vectors ranging in set size from 2 to 140. Vectors can be
+                  selected with the mouse (click and drag over the arrow head). Components
+                  of selected vectors can be displayed ("c" key toggles this on/off).
+                  Components include x, y, unit normal (red), unit perpendicular (red),
+                  and the projection of the selected vector onto a second vector.
+                  Vector rotation can be toggled on/off with the "f" key. The "a"
+                  key toggles the display of the add vector (grand total), which is
+                  shown in green. In "add" mode each vector in the sum series is rendered
+                  head to tail. The "t" key toggles on/off the display of a tail drawn
+                  from the head of the total vector. The tail is represented with
+                  a 350 point FIFO list of the most recent points. The tail can be
+                  shown as points or lines (toggle back and forth with the "l" key).
+                  Zoom in/out with the "h" and "n" keys.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;
+               <a name="2D-framework"></a>
+               <a name="2D-physics"></a>
+            </td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/w0TSMIwPnb8?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="w0TSMIwPnb8">
-         <img class="frameCapture" src="screenshots/2D_framework_550w.png" width="550" height="499">
-      </div>
-      <p><strong class="title_2">2D-Physics Engine Framework</strong><br>
-      
-      <a href="A10_2D_baseline.pdf" target="_blank">PDF</a> /
-      <a href="A10_2D_baseline_server.html" target="_blank">Server code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>This assignment merges the 1D engine with the 2D vector class 
-      and the multiplayer module. The spring class is also introduced 
-      here. There are drawings in the PDF that explain 2D collisions, 
-      stickiness corrections, and the client-server relationship.</p>
-      <p>The video shows two cursors, one from the local client and the 
-      other from a network client on a laptop. Left and right hands are 
-      working the two cursors. It's surprisingly natural (we've got two 
-      hands). One section of the video shows the two cursors' tethers 
-      pulling two balls together and watching the transition from stable 
-      to unstable as the cursors cross each other; once unstable, the 
-      balls flip their positions to get back to stability. Stickiness 
-      behavior is toggled on/off with the "p" key; the black background 
-      turns grey when the stickiness corrections are off.</p>
-      <p>The client script that is used here works with all the following 
-      assignments (except the first two in the Box2D section).</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="w0TSMIwPnb8">
+                  <img class="frameCapture" src="screenshots/2D_framework_550w.png" width="550" height="499">
+               </div>
+               <p><strong class="title_2">2D-Physics Engine Framework</strong><br>
+
+                  <a href="A10_2D_baseline.pdf" target="_blank">PDF</a> /
+                  <a href="A10_2D_baseline_server.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>This assignment merges the 1D engine with the 2D vector class
+                  and the multiplayer module. The spring class is also introduced
+                  here. There are drawings in the PDF that explain 2D collisions,
+                  stickiness corrections, and the client-server relationship.</p>
+               <p>The video shows two cursors, one from the local client and the
+                  other from a network client on a laptop. Left and right hands are
+                  working the two cursors. It's surprisingly natural (we've got two
+                  hands). One section of the video shows the two cursors' tethers
+                  pulling two balls together and watching the transition from stable
+                  to unstable as the cursors cross each other; once unstable, the
+                  balls flip their positions to get back to stability. Stickiness
+                  behavior is toggled on/off with the "p" key; the black background
+                  turns grey when the stickiness corrections are off.</p>
+               <p>The client script that is used here works with all the following
+                  assignments (except the first two in the Box2D section).</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/jc7IFmR8R48?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="jc7IFmR8R48">
-         <img class="frameCapture" src="screenshots/rotatingTubes_550w.png" width="550" height="499">
-      </div>
-      <p><strong class="title_2">Rotating Tubes<br></strong>
-      
-      <a href="A11_2D_rotating_tubes.pdf" target="_blank">PDF</a> /
-      <a href="A11_2D_rotating_tubes.html" target="_blank">Server code</a>
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>This introduces the concepts behind polygon rotation as facilitated 
-      by the rotation methods in the vector class. This tube class will 
-      be the base class for representing both jet and turret tubes.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="jc7IFmR8R48">
+                  <img class="frameCapture" src="screenshots/rotatingTubes_550w.png" width="550" height="499">
+               </div>
+               <p><strong class="title_2">Rotating Tubes<br></strong>
+
+                  <a href="A11_2D_rotating_tubes.pdf" target="_blank">PDF</a> /
+                  <a href="A11_2D_rotating_tubes.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>This introduces the concepts behind polygon rotation as facilitated
+                  by the rotation methods in the vector class. This tube class will
+                  be the base class for representing both jet and turret tubes.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/XIxGaZvdOaE?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="XIxGaZvdOaE">
-         <img class="frameCapture" src="screenshots/tubesAndJets-cropped.png" width="550" height="499">
-      </div>
-      <p><strong class="title_2">Rotating Tubes and Jets on Client Puck</strong><br>
-      
-      <a href="A12_2D_tube_jet.pdf" target="_blank">PDF</a> /
-      <a href="A12_2D_tube_jet.html" target="_blank">Server code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>A raw tube and a jet tube are associated with a client-controlled 
-      puck. The association causes the tubes to move with (are drawn relative 
-      to the center of mass of) the pucks. A new three-point red polygon 
-      is used to represent the jet's exhaust flame. The video shows the 
-      local client and a network client controlling (rotating) tubes on 
-      the two pucks. Python inheritance is introduced in this exercise: 
-      jet-tube is derived from the tube base class.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="XIxGaZvdOaE">
+                  <img class="frameCapture" src="screenshots/tubesAndJets-cropped.png" width="550" height="499">
+               </div>
+               <p><strong class="title_2">Rotating Tubes and Jets on Client Puck</strong><br>
+
+                  <a href="A12_2D_tube_jet.pdf" target="_blank">PDF</a> /
+                  <a href="A12_2D_tube_jet.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>A raw tube and a jet tube are associated with a client-controlled
+                  puck. The association causes the tubes to move with (are drawn relative
+                  to the center of mass of) the pucks. A new three-point red polygon
+                  is used to represent the jet's exhaust flame. The video shows the
+                  local client and a network client controlling (rotating) tubes on
+                  the two pucks. Python inheritance is introduced in this exercise:
+                  jet-tube is derived from the tube base class.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/-LyL246nq94?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="-LyL246nq94">
-         <img class="frameCapture" src="screenshots/jetForces-cropped.png" width="550" height="497">
-      </div>
-      <p><strong class="title_2">Jet Forces</strong><br>
-      
-      <a href="A13_2D_jet_forces.pdf" target="_blank">PDF</a> /
-      <a href="A13_2D_jet_forces.html" target="_blank">Server code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>A thrust force is added to coincide with the jet's flame. This 
-      brings the total to four forces that are being processed in the 
-      physics engine: gravity, cursor-tether tension, spring-damper, and 
-      now jet force.</p>
-      <p>The "w" key turns on the jet forces that are applied to the host 
-      puck along the direction of the jet-tube axis. This jet-force vector 
-      is added to the puck_forces_2d_N (net-force-on-puck) vector and 
-      processed in the Euler's method calculations.</p>
-      <p>The video show a cursor tether restraining a puck under continuously 
-      applied jet forces while the jet tube is turned at a constant rate.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="-LyL246nq94">
+                  <img class="frameCapture" src="screenshots/jetForces-cropped.png" width="550" height="497">
+               </div>
+               <p><strong class="title_2">Jet Forces</strong><br>
+
+                  <a href="A13_2D_jet_forces.pdf" target="_blank">PDF</a> /
+                  <a href="A13_2D_jet_forces.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>A thrust force is added to coincide with the jet's flame. This
+                  brings the total to four forces that are being processed in the
+                  physics engine: gravity, cursor-tether tension, spring-damper, and
+                  now jet force.</p>
+               <p>The "w" key turns on the jet forces that are applied to the host
+                  puck along the direction of the jet-tube axis. This jet-force vector
+                  is added to the puck_forces_2d_N (net-force-on-puck) vector and
+                  processed in the Euler's method calculations.</p>
+               <p>The video show a cursor tether restraining a puck under continuously
+                  applied jet forces while the jet tube is turned at a constant rate.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/pcxxD5I0leI?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="pcxxD5I0leI">
-         <img class="frameCapture" src="screenshots/gunAndImpulse-cropped.png" width="550" height="497">
-      </div>
-      <p><strong class="title_2">Gun and Impulse Forces</strong><br>
-      
-      <a href="A14_2D_gun.pdf" target="_blank">PDF</a> /
-      <a href="A14_2D_gun.html" target="_blank">Server code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>The physics of gun
-      <a href="http://en.wikipedia.org/wiki/Recoil" target="_blank">recoil</a> 
-      is modeled with an impulse force. Each bullet firing causes an opposing 
-      impulse force to be delivered to the gun. The magnitude of this 
-      force is equal to the change in momentum of the bullet divided by 
-      the duration of the firing interval (one step in time by the physics 
-      calculations in the game loop). Bullet clean-up is implemented by 
-      assigning a birth time to each fired bullet. Bullet objects older 
-      than 3 seconds are deleted.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" colspan="2" class="indent">
-      <!--
+               <div class="video-container" data-videoID="pcxxD5I0leI">
+                  <img class="frameCapture" src="screenshots/gunAndImpulse-cropped.png" width="550" height="497">
+               </div>
+               <p><strong class="title_2">Gun and Impulse Forces</strong><br>
+
+                  <a href="A14_2D_gun.pdf" target="_blank">PDF</a> /
+                  <a href="A14_2D_gun.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>The physics of gun
+                  <a href="http://en.wikipedia.org/wiki/Recoil" target="_blank">recoil</a>
+                  is modeled with an impulse force. Each bullet firing causes an opposing
+                  impulse force to be delivered to the gun. The magnitude of this
+                  force is equal to the change in momentum of the bullet divided by
+                  the duration of the firing interval (one step in time by the physics
+                  calculations in the game loop). Bullet clean-up is implemented by
+                  assigning a birth time to each fired bullet. Bullet objects older
+                  than 3 seconds are deleted.
+               </p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" colspan="2" class="indent">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="498" src="https://www.youtube.com/embed/81PO3o2_grQ?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="81PO3o2_grQ">
-         <img class="frameCapture" src="screenshots/gameFeatures-cropped.png" width="550" height="498">
-      </div>
-      <p><strong class="title_2"><a name="jello"></a>Final Game Features<br></strong>
-      
-      <a href="A15_2D_final_features.pdf" target="_blank">PDF-1</a> /
-      <a href="A15_2D_spring_class_help.pdf" target="_blank">PDF-2</a> 
-      / <a href="A15a_2D_finished_game.html" target="_blank">Puck-Popper 
-      server code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>This assignment adds features to make a playable game. For example, 
-      a hit counter (a hit by another player makes your puck flash red) 
-      is the basis for establishing the health of each player. Health, 
-      or rather the lack of it, is illustrated with an expanding red circle. 
-      Too many hits and your puck pops (hence the name of the game: Puck 
-      Popper). Shields (hold down the space bar) prevent bullets from 
-      hitting your puck; when shields are up, you can't fire. The "s" 
-      and "k" keys are used to flip the tube directions into an orientation 
-      opposing the current motion of the puck; this can be useful in breaking 
-      (stopping). The "a","d", and "w" keys orient and fire the jet; the 
-      "j","l", and "i" keys orient and fire the gun. The "f" and "g" keys 
-      can add an interesting dimension to the game by the local user (user 
-      on the server computer); try it.<br><br>
-      <a href="A15b_2D_MadJello_serverN.html" target="_blank">Jello-Madness 
-      server code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a><br><br>
-      The jello simulation that's shown in a few of the other videos 
-      has been turned into a game here (shown in the second half of this 
-      video). You scramble the jello (this starts the timer) for your 
-      opponent then press the "p" key to freeze the physics engine and 
-      the corresponding timer on the screen. When your opponent is ready 
-      to try and straighten out the jello, they press the "p" key again. 
-      That resets and starts the timer and physics engine. When the jello 
-      is straightened (no puck collisions), the timer will stop. A useful 
-      tool to use in the straightening is repeated use of the "f" key. 
-      This momentarily sets the velocity of each puck to zero. Low score 
-      (time) wins. Players take turns.</p>
-      <p>The video shows me playing Puck Popper solo with something heavy 
-      sitting on the "i" key of my laptop. So the red player is pretty 
-      much a sitting duck in the corner. But you get the idea of the shields, 
-      health circles, and the popping pucks. I also do one round of Jello 
-      Madness and got a de-tangling time of 22.15 seconds (a big part 
-      of this is to really make a mess of it for the other guy). Jello 
-      Madness requires an I5 processor or better; this will crash (become 
-      unstable) on slower machines.<br></p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;<strong class="title_2"><a name="perfect-kiss"></a></strong></td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="81PO3o2_grQ">
+                  <img class="frameCapture" src="screenshots/gameFeatures-cropped.png" width="550" height="498">
+               </div>
+               <p><strong class="title_2"><a name="jello"></a>Final Game Features<br></strong>
+
+                  <a href="A15_2D_final_features.pdf" target="_blank">PDF-1</a> /
+                  <a href="A15_2D_spring_class_help.pdf" target="_blank">PDF-2</a>
+                  / <a href="A15a_2D_finished_game.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>This assignment adds features to make a playable game. For example,
+                  a hit counter (a hit by another player makes your puck flash red)
+                  is the basis for establishing the health of each player. Health,
+                  or rather the lack of it, is illustrated with an expanding red circle.
+                  Too many hits and your puck pops (hence the name of the game: Puck
+                  Popper). Shields (hold down the space bar) prevent bullets from
+                  hitting your puck; when shields are up, you can't fire. The "s"
+                  and "k" keys are used to flip the tube directions into an orientation
+                  opposing the current motion of the puck; this can be useful in breaking
+                  (stopping). The "a","d", and "w" keys orient and fire the jet; the
+                  "j","l", and "i" keys orient and fire the gun. The "f" and "g" keys
+                  can add an interesting dimension to the game by the local user (user
+                  on the server computer); try it.<br><br>
+
+                  The jello simulation that's shown in a few of the other videos
+                  has been turned into a game here (shown in the second half of this
+                  video). You scramble the jello (this starts the timer) for your
+                  opponent then press the "p" key to freeze the physics engine and
+                  the corresponding timer on the screen. When your opponent is ready
+                  to try and straighten out the jello, they press the "p" key again.
+                  That resets and starts the timer and physics engine. When the jello
+                  is straightened (no puck collisions), the timer will stop. A useful
+                  tool to use in the straightening is repeated use of the "f" key.
+                  This momentarily sets the velocity of each puck to zero. Low score
+                  (time) wins. Players take turns.
+               </p>
+               <p>The video shows me playing Puck Popper solo with something heavy
+                  sitting on the "i" key of my laptop. So the red player is pretty
+                  much a sitting duck in the corner. But you get the idea of the shields,
+                  health circles, and the popping pucks. I also do one round of Jello
+                  Madness and got a de-tangling time of 22.15 seconds (a big part
+                  of this is to really make a mess of it for the other guy). Jello
+                  Madness requires an I5 processor or better; this will crash (become
+                  unstable) on slower machines.<br></p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;<strong class="title_2"><a name="perfect-kiss"></a></strong></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="498" src="https://www.youtube.com/embed/aO8QEWOlxHk?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="aO8QEWOlxHk">
-         <img class="frameCapture" src="screenshots/perfectKiss-cropped.png" width="550" height="498">
-      </div>
-      <p><strong class="title_2">Perfect Kiss<br></strong>
-      
-      <a href="A15c_2D_perfect_kiss.pdf" target="_blank">PDF</a> /
-      <a href="A15c_2D_perfect_kiss_serverN.html" target="_blank">Server 
-      code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>The perfect-kiss algorithm is a refinement to the overlap-correction 
-      calculations described in the <em>2D-Physics Engine Framework</em> 
-      assignment. This refinement offers true contact-normal calculations 
-      and corresponding ideal modeling of 2D puck collisions. The video 
-      is annotated to show three categories of puck collisions: (1) raw 
-      (no overlap correction), (2) overlap correction using the approximate-contact 
-      normal, and (3) overlap correction using the idea-contact normal. 
-      The speed of the incoming puck is chosen to produce large overlaps 
-      and its initial position is randomized to show a variety of responses. 
-      The third category of runs shows a consistent collision prediction 
-      that is independent of the amount of overlap at the collision detection 
-      point. To illustrate the correction process, two intermediate steps 
-      are drawn with special colors: Both overlapping pucks are drawn 
-      in red; Both kissing pucks are drawn in cyan. The final corrected 
-      position is drawn in normal puck colors. There are cases where some 
-      of the intermediate puck images are not visible because they lie 
-      directly underneath a subsequent drawing.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="aO8QEWOlxHk">
+                  <img class="frameCapture" src="screenshots/perfectKiss-cropped.png" width="550" height="498">
+               </div>
+               <p><strong class="title_2">Perfect Kiss<br></strong>
+
+                  <a href="A15c_2D_perfect_kiss.pdf" target="_blank">PDF</a> /
+                  <a href="A15c_2D_perfect_kiss_serverN.html" target="_blank">Server
+                     code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a>
+               </p>
+               <p>The perfect-kiss algorithm is a refinement to the overlap-correction
+                  calculations described in the <em>2D-Physics Engine Framework</em>
+                  assignment. This refinement offers true contact-normal calculations
+                  and corresponding ideal modeling of 2D puck collisions. The video
+                  is annotated to show three categories of puck collisions: (1) raw
+                  (no overlap correction), (2) overlap correction using the approximate-contact
+                  normal, and (3) overlap correction using the idea-contact normal.
+                  The speed of the incoming puck is chosen to produce large overlaps
+                  and its initial position is randomized to show a variety of responses.
+                  The third category of runs shows a consistent collision prediction
+                  that is independent of the amount of overlap at the collision detection
+                  point. To illustrate the correction process, two intermediate steps
+                  are drawn with special colors: Both overlapping pucks are drawn
+                  in red; Both kissing pucks are drawn in cyan. The final corrected
+                  position is drawn in normal puck colors. There are cases where some
+                  of the intermediate puck images are not visible because they lie
+                  directly underneath a subsequent drawing.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="498" src="https://www.youtube.com/embed/6Uftmwnvc34?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="6Uftmwnvc34">
-         <img class="frameCapture" src="screenshots/playing-catch-cropped.png" width="550" height="644">
-      </div>
-      <p><strong class="title_2">Playing Catch with Perfect Kiss</strong></p>
-      
-      <p>The ideal collisions of the previous topic support reversibility in our 2D framework.
-      This means an ordered set of pucks can be disordered through a series of collisions and then
-      returned to order by reversing the direction of the time step or by reversing the velocity
-      of each of the pucks. This produces a very counterintuitive result, like watching a scrambled egg
-      return to the shell by playing a video in reverse, decreasing entropy.</p>
-      
-      <p>The video shows each of the first four demos running in perfect-kiss mode (background turns from black to gray), flinging a puck to disorder the set,
-      waiting for disorder, then pressing the "r" key to reverse all the puck velocities. The
-      collision counter (upper left) will start counting in the reverse direction at this point.
-      As the counter approaches zero, order returns and flings the ball back where 
-      it is caught with the mouse. Watch fullscreen to better see the output from the command line.</p>
-      
-      <p>Keyboard commands for playing with reversibility: </p>
-      <p>
-      &quot;<strong>z</strong>&quot; enables the Perfect Kiss algorithm. This 
-      also set each puck to be elastic; coefficient of restitution 
-      is set to 1.0.<br>&quot;<strong>r</strong>&quot; reverses the velocity of each puck.<br>&quot;<strong>shift-r</strong>&quot; reverses the direction of the timestep. 
-      Note 
-      time reversal differs from velocity reversal in that spring 
-      losses, dampers, will gain energy, generally behaving 
-      unstable. So if you intend to use the mouse, velocity 
-      reversal, &quot;r&quot;, works best.<br>&quot;<strong>shift-p</strong>&quot; clamps the framerate at the current value and 
-      then steps the engine in equal interval steps (inverse of 
-      the clamped rate). The clamped framerate value is shown in 
-      parentheses.<br>&quot;<strong>e</strong>&quot; sets all collisions to be elastic; useful for 
-      testing without Perfect Kissing.<br>&quot;<strong>t</strong>&quot; starts and stops a general timer.
-      </p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="sectionbreak" colspan="2"><a name="box2d"></a><strong>Box2D</strong></td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="6Uftmwnvc34">
+                  <img class="frameCapture" src="screenshots/playing-catch-cropped.png" width="550" height="644">
+               </div>
+               <p><strong class="title_2">Playing Catch with Perfect Kiss</strong></p>
+
+               <p>The ideal collisions of the previous topic support reversibility in our 2D framework.
+                  This means an ordered set of pucks can be disordered through a series of collisions and then
+                  returned to order by reversing the direction of the time step or by reversing the velocity
+                  of each of the pucks. This produces a very counterintuitive result, like watching a scrambled egg
+                  return to the shell by playing a video in reverse, decreasing entropy.</p>
+
+               <p>The video shows each of the first four demos running in perfect-kiss mode (background turns from black
+                  to gray), flinging a puck to disorder the set,
+                  waiting for disorder, then pressing the "r" key to reverse all the puck velocities. The
+                  collision counter (upper left) will start counting in the reverse direction at this point.
+                  As the counter approaches zero, order returns and flings the ball back where
+                  it is caught with the mouse. Watch fullscreen to better see the output from the command line.</p>
+
+               <p>Keyboard commands for playing with reversibility: </p>
+               <p>
+                  &quot;<strong>z</strong>&quot; enables the Perfect Kiss algorithm. This
+                  also set each puck to be elastic; coefficient of restitution
+                  is set to 1.0.<br>&quot;<strong>r</strong>&quot; reverses the velocity of each
+                  puck.<br>&quot;<strong>shift-r</strong>&quot; reverses the direction of the timestep.
+                  Note
+                  time reversal differs from velocity reversal in that spring
+                  losses, dampers, will gain energy, generally behaving
+                  unstable. So if you intend to use the mouse, velocity
+                  reversal, &quot;r&quot;, works best.<br>&quot;<strong>shift-p</strong>&quot; clamps the framerate at
+                  the current value and
+                  then steps the engine in equal interval steps (inverse of
+                  the clamped rate). The clamped framerate value is shown in
+                  parentheses.<br>&quot;<strong>e</strong>&quot; sets all collisions to be elastic; useful for
+                  testing without Perfect Kissing.<br>&quot;<strong>t</strong>&quot; starts and stops a general timer.
+               </p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="sectionbreak" colspan="2"><a name="box2d"></a><strong>Box2D</strong></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="498" src="https://www.youtube.com/embed/A8PydtjE2BM?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="A8PydtjE2BM">
-         <img class="frameCapture" src="screenshots/pybox2dWithFramework_550w.png" width="550" height="460">
-      </div>
-      <p><strong class="title_2">Pybox2d Framework Example</strong><br>
-      
-      no PDF / <a href="A16a_BodyTypes.html" target="_blank">
-      Code</a></p>
-      <p>This script is based on the test_BodyTypes.py file in the examples 
-      directory of the pybox2d distribution. This depends on the Pygame 
-      framework in that distribution so all the framework files must be 
-      in the same directory as this file. (This script works best if you 
-      run it in the box2d_jdm <!--"...box2d_source_files\box2d_jdm" --> folder of the zip 
-      distribution provided above.)</p>
-      <p>This file has been modified to support bullet shooting. (I looked 
-      through their examples for one that had some hinged object that 
-      would work for aiming the projectile stream.) The main adders here 
-      are: (1) bullet aiming and firing, (2) masking of objects (bullets 
-      pass through the gun base without a collision), (3) age limits on 
-      the bullets so they clean up after themselves (the simulation would 
-      labor if the collection of bullets kept growing), (4) the cursor 
-      gun, (5) something interesting to shoot at (target generation): 
-      pyramids, circles, and squares.</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2">&nbsp;</td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <div class="video-container" data-videoID="A8PydtjE2BM">
+                  <img class="frameCapture" src="screenshots/pybox2dWithFramework_550w.png" width="550" height="460">
+               </div>
+               <p><strong class="title_2">Pybox2d Framework Example</strong><br>
+
+                  no PDF / <a href="A16a_BodyTypes.html" target="_blank">
+                     Code</a></p>
+               <p>This script is based on the test_BodyTypes.py file in the examples
+                  directory of the pybox2d distribution. This depends on the Pygame
+                  framework in that distribution so all the framework files must be
+                  in the same directory as this file. (This script works best if you
+                  run it in the pybox2d_framework_P3 folder of the repository files.)</p>
+               <p>This file has been modified to support bullet shooting. (I looked
+                  through their examples for one that had some hinged object that
+                  would work for aiming the projectile stream.) The main adders here
+                  are: (1) bullet aiming and firing, (2) masking of objects (bullets
+                  pass through the gun base without a collision), (3) age limits on
+                  the bullets so they clean up after themselves (the simulation would
+                  labor if the collection of bullets kept growing), (4) the cursor
+                  gun, (5) something interesting to shoot at (target generation):
+                  pyramids, circles, and squares.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="400" src="https://www.youtube.com/embed/NqGfp82ZGEU?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       -->
-      <div class="video-container" data-videoID="NqGfp82ZGEU">
-         <img class="frameCapture" src="screenshots/box2d-forces.png" width="550" height="320">
-      </div>
+               <div class="video-container" data-videoID="NqGfp82ZGEU">
+                  <img class="frameCapture" src="screenshots/box2d-forces.png" width="550" height="320">
+               </div>
 
-      <p><strong class="title_2">Pybox2d Without Their Framework</strong><br>
-      no PDF /
-      <a href="A16b_simple_airtrack_forces.html" target="_blank">Code</a></p>
-      <p>This script is based on the simple_01.py example in the pybox2d 
-      example directory. Unlike the example above, this one does not depend 
-      on the framework files, so it will run anywhere. I've extracted 
-      mouse-joint and zooming features as well as some basic polygon rendering 
-      facilitated by Pygame. This demonstrates the body-transform overload 
-      operation on a vertex of a polygon (to get its physics-world coordinates). 
-      There are also two force points defined on one of the cars (keyboard 
-      controlled).</p>
-      <p>The video shows an air-track type environment, except of course 
-      this is 2D and the cars are allowed to behave very badly and can 
-      end up off the track. Cars can be dragged with the mouse. Zoom the 
-      view with the mouse wheel; pan the view with the right mouse button. 
-      Control the two force points with the "f" and "g" keys. When a force 
-      is applied at a force point, the point lights up green. (View in 
-      full-screen mode at 480p to see the force points.)</p>
-   </td>
-   </tr>
-   
-   <tr>
-   <td class="minorsection" colspan="2"><a name="in-our-framework"></a></td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" class="indent" colspan="2">
-      <!--
+               <p><strong class="title_2">Pybox2d Without Their Framework</strong><br>
+                  no PDF /
+                  <a href="A16b_simple_airtrack_forces.html" target="_blank">Code</a>
+               </p>
+               <p>This script is based on the simple_01.py example in the pybox2d
+                  example directory. Unlike the example above, this one does not depend
+                  on the framework files, so it will run anywhere. I've extracted
+                  mouse-joint and zooming features as well as some basic polygon rendering
+                  facilitated by Pygame. This demonstrates the body-transform overload
+                  operation on a vertex of a polygon (to get its physics-world coordinates).
+                  There are also two force points defined on one of the cars (keyboard
+                  controlled).</p>
+               <p>The video shows an air-track type environment, except of course
+                  this is 2D and the cars are allowed to behave very badly and can
+                  end up off the track. Cars can be dragged with the mouse. Zoom the
+                  view with the mouse wheel; pan the view with the right mouse button.
+                  Control the two force points with the "f" and "g" keys. When a force
+                  is applied at a force point, the point lights up green. (View in
+                  full-screen mode at 480p to see the force points.)</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2"><a name="in-our-framework"></a></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" class="indent" colspan="2">
+               <!--
       <div class="video-container">
          <iframe loading="lazy" width="550" height="499" src="https://www.youtube.com/embed/u2-8P7MKbNo?rel=0" frameborder="0" 
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
       -->
-      <div class="video-container" data-videoID="u2-8P7MKbNo">
-         <img class="frameCapture" src="screenshots/firstVideo_550w.png" width="550" height="498">
-      </div>
-      <p><strong class="title_2">Using Pybox2d in Our Framework</strong><br>
-      
-      no PDF / <a href="A16c_2D_B2D_serverN.html" target="_blank">Server 
-      code</a> 
-      / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-      <p>Finally, here is an integration of the Box2D engine into our 
-      own 2D framework. This is like taking the engine out of our Honda 
-      Civic and replacing it with a 426 Hemi. This opens the door to non-spherical 
-      object collisions, object rotation, torque (and rotational drag), 
-      surface friction, and true settling behaviors.</p>
-      <p>The basic idea here is that we define an interface between our 
-      air-table framework and the Box2D engine using force points. So 
-      we keep all the force generating objects such as springs and cursor-tethers 
-      and communicate their forces to the Box2D world. Then we let the engine 
-      take care of collisions and object motion and let it inform our 
-      rendering functionality as to the state/position of the objects.</p>
-      <p>A few notes on the interface: gun and jet controls are the same 
-      as before. The "t" key will torque a selected object. Shift-t will 
-      torque it the other way. The "f" key still freezes the translational 
-      motion, but now there is also the "r" key which will stop the rotation 
-      of all the objects in the world. Cursor tethers attach, by default, 
-      to the center of mass of the object, but with the shift key down, 
-      you can attach cursor tether anywhere on the object. The "h" and 
-      "n" keys zoom the view in and out; if the control key is down, mouse 
-      movement acts to pan the view. Various demos are initiated as usual 
-      with the keyboard number keys (i.e. above the letters). In this 
-      video I have one network client, a laptop, connected (red cursor); 
-      the regular cursor is controlled by the server.</p>
-      <p>Many of the features of this final topic are demonstrated on the
-	  <a href="https://triquence.org">Springs &amp; Pucks</a> page using a live HTML-5 Canvas.</p>
-   </td>
-   </tr>
-   
-   <tr bgcolor="#cccccc">
-   <td class="sectionbreak" colspan="2"><strong>Let's play</strong></td>
-   </tr>
-   <tr>
-   <td bgcolor="#ffffff" colspan="2" class="indent">
-      <p><strong class="title_2">The Tournament</strong><br>
-      <a href="A17_tournament.pdf" target="_blank">PDF</a> / (No code)</p>
-      <p>There were many impressive entries by the students...</p>
-   </td>
-   </tr>
-   
-	</table>
-   
-	<p>
-	<a href="https://triquence.org" target="_blank" title="Springs &amp; Pucks">
-	(S&amp;P)</a></p>
-</div>
+               <div class="video-container" data-videoID="u2-8P7MKbNo">
+                  <img class="frameCapture" src="screenshots/firstVideo_550w.png" width="550" height="498">
+               </div>
+               <p><strong class="title_2">Using Pybox2d in Our Framework</strong><br>
+
+                  no PDF / <a href="A16c_2D_B2D_serverN.html" target="_blank">Server
+                     code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
+               <p>Finally, here is an integration of the Box2D engine into our
+                  own 2D framework. This is like taking the engine out of our Honda
+                  Civic and replacing it with a 426 Hemi. This opens the door to non-spherical
+                  object collisions, object rotation, torque (and rotational drag),
+                  surface friction, and true settling behaviors.</p>
+               <p>The basic idea here is that we define an interface between our
+                  air-table framework and the Box2D engine using force points. So
+                  we keep all the force generating objects such as springs and cursor-tethers
+                  and communicate their forces to the Box2D world. Then we let the engine
+                  take care of collisions and object motion and let it inform our
+                  rendering functionality as to the state/position of the objects.</p>
+               <p>A few notes on the interface: gun and jet controls are the same
+                  as before. The "t" key will torque a selected object. Shift-t will
+                  torque it the other way. The "f" key still freezes the translational
+                  motion, but now there is also the "r" key which will stop the rotation
+                  of all the objects in the world. Cursor tethers attach, by default,
+                  to the center of mass of the object, but with the shift key down,
+                  you can attach cursor tether anywhere on the object. The "h" and
+                  "n" keys zoom the view in and out; if the control key is down, mouse
+                  movement acts to pan the view. Various demos are initiated as usual
+                  with the keyboard number keys (i.e. above the letters). In this
+                  video I have one network client, a laptop, connected (red cursor);
+                  the regular cursor is controlled by the server.</p>
+               <p>Many of the features of this final topic are demonstrated on the
+                  <a href="https://triquence.org">Springs &amp; Pucks</a> page using a live HTML-5 Canvas.
+               </p>
+            </td>
+         </tr>
+
+         <tr bgcolor="#cccccc">
+            <td class="sectionbreak" colspan="2"><strong>Let's play</strong></td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" colspan="2" class="indent">
+               <p><strong class="title_2">The Tournament</strong><br>
+                  <a href="A17_tournament.pdf" target="_blank">PDF</a> / (No code)
+               </p>
+               <p>There were many impressive entries by the students...</p>
+            </td>
+         </tr>
+
+      </table>
+
+      <p>
+         <a href="https://triquence.org" target="_blank" title="Springs &amp; Pucks">
+            (S&amp;P)</a>
+      </p>
+   </div>
 
 </body>
+
 </html>

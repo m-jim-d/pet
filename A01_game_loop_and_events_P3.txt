@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 # Filename: A01_game_loop_and_events.py
+# Written by: James D. Miller
 
 import sys, os
 import pygame
 
 # PyGame Constants
-from pygame.locals import K_ESCAPE, K_e, K_f
+from pygame.locals import *
 from pygame.color import THECOLORS
 
 # Initialize the Pygame environment.
@@ -31,7 +32,8 @@ mouse_button_UD = "U"
 
 while not user_done:
 
-    dt_s = myclock.tick( framerate_limit) * 1e-3
+    dt_s = float(myclock.tick( framerate_limit) * 1e-3)
+    #myclock.tick(framerate_limit)
     
     #=====================================================
     # Get user input
@@ -94,8 +96,6 @@ while not user_done:
     # Determine the color for the circle based on if a mouse button is up (U) or down (D).
     if ((mouse_button_UD == 'D') and (mouse_button == 1)):
         circle_color = THECOLORS["yellow"]
-    elif ((mouse_button_UD == 'D') and (mouse_button == 2)):
-        circle_color = THECOLORS["magenta"]
     elif ((mouse_button_UD == 'D') and (mouse_button == 3)):
         circle_color = THECOLORS["red"]
     else:
@@ -108,7 +108,7 @@ while not user_done:
     time_s += dt_s
     
     # Print to the command window.
-    print( f"{time_s:.1f}, {dt_s:.3f}, {myclock.get_fps():.0f}")
+    print( "{:-.1f}".format( time_s), "{:-.3f}".format( dt_s), "{:-.0f}".format( myclock.get_fps()))
     
     # If the "f" key is up (not Down), update the entire display window. 
     if (key_f != 'D'):

@@ -3,24 +3,24 @@
 body {
 	font-family: Helvetica;
 	font-size: 100%;
-   background-color: #92a191; /**/
+	background-color: #92a191; /**/
 }
 
 div.pageblock {   
 	min-width: 800px;
 	max-width: 1100px;
 	margin: 0 auto;
-   background-color: white;
-   
-   padding: 5px 20px 20px;
-   border-radius: 10px;
+	background-color: white;
+
+	padding: 5px 20px 20px;
+	border-radius: 10px;
 }
 div.pageblock h1.maintitle { 
 	font-size: 175%;
 	color: black; 
-   /*       top R/L bottom  */
-   padding: 7px 0px  9px;
-   margin-bottom: 0px;   
+	/*       top R/L bottom  */
+	padding: 7px 0px  9px;
+	margin-bottom: 0px;   
 }
 div.pageblock a {
 	color: black;
@@ -44,8 +44,6 @@ span.float_right {
 }
 
 
-table{
-}
 td {
 	vertical-align: top;
 	text-align: left;
@@ -114,19 +112,45 @@ strong.title_2 {
 
 .CodeWords_white {
 	color: #FFFFFF;
-	background-color: #333333;
+	background-color: #000000;
+	padding: 2px 3px;
+	border-radius: 3px;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 .CodeWords_blue {
-	color: #33CCFF;
-	background-color: #333333;
+	color: #66d9ef;
+	background-color: #000000;
+	padding: 2px 3px;
+	border-radius: 3px;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
-.CodeWord_green {
-	color: #00FF00;
-	background-color: #333333;
+.CodeWords_green {
+	color: #c3e88d;
+	background-color: #000000;
+	padding: 2px 3px;
+	border-radius: 3px;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 .CodeWords_orange {
 	color: #FF9933;
 	background-color: #000000;
+	padding: 2px 3px;
+	border-radius: 3px;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+.CodeWords_purple {
+	color: #c792ea;
+	background-color: #000000;
+	padding: 2px 3px;
+	border-radius: 3px;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+.CodeWords_yellow {
+	color: #e6db74;
+    background-color: #000000;
+    padding: 2px 3px;
+    border-radius: 3px;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 
 
@@ -150,4 +174,3 @@ img.playButton {
    transform: translate(-50%,-50%); 
    opacity: 0.7;
 }
-

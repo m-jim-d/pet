@@ -107,8 +107,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A09b_2D_vector_sandbox.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Filename: A09b_2D_vector_sandbox.py</span>
 
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
@@ -117,11 +118,10 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pygame.color</span> <span class="kn">import</span> <span class="n">THECOLORS</span>
 
-<span class="c1"># PyGame gui</span>
-<span class="kn">from</span> <span class="nn">pgu</span> <span class="kn">import</span> <span class="n">gui</span>
-
 <span class="c1"># Import the vector class from a local module (in this same directory)</span>
-<span class="kn">from</span> <span class="nn">vec2d_jdm</span> <span class="kn">import</span> <span class="n">Vec2D</span>
+<span class="kn">from</span> <span class="nn">A09_vec2d</span> <span class="kn">import</span> <span class="n">Vec2D</span>
+
+<span class="kn">from</span> <span class="nn">A08_network</span> <span class="kn">import</span> <span class="n">RunningAvg</span>
 
 <span class="c1">#=====================================================================</span>
 <span class="c1"># Classes</span>
@@ -132,7 +132,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">theColor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selectable</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span> <span class="o">=</span> <span class="mf">0.10</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">px_from_m</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">px_from_m</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span><span class="p">))</span>
         
         <span class="k">if</span> <span class="n">vectors_2d_m</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">vectors_2d_m</span> <span class="o">=</span> <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span>
@@ -169,12 +169,13 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             
             <span class="c1"># Draw line segment</span>
             <span class="n">line_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span><span class="n">vec_A_2d_m</span><span class="p">),</span> <span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span><span class="n">vec_B_2d_m</span><span class="p">)]</span>
-            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aaline</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="c1">#pygame.draw.aaline(game_window.surface, color, line_points[0], line_points[1], True)</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aaline</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             
             <span class="c1"># Draw circle.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">px_from_m</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">px_from_m</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">small_circle</span><span class="p">:</span>
-                <span class="n">radius_px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span>
+                <span class="n">radius_px</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>    
                 <span class="n">radius_px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span>
             <span class="k">if</span> <span class="n">radius_px</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -196,7 +197,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                         <span class="k">for</span> <span class="n">point_2d_m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_history_2d_m</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">total_history_tuples_px</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span> <span class="n">point_2d_m</span><span class="p">))</span>
                         <span class="c1">#pygame.draw.lines(game_window.surface, self.color, False, self.total_history_tuples_px, 1)</span>
-                        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_history_tuples_px</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                        <span class="c1">#pygame.draw.aalines(game_window.surface, self.color, False, self.total_history_tuples_px, True)</span>
+                        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aalines</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_history_tuples_px</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">point_2d_m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_history_2d_m</span><span class="p">:</span>
                         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span> <span class="n">point_2d_m</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -240,7 +242,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                                        <span class="n">Vec2D</span><span class="p">(</span> <span class="o">-</span><span class="mf">1.00</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sf_x</span><span class="p">,</span>  <span class="mf">0.50</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sf_y</span><span class="p">),</span> 
                                        <span class="n">Vec2D</span><span class="p">(</span>  <span class="mf">0.00</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sf_x</span><span class="p">,</span>  <span class="mf">0.00</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sf_y</span><span class="p">)]</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">rt_vertices_2d_px</span>  <span class="o">=</span> <span class="p">[]</span>                       
+        <span class="bp">self</span><span class="o">.</span><span class="n">rt_vertices_2d_px</span>  <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
         
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -267,18 +269,18 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     
     <span class="k">def</span> <span class="nf">draw_selection_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Draw circle.</span>
-        <span class="n">radius_px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">px_from_m</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span><span class="p">)))</span>
+        <span class="n">radius_px</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">px_from_m</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">radius_px</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">radius_px</span> <span class="o">=</span> <span class="mi">1</span>
         
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">radius_px</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">draw_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
         <span class="c1"># Draw main body of the arrow: line from base point to end point.</span>
         <span class="n">line_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_2d_m</span><span class="p">),</span> <span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span><span class="bp">self</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_2d_m</span><span class="p">)]</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aaline</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
         <span class="c1">#pygame.draw.line(game_window.surface, self.color, line_points[0], line_points[1], 2)</span>
+        <span class="c1">#pygame.draw.aaline(game_window.surface, self.color, line_points[0], line_points[1], True)</span>
+        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aaline</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">line_points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         
         <span class="c1"># Draw the arrowhead</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">length_squared</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -375,7 +377,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screenSize_px</span><span class="p">,</span> <span class="n">length_x_m</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span> <span class="o">=</span> <span class="n">Vec2D</span><span class="p">(</span><span class="n">screenSize_px</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset_px</span> <span class="o">=</span> <span class="n">Vec2D</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">x</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">y</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter_px</span> <span class="o">=</span> <span class="n">Vec2D</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
     
@@ -384,8 +385,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="bp">self</span><span class="o">.</span><span class="n">key_m</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key_h</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
     
-        <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">=</span> <span class="n">length_x_m</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">length_x_m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">=</span> <span class="n">length_x_m</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">x</span><span class="o">/</span><span class="n">length_x_m</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">inhibit_screen_clears</span> <span class="o">=</span> <span class="kc">False</span>
         
@@ -399,15 +400,17 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         
         <span class="bp">self</span><span class="o">.</span><span class="n">dt_s</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freeze</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fr_avg</span> <span class="o">=</span> <span class="n">RunningAvg</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">pygame</span><span class="p">,</span> <span class="n">colorScheme</span><span class="o">=</span><span class="s1">&#39;light&#39;</span><span class="p">)</span>
     
     <span class="c1"># Convert from meters to pixels </span>
     <span class="k">def</span> <span class="nf">px_from_m</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_m</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">dx_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>
     
     <span class="c1"># Convert from pixels to meters</span>
-    <span class="c1"># Note: still floating values here)</span>
+    <span class="c1"># Note: still floating values here</span>
     <span class="k">def</span> <span class="nf">m_from_px</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_px</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">dx_px</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>
+        <span class="k">return</span> <span class="n">dx_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>
     
     <span class="k">def</span> <span class="nf">control_zoom_and_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_h</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
@@ -416,7 +419,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>
     
     <span class="k">def</span> <span class="nf">ConvertScreenToWorld</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_2d_px</span><span class="p">):</span>
-        <span class="c1">#self.viewOffset_px = self.viewCenter_px</span>
         <span class="n">x_m</span> <span class="o">=</span> <span class="p">(</span>                       <span class="n">point_2d_px</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset_px</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">)</span>
         <span class="n">y_m</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">point_2d_px</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset_px</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Vec2D</span><span class="p">(</span> <span class="n">x_m</span><span class="p">,</span> <span class="n">y_m</span><span class="p">)</span>
@@ -427,9 +429,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="sd">        In the class instance, we store a zoom factor, an offset indicating where</span>
 <span class="sd">        the view extents start at, and the screen size (in pixels).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># self.viewOffset = self.viewCenter - self.screenSize_px/2</span>
-        <span class="c1">#self.viewOffset = self.viewCenter_px</span>
         <span class="n">x_px</span> <span class="o">=</span> <span class="p">(</span><span class="n">point_2d_m</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset_px</span><span class="o">.</span><span class="n">x</span>
         <span class="n">y_px</span> <span class="o">=</span> <span class="p">(</span><span class="n">point_2d_m</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset_px</span><span class="o">.</span><span class="n">y</span>
         <span class="n">y_px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screenSize_px</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_px</span>
@@ -438,7 +437,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="k">return</span> <span class="n">Vec2D</span><span class="p">(</span><span class="n">x_px</span><span class="p">,</span> <span class="n">y_px</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tuple</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">get_user_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        
         <span class="c1"># Get all the events since the last call to get().</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">):</span> 
@@ -446,20 +444,20 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">):</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">):</span>
                     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_KP1</span><span class="p">):</span>            
+                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_KP1</span><span class="p">):</span>
                     <span class="k">return</span> <span class="s2">&quot;1p&quot;</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_KP2</span><span class="p">):</span>            
+                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_KP2</span><span class="p">):</span>
                     <span class="k">return</span> <span class="s2">&quot;2p&quot;</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_KP3</span><span class="p">):</span>            
+                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_KP3</span><span class="p">):</span>
                     <span class="k">return</span> <span class="s2">&quot;3p&quot;</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_1</span><span class="p">):</span>            
-                    <span class="k">return</span> <span class="mi">1</span>           
-                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_2</span><span class="p">):</span>                          
+                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_1</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_2</span><span class="p">):</span>
                     <span class="k">return</span> <span class="mi">2</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_3</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="mi">3</span>           
+                    <span class="k">return</span> <span class="mi">3</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_4</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="mi">4</span>           
+                    <span class="k">return</span> <span class="mi">4</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_5</span><span class="p">):</span>
                     <span class="k">return</span> <span class="mi">5</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_6</span><span class="p">):</span>
@@ -494,7 +492,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                     <span class="bp">self</span><span class="o">.</span><span class="n">key_m</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span>
                 <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_h</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">key_h</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span>
-                
+                <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_q</span><span class="p">):</span>
+                    <span class="n">env</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">=</span> <span class="mf">1.00</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="s2">&quot;nothing set up for this key&quot;</span>
             
@@ -629,7 +628,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">temp</span><span class="p">)</span>
             <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">projection_target_2d_m</span> <span class="o">=</span> <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             
-        <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span> <span class="o">=</span> <span class="n">Vectors_Add</span><span class="p">()</span>        
+        <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span> <span class="o">=</span> <span class="n">Vectors_Add</span><span class="p">()</span>
         
     <span class="k">elif</span> <span class="n">resetmode</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">141</span><span class="p">):</span>
@@ -637,24 +636,10 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">temp</span><span class="p">)</span>
             <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">projection_target_2d_m</span> <span class="o">=</span> <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             
-        <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span> <span class="o">=</span> <span class="n">Vectors_Add</span><span class="p">()</span>        
+        <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span> <span class="o">=</span> <span class="n">Vectors_Add</span><span class="p">()</span>
         
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s2">&quot;Nothing set up for this key.&quot;</span>
-
-<span class="k">def</span> <span class="nf">display_number</span><span class="p">(</span><span class="n">numeric_value</span><span class="p">,</span> <span class="n">font_object</span><span class="p">,</span>  <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;FPS&#39;</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">mode</span><span class="o">==</span><span class="s1">&#39;FPS&#39;</span><span class="p">:</span>
-        <span class="c1"># Small background rectangle for FPS text</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;white&quot;</span><span class="p">],</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        <span class="c1"># The text</span>
-        <span class="n">fps_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%.0f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">numeric_value</span>
-        <span class="n">txt_surface</span> <span class="o">=</span> <span class="n">font_object</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">fps_string</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">])</span>
-        <span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">txt_surface</span><span class="p">,</span> <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">mode</span><span class="o">==</span><span class="s1">&#39;gameTimer&#39;</span><span class="p">:</span>
-        <span class="c1"># The text</span>
-        <span class="n">fps_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">numeric_value</span>
-        <span class="n">txt_surface</span> <span class="o">=</span> <span class="n">font_object</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">fps_string</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;white&quot;</span><span class="p">])</span>
-        <span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">txt_surface</span><span class="p">,</span> <span class="p">[</span><span class="mi">600</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nothing set up for this key.&quot;</span><span class="p">)</span>
     
 <span class="c1">#============================================================</span>
 <span class="c1"># Main procedural script.</span>
@@ -691,7 +676,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="n">framerate_limit</span> <span class="o">=</span> <span class="mf">480.0</span>   <span class="c1"># 480</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">env</span><span class="o">.</span><span class="n">dt_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span> <span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">dt_s</span> <span class="o">=</span> <span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span> <span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>
         
         <span class="c1"># Listen to the user: establish the state of the keyboard and mouse and determine if a new demo is called for.</span>
         <span class="n">resetmode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_user_input</span><span class="p">()</span>
@@ -699,7 +684,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="c1"># Reset the game based on local user control.</span>
         <span class="k">if</span> <span class="n">resetmode</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;1p&quot;</span><span class="p">,</span><span class="s2">&quot;2p&quot;</span><span class="p">,</span><span class="s2">&quot;3p&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">demo_mode</span> <span class="o">=</span> <span class="n">resetmode</span>
-            <span class="nb">print</span> <span class="n">resetmode</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">resetmode</span><span class="p">)</span>
             <span class="c1"># Delete all the objects in the sandbox. Cleaning out these list reference to these objects effectively</span>
             <span class="c1"># deletes the objects.</span>
             <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span> <span class="o">=</span> <span class="kc">None</span>
@@ -709,7 +694,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">game_window</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
             
             <span class="c1"># Reinitialize the demo.</span>
-            <span class="n">make_some_vectors</span><span class="p">(</span> <span class="n">demo_mode</span><span class="p">)</span>               
+            <span class="n">make_some_vectors</span><span class="p">(</span> <span class="n">demo_mode</span><span class="p">)</span>
                     
         <span class="c1"># Control vector selection and mouse related movement.</span>
         <span class="n">v_sb</span><span class="o">.</span><span class="n">updateSelectedVector</span><span class="p">()</span>
@@ -722,14 +707,17 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
 
         <span class="c1"># Display FPS text.</span>
-        <span class="n">display_number</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">env</span><span class="o">.</span><span class="n">dt_s</span><span class="p">,</span> <span class="n">fnt_FPS</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;FPS&#39;</span><span class="p">)</span>
-        
+        <span class="n">env</span><span class="o">.</span><span class="n">fr_avg</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">myclock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">())</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">fr_avg</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span> <span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
         <span class="c1"># Draw axis for the vector sandbox.</span>
         <span class="n">v_sb</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
         
-        <span class="c1"># Draw vectors.</span>
+        <span class="c1"># Update and draw vectors (updates are in the draw methods)</span>
+        <span class="c1"># Do the total first; so it&#39;s on the bottom.</span>
         <span class="k">if</span> <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">v_sb</span><span class="o">.</span><span class="n">total_vector_2d_m</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>    
+        <span class="c1"># Then do the individual vectors.</span>
         <span class="k">for</span> <span class="n">eachvector</span> <span class="ow">in</span> <span class="n">v_sb</span><span class="o">.</span><span class="n">vectors</span><span class="p">:</span> 
             <span class="n">eachvector</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
         

@@ -7,8 +7,7 @@ Licensed under the BSD license, see LICENSE for details.
 -->
 <html>
 <head>
-  <link rel='canonical' href='https://pet.triquence.org/A02.1_string_rendering_v2.html' />
-  <title>A02.1_string_rendering_v2</title>
+  <title></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style type="text/css">
 /*
@@ -107,31 +106,35 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A02.1_string_rendering_v2.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="c1"># Filename: A02.1_string_rendering_v2.py</span>
 
-<span class="sd">10:05 PM Thu September 20, 2018</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">When running this script, include a demo number as an argument. </span>
+<span class="sd">Optionally include &#39;d&#39; for data details.</span>
 
-<span class="sd">Noticed recently that control-s wasn&#39;t pausing execution in Windows. So, </span>
-<span class="sd">updated this script to include the pygame (keyboard) event handlers. </span>
-<span class="sd">This requires a little pygame window be displayed. This window is only </span>
-<span class="sd">used to enable these handlers. Use the p key to pause and resume. Use </span>
-<span class="sd">the x key to quit.</span>
+<span class="sd">For example:    </span>
+<span class="sd">python A02.1_string_rendering_v2.py 2 d</span>
 
-<span class="sd">see check_pause_orDone.</span>
+<span class="sd">This script includes the pygame (keyboard) event handlers and </span>
+<span class="sd">requires a little pygame window be displayed. This window is only </span>
+<span class="sd">used to enable these handlers. </span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Use the p key to pause and resume. </span>
+<span class="sd">Use the x key to quit.</span>
+
+<span class="sd">(see check_pause_orDone).</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">textwrap</span>
 <span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">default_timer</span>
 
 <span class="kn">import</span> <span class="nn">pygame</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">K_p</span><span class="p">,</span> <span class="n">K_x</span><span class="p">,</span> <span class="n">K_c</span><span class="p">,</span> <span class="n">K_s</span><span class="p">,</span> <span class="n">K_LCTRL</span><span class="p">,</span> <span class="n">K_RCTRL</span><span class="p">,</span> <span class="n">K_ESCAPE</span>
 
 <span class="k">def</span> <span class="nf">px_from_m</span><span class="p">(</span> <span class="n">x_m</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span> <span class="n">x_m</span> <span class="o">*</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;m_to_px&#39;</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span> <span class="n">x_m</span> <span class="o">*</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;m_to_px&#39;</span><span class="p">])</span>
         
 <span class="k">def</span> <span class="nf">move</span><span class="p">(</span> <span class="n">car</span><span class="p">):</span>
     <span class="n">v_i</span> <span class="o">=</span> <span class="n">car</span><span class="p">[</span><span class="s1">&#39;v_mps&#39;</span><span class="p">]</span>
@@ -163,11 +166,11 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="n">print_string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
         <span class="n">print_string</span> <span class="o">+=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span>
-    <span class="nb">print</span> <span class="n">print_string</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">print_string</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">):</span>
     <span class="c1"># dp is short for debug print.</span>
-    <span class="nb">print</span> <span class="n">variable_name</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">variable_name</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">variable</span><span class="p">))</span>
     
 <span class="k">def</span> <span class="nf">x_corrected_exact</span><span class="p">(</span> <span class="n">car</span><span class="p">,</span> <span class="n">x_overlap</span><span class="p">):</span>
     <span class="c1"># Inputs are conditions at the time of collision detection. These</span>
@@ -289,25 +292,25 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="k">def</span> <span class="nf">render</span><span class="p">(</span> <span class="n">car</span><span class="p">):</span>   
     <span class="n">display_string</span> <span class="o">=</span> <span class="n">build_airtrack_string</span><span class="p">(</span> <span class="n">car</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">]:</span>
-        <span class="nb">print</span> <span class="n">display_string</span> <span class="o">+</span> <span class="s1">&#39;x=&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%6.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">car</span><span class="p">[</span><span class="s1">&#39;x_m&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;, v=&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">% .2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">car</span><span class="p">[</span><span class="s1">&#39;v_mps&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;, F=&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%3.0f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fps_observed</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">display_string</span><span class="si">}</span><span class="s2">x = </span><span class="si">{</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;x_m&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">, v = </span><span class="si">{</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;v_mps&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2">, FPS = </span><span class="si">{</span><span class="n">fps_observed</span><span class="si">:</span><span class="s2">3.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="n">display_string</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">display_string</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">pos_avg_10</span><span class="p">(</span> <span class="n">car</span><span class="p">):</span>
     <span class="n">x_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">car</span><span class="p">[</span><span class="s1">&#39;x_m&#39;</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span> <span class="n">x_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x_list</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_list</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x_list</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">x_list</span><span class="p">)</span>
     
 <span class="k">def</span> <span class="nf">pretty_paragraphs</span><span class="p">(</span> <span class="n">text_string</span><span class="p">,</span> <span class="n">n_blanklines</span><span class="p">):</span>
     <span class="n">paragraph_list</span> <span class="o">=</span> <span class="n">text_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;||&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="n">paragraph_list</span><span class="p">:</span>    
         <span class="n">dedented_text</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span> <span class="n">paragraph</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="nb">print</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">dedented_text</span><span class="p">,</span> <span class="n">initial_indent</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span> <span class="n">subsequent_indent</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-        <span class="nb">print</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">n_blanklines</span><span class="p">):</span> <span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">dedented_text</span><span class="p">,</span> <span class="n">initial_indent</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span> <span class="n">subsequent_indent</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">n_blanklines</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
   
 <span class="k">def</span> <span class="nf">print_delay</span><span class="p">(</span> <span class="n">string</span><span class="p">):</span>
-    <span class="nb">print</span> <span class="n">string</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span> <span class="mf">0.10</span><span class="p">)</span>
   
 <span class="k">def</span> <span class="nf">try_sleep</span><span class="p">(</span> <span class="n">seconds</span><span class="p">):</span>
@@ -320,32 +323,32 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">print_delay</span><span class="p">(</span><span class="s2">&quot;             *   *    &quot;</span><span class="p">)</span>
         <span class="n">print_delay</span><span class="p">(</span><span class="s2">&quot;              * *     &quot;</span><span class="p">)</span>
         <span class="n">print_delay</span><span class="p">(</span><span class="s2">&quot;               *      &quot;</span><span class="p">)</span>
-        <span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">):</span>
-    <span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\n\n\n\n</span><span class="s2">&quot;</span>
-    <span class="nb">print</span> <span class="s2">&quot; Example #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; ---------------------&quot;</span>
-    <span class="nb">print</span> <span class="s2">&quot; Initial x = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;x_m&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Initial v = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;v_mps&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; a = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;a_mps2&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Coefficient of Restitution = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;CR&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot;&quot;</span>
-    <span class="nb">print</span> <span class="s2">&quot; Stickiness correction = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;stickiness_correction&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Example #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ---------------------&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Initial x = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;x_m&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Initial v = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;v_mps&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; a = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">car</span><span class="p">[</span><span class="s1">&#39;a_mps2&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Coefficient of Restitution = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;CR&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Stickiness correction = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;stickiness_correction&#39;</span><span class="p">]))</span>
     <span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;stickiness_correction&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">env</span><span class="p">[</span><span class="s1">&#39;exact_solution&#39;</span><span class="p">]:</span>
-        <span class="nb">print</span> <span class="s2">&quot; Correction (version 2) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;correction_version_2&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Exact solution = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;exact_solution&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Use observed dt in next frame = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;use_observed_dt&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot;&quot;</span>
-    <span class="nb">print</span> <span class="s2">&quot; Show starting mark (</span><span class="se">\&quot;</span><span class="s2">.</span><span class="se">\&quot;</span><span class="s2">) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_start_mark&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Show collision mark (</span><span class="se">\&quot;</span><span class="s2">0</span><span class="se">\&quot;</span><span class="s2">) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_collision_mark&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Show physics-engine output = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cl</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot;&quot;</span>
-    <span class="nb">print</span> <span class="s2">&quot; FPS target = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;fps_target&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Auto-Off = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;auto_off&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; Zoom (meters to px factor) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;m_to_px&#39;</span><span class="p">])</span>
-    <span class="nb">print</span> <span class="s2">&quot; &quot;</span>
-        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Correction (version 2) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;correction_version_2&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Exact solution = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;exact_solution&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Use observed dt in next frame = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;use_observed_dt&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Show starting mark (</span><span class="se">\&quot;</span><span class="s2">.</span><span class="se">\&quot;</span><span class="s2">) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_start_mark&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Show collision mark (</span><span class="se">\&quot;</span><span class="s2">0</span><span class="se">\&quot;</span><span class="s2">) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_collision_mark&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Show physics-engine output = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cl</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; FPS target = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;fps_target&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Auto-Off = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;auto_off&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Zoom (meters to px factor) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;m_to_px&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
 <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span> <span class="n">car</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
         
     <span class="k">if</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -354,7 +357,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;CR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.7</span>
 
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        This first example has the car (represented by a &quot;*&quot;) starting from</span>
 <span class="s1">        rest and accelerating to the left. Stickiness correction is ON. There is</span>
 <span class="s1">        energy loss (fractional reduction in v) after each wall collision.</span>
@@ -377,7 +380,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -387,14 +390,14 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;CR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        Stickiness correction is turned off which allows the overlap</span>
 <span class="s1">        (penetration) to be seen. These are elastic collisions (CR=1), meaning</span>
 <span class="s1">        this will run until a keyboard stop or the loop counter hits its limit.</span>
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
         
@@ -407,7 +410,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;CR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        All parameters are identical to example 1 except that stickiness</span>
 <span class="s1">        correction is OFF.</span>
 <span class="s1">        ||</span>
@@ -422,7 +425,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop      </span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">4.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
@@ -432,14 +435,14 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_collision_mark&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        The target frame rate is set high to give an interesting display of the</span>
 <span class="s1">        time-series tail. The car loses speed from each wall collision.</span>
 <span class="s1">        Acceleration (set high) to the left (negative).</span>
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
 
         
@@ -448,7 +451,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;CR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.7</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        Acceleration is to the right (opposite direction from other examples).</span>
 <span class="s1">        ||</span>
 <span class="s1">        A collision mark (0) is displayed at the original collision</span>
@@ -456,7 +459,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop      </span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
@@ -465,7 +468,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;m_to_px&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">30.0</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        The scaling factor between the physics engine and the renderer has</span>
 <span class="s1">        decreased from the level used in example 5. This effectively zooms out</span>
 <span class="s1">        the view of the track and the car on it. The output from the physics</span>
@@ -474,7 +477,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>   
 
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
@@ -484,7 +487,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_start_mark&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        The CR value of unity yields elastic collisions. The frame rate is set</span>
 <span class="s1">        high to give the highest precision in the physics predictions. Note</span>
 <span class="s1">        the car consistently returns to the initial starting point as marked by</span>
@@ -492,7 +495,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop    </span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
@@ -502,7 +505,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_start_mark&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        This is like the previous example (7), except the target frame rate is</span>
 <span class="s1">        reduced to give the lower precision in the physics predictions.</span>
 <span class="s1">        Note the car does NOT return to the initial starting point (as marked</span>
@@ -515,7 +518,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
@@ -526,7 +529,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">track</span><span class="p">[</span><span class="s1">&#39;show_start_mark&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        The observed dt is used in the subsequent frame to calculate the</span>
 <span class="s1">        physics engine motions. All other settings are identical to those in</span>
 <span class="s1">        example 8. Note the car, again, does NOT return to the initial starting</span>
@@ -535,7 +538,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop    </span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
@@ -546,7 +549,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;exact_solution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        The Euler-method calculation has been replaced with an exact</span>
 <span class="s1">        calculation method in this example. The calculation uses physics</span>
 <span class="s1">        kinematics equations to model the motion between the ends of the track</span>
@@ -556,7 +559,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop   </span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span>
@@ -568,14 +571,14 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;use_observed_dt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        The observed dt is used in the calculations of subsequent frames. Note</span>
 <span class="s1">        that in contrast to example 9, the car consistently returns to the</span>
 <span class="s1">        initial starting point.</span>
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">elif</span> <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
@@ -587,24 +590,24 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">env</span><span class="p">[</span><span class="s1">&#39;use_observed_dt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">        Same as example 11 but with a CR of less than 1.0.</span>
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop    </span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>        
         
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cl</span><span class="p">[</span><span class="s1">&#39;example_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;--&gt; Defaults&quot;</span>
         <span class="n">print_header</span><span class="p">(</span><span class="n">car</span><span class="p">)</span>
-        <span class="n">explaination</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
+        <span class="n">explanation</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39; </span>
 <span class="s1">        No command line arguments were supplied or there was no</span>
 <span class="s1">        match for the mode value. Default parameters will be used.</span>
 <span class="s1">        ||</span>
 <span class="s1">        p key: pause or resume  /  x key: stop</span>
 <span class="s1">        &#39;&#39;&#39;</span>
-        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explaination</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+        <span class="n">pretty_paragraphs</span><span class="p">(</span> <span class="n">explanation</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
         <span class="n">try_sleep</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
         
 <span class="k">def</span> <span class="nf">at_rest</span><span class="p">(</span> <span class="n">car</span><span class="p">):</span>
@@ -630,22 +633,22 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="k">def</span> <span class="nf">check_pause_orDone</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">QUIT</span><span class="p">):</span> 
-            <span class="nb">print</span> <span class="s1">&#39;Stopped by closing pygame window.&#39;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopped by closing pygame window.&#39;</span><span class="p">)</span>
             <span class="n">user</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_x</span><span class="p">)):</span>
-                <span class="nb">print</span> <span class="s1">&#39;Stopped with escape key or x key.&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopped with escape key or x key.&#39;</span><span class="p">)</span>
                 <span class="n">user</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_p</span><span class="p">):</span>
                 <span class="n">user</span><span class="p">[</span><span class="s1">&#39;paused&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;paused&#39;</span><span class="p">]</span>
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_s</span><span class="p">):</span>
                 <span class="n">keys</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]</span> <span class="ow">or</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">K_LCTRL</span><span class="p">]</span> <span class="ow">or</span> <span class="n">keys</span><span class="p">[</span><span class="n">K_RCTRL</span><span class="p">]):</span>
                     <span class="n">user</span><span class="p">[</span><span class="s1">&#39;paused&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;paused&#39;</span><span class="p">]</span>
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_c</span><span class="p">):</span>
                 <span class="n">keys</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]</span> <span class="ow">or</span> <span class="n">keys</span><span class="p">[</span><span class="n">pygame</span><span class="o">.</span><span class="n">K_LCTRL</span><span class="p">]):</span>
-                    <span class="nb">print</span> <span class="s1">&#39;Stopped with ctrl-c.&#39;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="n">K_LCTRL</span><span class="p">]</span> <span class="ow">or</span> <span class="n">keys</span><span class="p">[</span><span class="n">K_RCTRL</span><span class="p">]):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopped with ctrl-c.&#39;</span><span class="p">)</span>
                     <span class="n">user</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>  
@@ -653,7 +656,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     
     <span class="c1"># This pygame window is only used here to facilitate the event handling features of pygame.</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-    <span class="n">display_surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">display_surface</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">300</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
     
     <span class="c1"># A list to support calculating a running average of the position.</span>
     <span class="n">x_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -724,11 +727,11 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="c1"># Note: this exception will only fire if the main command window has the focus. So if using</span>
             <span class="c1"># the pygame events (and it&#39;s window) you must click in the main command window before</span>
             <span class="c1"># issuing the ctrl-c.</span>
-            <span class="nb">print</span> <span class="s2">&quot;Stopped by keyboard (ctrl-c).&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stopped by keyboard (ctrl-c).&quot;</span><span class="p">)</span>
             <span class="k">break</span>
         
         <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="s2">&quot;There is a problem in the TRY block above: </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There is a problem in the TRY block above: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># The following &quot;raise&quot; will print out the traceback.</span>
             <span class="k">raise</span>
             <span class="k">break</span>

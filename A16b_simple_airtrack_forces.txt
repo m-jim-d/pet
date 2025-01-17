@@ -1,5 +1,6 @@
-# Filename: A16b_simple_airtrack_forces.py
-# Written by: James D. Miller
+#!/usr/bin/env python3
+
+# Filename: A16b_simple_airtrack_forces_P3.py
 
 """
 Air Track with point forces...
@@ -39,19 +40,16 @@ class fwQueryCallback(b2QueryCallback):
         # Continue the query
         return True
 
-class Environment:
 
+class Environment:
     def __init__(self, screensize_tuple, world):
         self.world = world
         
         self.viewZoom          = 10.0
-        self.viewCenter        = b2Vec2(0, 0.0)
+        self.viewCenter        = b2Vec2(0, 0)
         self.viewOffset        = b2Vec2(0, 0)
         self.screenSize        = b2Vec2(*screensize_tuple)
         self.rMouseDown        = False
-        # self.textLine           = 30
-        # self.font               = None
-        # self.fps                = 0      
         
         self.mouseJoint = None
 
@@ -118,74 +116,59 @@ class Environment:
         self.mouseWorld = p
         if self.mouseJoint:
             self.mouseJoint.target = p
-            
-    def CheckKeys(self):
-        """
-        Check the keys that are evaluated on every main loop iteration.
-        I.e., they aren't just evaluated when first pressed down
-        """
-
-        pygame.event.pump()
-        self.keys = keys = pygame.key.get_pressed()
-        if keys[self.Keys.K_LEFT]:
-            self.viewCenter -= (0.5, 0)
-        elif keys[self.Keys.K_RIGHT]:
-            self.viewCenter += (0.5, 0)
-
-        if keys[self.Keys.K_UP]:
-            self.viewCenter += (0, 0.5)
-        elif keys[self.Keys.K_DOWN]:
-            self.viewCenter -= (0, 0.5)
-
-        if keys[self.Keys.K_HOME]:
-            self.viewZoom = 1.0
-            self.viewCenter = (0.0, 20.0)
-        
+                    
     def Keyboard_Event(self, key, down=True):
         global apply_jet_1_TF, apply_jet_2_TF
         if down:
-            if key==K_z:       # Zoom in
+            if key == K_z:       # Zoom in
                 self.viewZoom = min(1.1 * self.viewZoom, 50.0)
-            elif key==K_x:     # Zoom out
+            elif key == K_x:     # Zoom out
                 self.viewZoom = max(0.9 * self.viewZoom, 0.02)
+            
+            elif key == K_UP:
+                self.viewCenter -= (0, 20)
+            elif key == K_DOWN:
+                self.viewCenter += (0, 20)
+            elif key == K_RIGHT:
+                self.viewCenter -= (20, 0)
+            elif key == K_LEFT:
+                self.viewCenter += (20, 0)
+            elif key == K_HOME:
+                self.viewZoom    = 10.0
+                self.viewCenter  = b2Vec2(0, 0)
+                self.viewOffset  = b2Vec2(0, 0)
+            
             elif key == K_f:
-                # Toggle the force.
-                apply_jet_1_TF = not apply_jet_1_TF
-                #print "applying force 1"
+                apply_jet_1_TF = True
+                print("applying force 1")
             elif key == K_g:
-                # Toggle the force.
-                apply_jet_2_TF = not apply_jet_2_TF
-                #print "applying force 2"
+                apply_jet_2_TF = True
+                print("applying force 2")
             else:
                 pass
         # If up
         else:
             if key == K_f:
-                # Toggle the force.
-                apply_jet_1_TF = not apply_jet_1_TF
+                apply_jet_1_TF = False
             elif key == K_g:
-                # Toggle the force.
-                apply_jet_2_TF = not apply_jet_2_TF
+                apply_jet_2_TF = False
             else:
                 pass
     
-    def checkEvents(self):
+    def CheckEvents(self):
         """
         Check for pygame events (mainly keyboard/mouse events).
         Passes the events onto the GUI also.
         """
-        # print "checkEvents"
         for event in pygame.event.get():
-            # print "event.type = ", event.type
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
-                print "early bailout"
+                print("early bailout")
                 return False
             elif event.type == KEYDOWN:
                 self.Keyboard_Event(event.key, down=True)
             elif event.type == KEYUP:
                 self.Keyboard_Event(event.key, down=False)
             elif event.type == MOUSEBUTTONDOWN:
-                #print "in MouseButtonDown block"
                 p = self.ConvertScreenToWorld(*event.pos)
                 if event.button == 1: # left
                    self.MouseDown( p )
@@ -195,7 +178,6 @@ class Environment:
                     self.rMouseDown = True
                 elif event.button == 4:
                     self.viewZoom *= 1.1
-                    #print "self.viewZoom", self.viewZoom
                 elif event.button == 5:
                     self.viewZoom /= 1.1
             elif event.type == MOUSEBUTTONUP:
@@ -205,11 +187,10 @@ class Environment:
                 else:
                     self.MouseUp(p)
             elif event.type == MOUSEMOTION:
-                
                 p = self.ConvertScreenToWorld(*event.pos)
                 self.MouseMove(p)
                 if self.rMouseDown:
-                    print "in mousemotion block", event.pos, event.rel[0], event.rel[1]
+                    #print(f"mouse motion: position=({event.pos[0]:4d},{event.pos[1]:4d}), change=({event.rel[0]:3d},{event.rel[1]:3d})")
                     self.viewCenter -= (event.rel[0]/1.0, -event.rel[1]/1.0)    #... it was /5.0
 
         return True
@@ -236,46 +217,42 @@ class Environment:
         y = (point.y * self.viewZoom) - self.viewOffset.y
         if self.flipY:
             y = self.screenSize.y - y
-        return (int(round(x)), int(round(y)))  # return tuple of integers
+        return (round(x), round(y))  # return tuple of integers
 
-    def drawMouseJoint(self):
+    def DrawMouseJoint(self):
         if self.mouseJoint:
-            p1_screen = self.ConvertWorldtoScreen(self.mouseJoint.anchorB)  #The point on the object converted to screen coordinates.
-            p2_screen = self.ConvertWorldtoScreen(self.mouseJoint.target)   #The current mouse position converted to screen coordinates.
+            p1_screen = self.ConvertWorldtoScreen(self.mouseJoint.anchorB)  # point on the object converted to screen coordinates
+            p2_screen = self.ConvertWorldtoScreen(self.mouseJoint.target)   # current mouse position converted to screen coordinates
 
             self.renderer.DrawPoint(p1_screen, self.pointSize, self.colors['mouse_point'])
             self.renderer.DrawPoint(p2_screen, self.pointSize, self.colors['mouse_point'])
             self.renderer.DrawSegment(p1_screen, p2_screen, self.colors['joint_line'])
             
-    def drawForcePoint(self, forcePoint_2d_m):
+    def DrawForcePoint(self, forcePoint_2d_m):
         forcePoint_screen = self.ConvertWorldtoScreen( forcePoint_2d_m)
         self.renderer.DrawPoint( forcePoint_screen, self.pointSize, self.colors['force_point'])
             
-class DrawToScreen:
 
+class DrawToScreen:
     def __init__(self, viewZoom):
         self.viewZoom = viewZoom
         self.surface = screen
     
     def DrawPoint(self, p, size, color):
-        """
-        Draw a single point at point p given a pixel size and color.
-        """
+        # Draw a single point at point p given a pixel size and color.
         self.DrawCircle(p, size/self.viewZoom, color, drawwidth=0)
     
     def DrawSegment(self, p1, p2, color):
-        """
-        Draw the line segment from p1-p2 with the specified color.
-        """
+        # Draw the line segment from p1-p2 with the specified color.
         pygame.draw.aaline(self.surface, color.bytes, p1, p2)
 
     def DrawCircle(self, center, radius, color, drawwidth=1):
-        """
-        Draw a wireframe circle given the center, radius, axis of orientation and color.
-        """
+        # Draw a wireframe circle.
         radius *= self.viewZoom
-        if radius < 1: radius = 1
-        else: radius = int(radius)
+        if radius < 1: 
+            radius = 1
+        else: 
+            radius = round(radius)
 
         pygame.draw.circle(self.surface, color.bytes, center, radius, drawwidth)
 
@@ -284,20 +261,20 @@ class DrawToScreen:
 # Some functions
 #=================================================================================
     
-def AddCar(theWorld, bodies, x=0, vx=0, width=1, height=1, my_restitution=1.00):
+def AddCar(theWorld, bodies, x=0, vx=0, width=1, height=1, rest=1.00, angDamp=0.0):
     
-    # Create a dynamic body
-    dynamic_body = theWorld.CreateDynamicBody(position=b2Vec2(x, 0), angle=0, linearVelocity=b2Vec2(vx, 0))
+    # Create a dynamic body.
+    dynamic_body = theWorld.CreateDynamicBody(position=b2Vec2(x, 0), angle=0, linearVelocity=b2Vec2(vx, 0), angularDamping=angDamp)
     
     # Add to the bodies list
     bodies.append( dynamic_body)
     
-    # And add a box fixture onto it (with a nonzero density, so it will move)
-    dynamic_body.CreatePolygonFixture(box=(width, height), density=1.0, friction=0.00, restitution=my_restitution)
+    # And add a box fixture onto the body.
+    dynamic_body.CreatePolygonFixture(box=(width, height), density=1.0, friction=0.00, restitution=rest)
 
     # Note the area used in the mass calc will be area = (2 * w) * (2 * h)
     # Then mass = density * area
-    print "Mass data:", dynamic_body.mass
+    print("Mass data:", dynamic_body.mass)
 
 #=================================================================================
 # Main program
@@ -311,18 +288,17 @@ screenXY = SCREEN_WIDTH, SCREEN_HEIGHT = 1140, 480
 # --- pygame setup ---
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
-pygame.display.set_caption('Simple pygame example')
+pygame.display.set_caption('Simple pybox2d example')
 clock = pygame.time.Clock()
 
 # --- pybox2d world setup ---
 # Create the world
 world = b2World(gravity=(-0.0, -10.0), doSleep=True)
 
-# Initialize the environment object (kind of like my own framework).
-e = Environment(screenXY, world)
-#Keys = TheKeys()
+# Initialize the environment object.
+env = Environment(screenXY, world)
 
-# List of bodies.
+# list of bodies
 bodies = []
 
 # And a static body to be the base of the air track.
@@ -346,14 +322,12 @@ air_track_bumper2 = world.CreateStaticBody(
     )
 bodies.append( air_track_bumper2) 
     
-# Add cars to the track
+# Add cars to the track.
 x = 15
 for j in range(5):
     x += 5
     vx = j + 2
-    #vx = -6
-    AddCar(world, bodies, x, vx, height=1.0, width=2.0, my_restitution=0.90)
-
+    AddCar(world, bodies, x, vx, height=1.0, width=2.0, rest=0.8, angDamp=0.7)
 
 colors = {
     b2_staticBody  : (255,255,255,255),
@@ -367,10 +341,7 @@ apply_jet_2_TF = False
 # --- main game loop ---
 running = True
 while running:
-
-    # Use the Environment instance "e" to check events
-    running = e.checkEvents()
-    # e.CheckKeys()
+    running = env.CheckEvents()
 
     # Apply forces
     if apply_jet_1_TF:
@@ -405,19 +376,19 @@ while running:
             vertices_screen = []
             for vertex_object in shape.vertices:
                 vertex_world = body.transform * vertex_object  # Overload operation
-                vertex_screen = e.ConvertWorldtoScreen( vertex_world) # This returns a tuple
+                vertex_screen = env.ConvertWorldtoScreen( vertex_world) # This returns a tuple
                 vertices_screen.append( vertex_screen) # Append to the list.
             
             pygame.draw.polygon(screen, colors[body.type], vertices_screen)
 
     # Draw mouse joint.
-    e.drawMouseJoint()
+    env.DrawMouseJoint()
     
     # Draw force points.
     if apply_jet_1_TF:
-        e.drawForcePoint( force_point_1_2d_m)
+        env.DrawForcePoint( force_point_1_2d_m)
     if apply_jet_2_TF:
-        e.drawForcePoint( force_point_2_2d_m)
+        env.DrawForcePoint( force_point_2_2d_m)
 
     # Flip the screen and try to keep at the target FPS
     pygame.display.flip()

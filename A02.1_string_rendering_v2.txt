@@ -1,28 +1,32 @@
+#!/usr/bin/env python3
+
 # Filename: A02.1_string_rendering_v2.py
-# Written by: James D. Miller
 
-'''
+"""
+When running this script, include a demo number as an argument. 
+Optionally include 'd' for data details.
 
-10:05 PM Thu September 20, 2018
+For example:    
+python A02.1_string_rendering_v2.py 2 d
 
-Noticed recently that control-s wasn't pausing execution in Windows. So, 
-updated this script to include the pygame (keyboard) event handlers. 
-This requires a little pygame window be displayed. This window is only 
-used to enable these handlers. Use the p key to pause and resume. Use 
-the x key to quit.
+This script includes the pygame (keyboard) event handlers and 
+requires a little pygame window be displayed. This window is only 
+used to enable these handlers. 
 
-see check_pause_orDone.
+Use the p key to pause and resume. 
+Use the x key to quit.
 
-'''
+(see check_pause_orDone).
+"""
 
 import time, sys, textwrap
 from timeit import default_timer
 
 import pygame
-from pygame.locals import *
+from pygame.locals import K_p, K_x, K_c, K_s, K_LCTRL, K_RCTRL, K_ESCAPE
 
 def px_from_m( x_m):
-    return int(round( x_m * env['m_to_px']))
+    return round( x_m * env['m_to_px'])
         
 def move( car):
     v_i = car['v_mps']
@@ -54,11 +58,11 @@ def debug_print(name_string):
     print_string = ''
     for name in names:
         print_string += name + ":" + str(eval(name)) + ", "
-    print print_string
+    print(print_string)
 
 def dp(variable, variable_name):
     # dp is short for debug print.
-    print variable_name + "=" + str(variable)
+    print(variable_name + "=" + str(variable))
     
 def x_corrected_exact( car, x_overlap):
     # Inputs are conditions at the time of collision detection. These
@@ -180,25 +184,25 @@ def build_airtrack_string( car):
 def render( car):   
     display_string = build_airtrack_string( car)
     if cl['details']:
-        print display_string + 'x=' + "%6.3f" % car['x_m'] + ', v=' + "% .2f" % car['v_mps'] + ", F=" + "%3.0f" % fps_observed
+        print(f"{display_string}x = {car['x_m']:6.2f}, v = {car['v_mps']:5.2f}, FPS = {fps_observed:3.0f}")
     else:
-        print display_string
+        print(display_string)
 
 def pos_avg_10( car):
     x_list.append( car['x_m'])
     if len(x_list) > 10: x_list.pop(0)
-    return sum(x_list)/float(len(x_list))
+    return sum(x_list)/len(x_list)
     
 def pretty_paragraphs( text_string, n_blanklines):
     paragraph_list = text_string.split('||')
     for paragraph in paragraph_list:    
         dedented_text = textwrap.dedent( paragraph).strip()
-        print textwrap.fill(dedented_text, initial_indent='    ', subsequent_indent=' ')
-        print ""
-    for j in range( n_blanklines): print "\n"
+        print(textwrap.fill(dedented_text, initial_indent='    ', subsequent_indent=' '))
+        print("")
+    for j in range( n_blanklines): print("\n")
   
 def print_delay( string):
-    print string
+    print(string)
     time.sleep( 0.10)
   
 def try_sleep( seconds):
@@ -211,32 +215,32 @@ def try_sleep( seconds):
         print_delay("             *   *    ")
         print_delay("              * *     ")
         print_delay("               *      ")
-        print "\n\n\n"
+        print("\n\n\n")
 
 def print_header(car):
-    print "\n\n\n\n"
-    print " Example #" + str(cl['example_index'])
-    print " ---------------------"
-    print " Initial x = " + str(car['x_m'])
-    print " Initial v = " + str(car['v_mps'])
-    print " a = " + str(car['a_mps2'])
-    print " Coefficient of Restitution = " + str(env['CR'])
-    print ""
-    print " Stickiness correction = " + str(env['stickiness_correction'])
+    print("\n\n\n\n")
+    print(" Example #" + str(cl['example_index']))
+    print(" ---------------------")
+    print(" Initial x = " + str(car['x_m']))
+    print(" Initial v = " + str(car['v_mps']))
+    print(" a = " + str(car['a_mps2']))
+    print(" Coefficient of Restitution = " + str(env['CR']))
+    print("")
+    print(" Stickiness correction = " + str(env['stickiness_correction']))
     if env['stickiness_correction'] and not env['exact_solution']:
-        print " Correction (version 2) = " + str(env['correction_version_2'])
-    print " Exact solution = " + str(env['exact_solution'])
-    print " Use observed dt in next frame = " + str(env['use_observed_dt'])
-    print ""
-    print " Show starting mark (\".\") = " + str(track['show_start_mark'])
-    print " Show collision mark (\"0\") = " + str(track['show_collision_mark'])
-    print " Show physics-engine output = " + str(cl['details'])
-    print ""
-    print " FPS target = " + str(env['fps_target'])
-    print " Auto-Off = " + str(env['auto_off'])
-    print " Zoom (meters to px factor) = " + str(env['m_to_px'])
-    print " "
-        
+        print(" Correction (version 2) = " + str(env['correction_version_2']))
+    print(" Exact solution = " + str(env['exact_solution']))
+    print(" Use observed dt in next frame = " + str(env['use_observed_dt']))
+    print("")
+    print(" Show starting mark (\".\") = " + str(track['show_start_mark']))
+    print(" Show collision mark (\"0\") = " + str(track['show_collision_mark']))
+    print(" Show physics-engine output = " + str(cl['details']))
+    print("")
+    print(" FPS target = " + str(env['fps_target']))
+    print(" Auto-Off = " + str(env['auto_off']))
+    print(" Zoom (meters to px factor) = " + str(env['m_to_px']))
+    print(" ")
+
 def modify( car, env):
         
     if cl['example_index'] == 1:
@@ -245,7 +249,7 @@ def modify( car, env):
         env['CR'] = 0.7
 
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         This first example has the car (represented by a "*") starting from
         rest and accelerating to the left. Stickiness correction is ON. There is
         energy loss (fractional reduction in v) after each wall collision.
@@ -268,7 +272,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(5.0)
         
     elif cl['example_index'] == 2:
@@ -278,14 +282,14 @@ def modify( car, env):
         env['CR'] = 1.0
         
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         Stickiness correction is turned off which allows the overlap
         (penetration) to be seen. These are elastic collisions (CR=1), meaning
         this will run until a keyboard stop or the loop counter hits its limit.
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
         
@@ -298,7 +302,7 @@ def modify( car, env):
         env['CR'] = 0.6
         
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         All parameters are identical to example 1 except that stickiness
         correction is OFF.
         ||
@@ -313,7 +317,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop      
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(4.0)        
         
     elif cl['example_index'] == 4:
@@ -323,14 +327,14 @@ def modify( car, env):
         track['show_collision_mark'] = False
 
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         The target frame rate is set high to give an interesting display of the
         time-series tail. The car loses speed from each wall collision.
         Acceleration (set high) to the left (negative).
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
 
         
@@ -339,7 +343,7 @@ def modify( car, env):
         env['CR'] = 0.7
         
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         Acceleration is to the right (opposite direction from other examples).
         ||
         A collision mark (0) is displayed at the original collision
@@ -347,7 +351,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop      
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     elif cl['example_index'] == 6:
@@ -356,7 +360,7 @@ def modify( car, env):
         env['m_to_px'] = 30.0
         
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         The scaling factor between the physics engine and the renderer has
         decreased from the level used in example 5. This effectively zooms out
         the view of the track and the car on it. The output from the physics
@@ -365,7 +369,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)   
 
     elif cl['example_index'] == 7:
@@ -375,7 +379,7 @@ def modify( car, env):
         track['show_start_mark'] = True
         
         print_header(car)
-        explaination = '''
+        explanation = '''
         The CR value of unity yields elastic collisions. The frame rate is set
         high to give the highest precision in the physics predictions. Note
         the car consistently returns to the initial starting point as marked by
@@ -383,7 +387,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop    
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     elif cl['example_index'] == 8:
@@ -393,7 +397,7 @@ def modify( car, env):
         track['show_start_mark'] = True
         
         print_header(car)
-        explaination = '''
+        explanation = '''
         This is like the previous example (7), except the target frame rate is
         reduced to give the lower precision in the physics predictions.
         Note the car does NOT return to the initial starting point (as marked
@@ -406,7 +410,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     elif cl['example_index'] == 9:
@@ -417,7 +421,7 @@ def modify( car, env):
         track['show_start_mark'] = True
         
         print_header(car)
-        explaination = '''
+        explanation = '''
         The observed dt is used in the subsequent frame to calculate the
         physics engine motions. All other settings are identical to those in
         example 8. Note the car, again, does NOT return to the initial starting
@@ -426,7 +430,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop    
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     elif cl['example_index'] == 10:
@@ -437,7 +441,7 @@ def modify( car, env):
         env['exact_solution'] = True
         
         print_header(car)
-        explaination = '''
+        explanation = '''
         The Euler-method calculation has been replaced with an exact
         calculation method in this example. The calculation uses physics
         kinematics equations to model the motion between the ends of the track
@@ -447,7 +451,7 @@ def modify( car, env):
         ||
         p key: pause or resume  /  x key: stop   
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     elif cl['example_index'] == 11:
@@ -459,14 +463,14 @@ def modify( car, env):
         env['use_observed_dt'] = True
         
         print_header(car)
-        explaination = '''
+        explanation = '''
         The observed dt is used in the calculations of subsequent frames. Note
         that in contrast to example 9, the car consistently returns to the
         initial starting point.
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     elif cl['example_index'] == 12:
@@ -478,24 +482,24 @@ def modify( car, env):
         env['use_observed_dt'] = True
         
         print_header(car)
-        explaination = '''
+        explanation = '''
         Same as example 11 but with a CR of less than 1.0.
         ||
         p key: pause or resume  /  x key: stop    
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)        
         
     else:
         cl['example_index'] = "--> Defaults"
         print_header(car)
-        explaination = ''' 
+        explanation = ''' 
         No command line arguments were supplied or there was no
         match for the mode value. Default parameters will be used.
         ||
         p key: pause or resume  /  x key: stop
         '''
-        pretty_paragraphs( explaination, 1) 
+        pretty_paragraphs( explanation, 1) 
         try_sleep(3.0)
         
 def at_rest( car):
@@ -521,22 +525,22 @@ def cl_args_init():
 def check_pause_orDone():
     for event in pygame.event.get():
         if (event.type == pygame.QUIT): 
-            print 'Stopped by closing pygame window.'
+            print('Stopped by closing pygame window.')
             user['done'] = True
         elif (event.type == pygame.KEYDOWN):
             if ((event.key == K_ESCAPE) or (event.key == K_x)):
-                print 'Stopped with escape key or x key.'
+                print('Stopped with escape key or x key.')
                 user['done'] = True
             elif (event.key == K_p):
                 user['paused'] = not user['paused']
             elif (event.key == K_s):
                 keys = pygame.key.get_pressed()
-                if (keys[pygame.K_LCTRL] or keys[pygame.K_LCTRL]):
+                if (keys[K_LCTRL] or keys[K_RCTRL]):
                     user['paused'] = not user['paused']
             elif (event.key == K_c):
                 keys = pygame.key.get_pressed()
-                if (keys[pygame.K_LCTRL] or keys[pygame.K_LCTRL]):
-                    print 'Stopped with ctrl-c.'
+                if (keys[K_LCTRL] or keys[K_RCTRL]):
+                    print('Stopped with ctrl-c.')
                     user['done'] = True
     
 def main():  
@@ -544,7 +548,7 @@ def main():
     
     # This pygame window is only used here to facilitate the event handling features of pygame.
     pygame.init()
-    display_surface = pygame.display.set_mode((100, 1))
+    display_surface = pygame.display.set_mode((300, 20))
     
     # A list to support calculating a running average of the position.
     x_list = []
@@ -615,11 +619,11 @@ def main():
             # Note: this exception will only fire if the main command window has the focus. So if using
             # the pygame events (and it's window) you must click in the main command window before
             # issuing the ctrl-c.
-            print "Stopped by keyboard (ctrl-c)."
+            print("Stopped by keyboard (ctrl-c).")
             break
         
         except:
-            print "There is a problem in the TRY block above: \n"
+            print("There is a problem in the TRY block above: \n")
             # The following "raise" will print out the traceback.
             raise
             break

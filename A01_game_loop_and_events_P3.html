@@ -7,8 +7,7 @@ Licensed under the BSD license, see LICENSE for details.
 -->
 <html>
 <head>
-  <link rel='canonical' href='https://pet.triquence.org/A01_game_loop_and_events.html' />
-  <title>A01_game_loop_and_events</title>
+  <title></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style type="text/css">
 /*
@@ -110,12 +109,13 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="c1"># Filename: A01_game_loop_and_events.py</span>
+<span class="c1"># Written by: James D. Miller</span>
 
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 
 <span class="c1"># PyGame Constants</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">K_ESCAPE</span><span class="p">,</span> <span class="n">K_e</span><span class="p">,</span> <span class="n">K_f</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pygame.color</span> <span class="kn">import</span> <span class="n">THECOLORS</span>
 
 <span class="c1"># Initialize the Pygame environment.</span>
@@ -140,7 +140,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
 <span class="k">while</span> <span class="ow">not</span> <span class="n">user_done</span><span class="p">:</span>
 
-    <span class="n">dt_s</span> <span class="o">=</span> <span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span> <span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>
+    <span class="n">dt_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span> <span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
+    <span class="c1">#myclock.tick(framerate_limit)</span>
     
     <span class="c1">#=====================================================</span>
     <span class="c1"># Get user input</span>
@@ -203,8 +204,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="c1"># Determine the color for the circle based on if a mouse button is up (U) or down (D).</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">mouse_button_UD</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mouse_button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)):</span>
         <span class="n">circle_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow&quot;</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="p">((</span><span class="n">mouse_button_UD</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mouse_button</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)):</span>
-        <span class="n">circle_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;magenta&quot;</span><span class="p">]</span>
     <span class="k">elif</span> <span class="p">((</span><span class="n">mouse_button_UD</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mouse_button</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)):</span>
         <span class="n">circle_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
@@ -217,7 +216,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="n">time_s</span> <span class="o">+=</span> <span class="n">dt_s</span>
     
     <span class="c1"># Print to the command window.</span>
-    <span class="nb">print</span><span class="p">(</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_s</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dt_s</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">myclock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">{:-.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">time_s</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:-.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">dt_s</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:-.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">myclock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">()))</span>
     
     <span class="c1"># If the &quot;f&quot; key is up (not Down), update the entire display window. </span>
     <span class="k">if</span> <span class="p">(</span><span class="n">key_f</span> <span class="o">!=</span> <span class="s1">&#39;D&#39;</span><span class="p">):</span>

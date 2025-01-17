@@ -107,8 +107,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A02_air_track_framework.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Filename: A02_air_track_framework.py</span>
 
 <span class="c1"># Python</span>
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
@@ -116,13 +117,13 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="c1"># PyGame Constants</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="n">K_ESCAPE</span><span class="p">,</span> <span class="n">K_1</span><span class="p">,</span> <span class="n">K_2</span><span class="p">,</span> <span class="n">K_3</span><span class="p">,</span> <span class="n">K_4</span><span class="p">,</span> <span class="n">K_5</span>
 <span class="kn">from</span> <span class="nn">pygame.color</span> <span class="kn">import</span> <span class="n">THECOLORS</span>
 
 <span class="c1">#=====================================================================</span>
 <span class="c1"># Classes</span>
 <span class="c1">#=====================================================================</span>
-        
+
 <span class="k">class</span> <span class="nc">GameWindow</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen_tuple_px</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width_px</span> <span class="o">=</span> <span class="n">screen_tuple_px</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -176,7 +177,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         
         <span class="c1"># Draw the main rectangle.</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
-            
+
         
 <span class="k">class</span> <span class="nc">AirTrack</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -188,48 +189,60 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">car</span><span class="o">.</span><span class="n">center_m</span> <span class="o">=</span> <span class="n">car</span><span class="o">.</span><span class="n">center_m</span> <span class="o">+</span> <span class="p">(</span><span class="n">car</span><span class="o">.</span><span class="n">speed_mps</span> <span class="o">*</span> <span class="n">dt_s</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">make_some_cars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nmode</span><span class="p">):</span>
-        <span class="c1"># Update the caption at the top of the pygame window frame.</span>
-        <span class="n">game_window</span><span class="o">.</span><span class="n">update_caption</span><span class="p">(</span><span class="s2">&quot;Air Track (basic): Demo #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span> 
+        <span class="c1"># Clear out any existing cars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cars</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># Create a filtered list of vibrant colors</span>
+        <span class="n">vibrant_colors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">color_name</span><span class="p">,</span> <span class="n">color_value</span> <span class="ow">in</span> <span class="n">THECOLORS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Skip colors that are too close to gray</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">color_value</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># Get RGB values</span>
+            <span class="c1"># Skip if all RGB values are too close together (indicates grayscale)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">g</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">g</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">):</span>
+                <span class="n">vibrant_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">color_value</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="p">(</span><span class="n">nmode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;red&quot;</span> <span class="p">],</span> <span class="n">left_px</span> <span class="o">=</span> <span class="mi">240</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span>  <span class="mf">0.2</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">],</span> <span class="n">left_px</span> <span class="o">=</span> <span class="mi">240</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span>  <span class="mf">0.2</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">],</span> <span class="n">left_px</span> <span class="o">=</span> <span class="mi">340</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">))</span>
-        
+            
         <span class="k">elif</span> <span class="p">(</span><span class="n">nmode</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow&quot;</span> <span class="p">],</span> <span class="n">left_px</span> <span class="o">=</span> <span class="mi">240</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow&quot;</span><span class="p">],</span> <span class="n">left_px</span> <span class="o">=</span> <span class="mi">240</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">],</span>   <span class="n">left_px</span> <span class="o">=</span> <span class="mi">440</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">))</span>
             
         <span class="k">elif</span> <span class="p">(</span><span class="n">nmode</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
             <span class="n">n_colors</span> <span class="o">=</span> <span class="mi">20</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">eachColor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="n">eachColor</span><span class="p">],</span> <span class="n">width_px</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">left_px</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span><span class="mf">0.05</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">n_colors</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">)</span>
-                <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">n_colors</span><span class="p">:</span> <span class="k">break</span>                    
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">n_colors</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vibrant_colors</span><span class="p">))):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">vibrant_colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">width_px</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">left_px</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> 
+                                       <span class="n">speed_mps</span><span class="o">=</span><span class="mf">0.05</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">n_colors</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">)</span>
             
         <span class="k">elif</span> <span class="p">(</span><span class="n">nmode</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
             <span class="n">n_colors</span> <span class="o">=</span> <span class="mi">180</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">eachColor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="n">eachColor</span><span class="p">],</span> <span class="n">width_px</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">left_px</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span><span class="mf">0.01</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">n_colors</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">)</span>
-                <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">n_colors</span><span class="p">:</span> <span class="k">break</span>  
-                
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">n_colors</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vibrant_colors</span><span class="p">))):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">vibrant_colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">width_px</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">left_px</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> 
+                                       <span class="n">speed_mps</span><span class="o">=</span><span class="mf">0.01</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">n_colors</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">)</span>
+            
         <span class="k">elif</span> <span class="p">(</span><span class="n">nmode</span> <span class="o">==</span> <span class="mi">5</span><span class="p">):</span>
             <span class="n">n_colors</span> <span class="o">=</span> <span class="mi">300</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">eachColor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="n">eachColor</span><span class="p">],</span> <span class="n">width_px</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">left_px</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">speed_mps</span><span class="o">=</span><span class="mf">0.01</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">n_colors</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">)</span>
-                <span class="k">if</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="n">n_colors</span><span class="p">:</span> <span class="k">break</span>                    
-            
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">n_colors</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vibrant_colors</span><span class="p">))):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Detroit</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">vibrant_colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">width_px</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">left_px</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> 
+                                       <span class="n">speed_mps</span><span class="o">=</span><span class="mf">0.01</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">n_colors</span><span class="o">/</span><span class="mf">2.0</span><span class="p">))</span> <span class="p">)</span>
+        
+        <span class="c1"># Update the caption at the top of the pygame window frame.</span>
+        <span class="n">game_window</span><span class="o">.</span><span class="n">update_caption</span><span class="p">(</span><span class="s2">&quot;Air Track (basic): Demo #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nmode</span><span class="p">))</span> 
+
 
 <span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length_px</span><span class="p">,</span> <span class="n">length_m</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">=</span> <span class="n">length_m</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">length_px</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">length_px</span><span class="p">)</span><span class="o">/</span><span class="n">length_m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">=</span> <span class="n">length_m</span><span class="o">/</span><span class="n">length_px</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span> <span class="o">=</span> <span class="n">length_px</span><span class="o">/</span><span class="n">length_m</span>
     
     <span class="c1"># Convert from meters to pixels</span>
     <span class="k">def</span> <span class="nf">px_from_m</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_m</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">dx_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">dx_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_to_px</span><span class="p">)</span>
     
     <span class="c1"># Convert from pixels to meters</span>
     <span class="k">def</span> <span class="nf">m_from_px</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx_px</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">dx_px</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span>
+        <span class="k">return</span> <span class="n">dx_px</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">px_to_m</span>
         
     <span class="k">def</span> <span class="nf">get_local_user_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
@@ -262,7 +275,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygame</span><span class="o">.</span><span class="n">MOUSEBUTTONUP</span><span class="p">):</span>
                 <span class="k">pass</span>
                 
-        
 <span class="c1">#============================================================</span>
 <span class="c1"># Main procedural functions.</span>
 <span class="c1">#============================================================</span>
@@ -306,12 +318,12 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">])</span>
 
         <span class="c1"># Get the delta t for one frame (this changes depending on system load).</span>
-        <span class="n">dt_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
+        <span class="n">dt_s</span> <span class="o">=</span> <span class="n">myclock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>
         
         <span class="c1"># Check for user initiated stop or demo change.</span>
         <span class="n">resetmode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_local_user_input</span><span class="p">()</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">resetmode</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">]):</span>
-            <span class="nb">print</span> <span class="s2">&quot;reset mode =&quot;</span><span class="p">,</span> <span class="n">resetmode</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reset mode =&quot;</span><span class="p">,</span> <span class="n">resetmode</span><span class="p">)</span>
             
             <span class="c1"># This should remove all references to the cars and effectively deletes them.</span>
             <span class="n">air_track</span><span class="o">.</span><span class="n">cars</span> <span class="o">=</span> <span class="p">[]</span>
@@ -326,7 +338,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">user_done</span> <span class="o">=</span> <span class="kc">True</span>
             
         <span class="k">elif</span> <span class="p">(</span><span class="n">resetmode</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="nb">print</span> <span class="n">resetmode</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">resetmode</span><span class="p">)</span>
         
         <span class="c1"># Update speed and x position of each car based on the dt_s for this frame.</span>
         <span class="k">for</span> <span class="n">car</span> <span class="ow">in</span> <span class="n">air_track</span><span class="o">.</span><span class="n">cars</span><span class="p">:</span>

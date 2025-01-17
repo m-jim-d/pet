@@ -1,5 +1,6 @@
+#!/usr/bin/env python3
+
 # Filename: A02_air_track_framework.py
-# Written by: James D. Miller
 
 # Python
 import sys, os
@@ -7,13 +8,13 @@ import pygame
 import datetime
 
 # PyGame Constants
-from pygame.locals import *
+from pygame.locals import K_ESCAPE, K_1, K_2, K_3, K_4, K_5
 from pygame.color import THECOLORS
 
 #=====================================================================
 # Classes
 #=====================================================================
-        
+
 class GameWindow:
     def __init__(self, screen_tuple_px):
         self.width_px = screen_tuple_px[0]
@@ -67,7 +68,7 @@ class Detroit:
         
         # Draw the main rectangle.
         pygame.draw.rect(game_window.surface, self.color, self.rect)
-            
+
         
 class AirTrack:
     def __init__(self):
@@ -79,48 +80,60 @@ class AirTrack:
         car.center_m = car.center_m + (car.speed_mps * dt_s)
         
     def make_some_cars(self, nmode):
-        # Update the caption at the top of the pygame window frame.
-        game_window.update_caption("Air Track (basic): Demo #" + str(nmode)) 
+        # Clear out any existing cars
+        self.cars = []
+        
+        # Create a filtered list of vibrant colors
+        vibrant_colors = []
+        for color_name, color_value in THECOLORS.items():
+            # Skip colors that are too close to gray
+            r, g, b = color_value[:3]  # Get RGB values
+            # Skip if all RGB values are too close together (indicates grayscale)
+            if not (abs(r - g) < 30 and abs(g - b) < 30 and abs(r - b) < 30):
+                vibrant_colors.append(color_value)
         
         if (nmode == 1):
-            self.cars.append( Detroit(color=THECOLORS["red" ], left_px = 240, speed_mps=  0.2))
+            self.cars.append( Detroit(color=THECOLORS["red"], left_px = 240, speed_mps=  0.2))
             self.cars.append( Detroit(color=THECOLORS["blue"], left_px = 340, speed_mps= -0.2))
-        
+            
         elif (nmode == 2):
-            self.cars.append( Detroit(color=THECOLORS["yellow" ], left_px = 240, speed_mps= -0.1))
+            self.cars.append( Detroit(color=THECOLORS["yellow"], left_px = 240, speed_mps= -0.1))
             self.cars.append( Detroit(color=THECOLORS["green"],   left_px = 440, speed_mps= -0.2))
             
         elif (nmode == 3):
             n_colors = 20
-            for j, eachColor in enumerate(THECOLORS):
-                self.cars.append( Detroit(color=THECOLORS[eachColor], width_px=15, left_px=450, speed_mps=0.05*(j-n_colors/2.0)) )
-                if j > n_colors: break                    
+            for j in range(min(n_colors, len(vibrant_colors))):
+                self.cars.append( Detroit(color=vibrant_colors[j], width_px=15, left_px=450, 
+                                       speed_mps=0.05*(j-n_colors/2.0)) )
             
         elif (nmode == 4):
             n_colors = 180
-            for j, eachColor in enumerate(THECOLORS):
-                self.cars.append( Detroit(color=THECOLORS[eachColor], width_px=15, left_px=450, speed_mps=0.01*(j-n_colors/2.0)) )
-                if j > n_colors: break  
-                
+            for j in range(min(n_colors, len(vibrant_colors))):
+                self.cars.append( Detroit(color=vibrant_colors[j], width_px=15, left_px=450, 
+                                       speed_mps=0.01*(j-n_colors/2.0)) )
+            
         elif (nmode == 5):
             n_colors = 300
-            for j, eachColor in enumerate(THECOLORS):
-                self.cars.append( Detroit(color=THECOLORS[eachColor], width_px=15, left_px=450, speed_mps=0.01*(j-n_colors/2.0)) )
-                if j > n_colors: break                    
-            
+            for j in range(min(n_colors, len(vibrant_colors))):
+                self.cars.append( Detroit(color=vibrant_colors[j], width_px=15, left_px=450, 
+                                       speed_mps=0.01*(j-n_colors/2.0)) )
+        
+        # Update the caption at the top of the pygame window frame.
+        game_window.update_caption("Air Track (basic): Demo #" + str(nmode)) 
+
 
 class Environment:
     def __init__(self, length_px, length_m):
-        self.px_to_m = length_m/float(length_px)
-        self.m_to_px = (float(length_px)/length_m)
+        self.px_to_m = length_m/length_px
+        self.m_to_px = length_px/length_m
     
     # Convert from meters to pixels
     def px_from_m(self, dx_m):
-        return int(round(dx_m * self.m_to_px))
+        return round(dx_m * self.m_to_px)
     
     # Convert from pixels to meters
     def m_from_px(self, dx_px):
-        return float(dx_px) * self.px_to_m
+        return dx_px * self.px_to_m
         
     def get_local_user_input(self):
         
@@ -153,7 +166,6 @@ class Environment:
             elif (event.type == pygame.MOUSEBUTTONUP):
                 pass
                 
-        
 #============================================================
 # Main procedural functions.
 #============================================================
@@ -197,12 +209,12 @@ def main():
         game_window.surface.fill(THECOLORS["black"])
 
         # Get the delta t for one frame (this changes depending on system load).
-        dt_s = float(myclock.tick(framerate_limit) * 1e-3)
+        dt_s = myclock.tick(framerate_limit) * 1e-3
         
         # Check for user initiated stop or demo change.
         resetmode = env.get_local_user_input()
         if (resetmode in [0,1,2,3,4,5,6,7,8,9]):
-            print "reset mode =", resetmode
+            print("reset mode =", resetmode)
             
             # This should remove all references to the cars and effectively deletes them.
             air_track.cars = []
@@ -217,7 +229,7 @@ def main():
             user_done = True
             
         elif (resetmode != None):
-            print resetmode
+            print(resetmode)
         
         # Update speed and x position of each car based on the dt_s for this frame.
         for car in air_track.cars:

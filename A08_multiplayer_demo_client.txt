@@ -1,55 +1,24 @@
+#!/usr/bin/env python3
+
 # Filename: A08_multiplayer_demo_client.py
-# Written by: James D. Miller
 
 import sys, os
 import pygame
 
 # PyGame Constants
-from pygame.locals import *
+from pygame.locals import (
+    K_ESCAPE,
+    K_c, K_1, K_2, K_3,
+    K_a, K_s, K_d, K_w,
+    K_j, K_k, K_l, K_i, K_SPACE,
+    K_LSHIFT, K_t
+)
 from pygame.color import THECOLORS
 
-# Network stuff. Note "connection" is a single instantiation.
-from PodSixNet.Connection import connection, ConnectionListener
-
-# Argument parsing...
 import argparse
 
-#=======================================================================
-# Classes       
-#=======================================================================
-
-class NetworkListener(ConnectionListener):
-    def __init__(self, (host, port)):
-        self.Connect((host, port))
-
-        self.client_colors = {'C1': THECOLORS["green"],  'C2': THECOLORS["tan"],'C3': THECOLORS["black"],'C4': THECOLORS["blue"],
-                              'C5': THECOLORS["pink"],   'C6': THECOLORS["red"],'C7': THECOLORS["coral"],'C8': THECOLORS["orangered1"],
-                              'C9': THECOLORS["grey80"],'C10': THECOLORS["rosybrown3"]}
-        
-        self.background_color = THECOLORS["white"]
-        self.client_name = 'C0'
-        self.client_color = THECOLORS["black"]
-        
-    def Network_hello(self, data):
-        global Player_ID, user_state
-        print "Network_hello:", data
-        
-        Player_ID = data['P_ID']
-        self.client_name = 'C' + str(Player_ID)
-        
-        self.background_color = THECOLORS["yellow"]
-        self.client_color = self.client_colors[self.client_name]
-        
-        # Initialize user state dictionary.
-        user_state = {'action': 'CN',
-                      'ID': Player_ID,
-                      'mouseXY':(0,0), 'mouseB1':'U',
-                      'a':'U', 's':'U',
-                      'd':'U', 'w':'U'}
-        
-        pygame.display.set_caption("Client: GamePad #" + str(Player_ID)) 
-        
-        
+from A08_network import GameClient, RunningAvg, setClientColors
+             
 #=======================================================================
 # Functions       
 #=======================================================================
@@ -57,10 +26,7 @@ class NetworkListener(ConnectionListener):
 def signoff(user_state):
     sys.exit()
     
-def checkforUserInput(user_state):
-    
-    # Check the button status.
-    (button1, button2, button3) = pygame.mouse.get_pressed()    
+def checkForUserInput(user_state):
     
     # Get all the events since the last call to get().
     for event in pygame.event.get():
@@ -70,11 +36,8 @@ def checkforUserInput(user_state):
             if (event.key == K_ESCAPE):
                 signoff(user_state)
             
-            elif (event.key==K_c):
-                client_display.fill(THECOLORS["blue"])  
-            
             elif (event.key==K_1):            
-                return 1           
+                return 1
             elif (event.key==K_2):                          
                 return 2
             elif (event.key==K_3):
@@ -109,71 +72,60 @@ def checkforUserInput(user_state):
         user_state['mouseXY'] = pygame.mouse.get_pos()
 
 #=======================================================================
-# Main program statements       
+# Main program
 #=======================================================================
 
-pygame.init()
+def main():
+    pygame.init()
 
-client_display = pygame.display.set_mode((600,400))
+    background_color = THECOLORS["yellow"] 
+    client_colors = setClientColors()
 
-# Instantiate clock to help control the framerate.
-client_clock = pygame.time.Clock()
+    client_display = pygame.display.set_mode((600,400))
 
-# Background color of the game pad.   
-client_display.fill(THECOLORS["grey"])
+    # Instantiate clock to control the framerate.
+    client_clock = pygame.time.Clock()
 
-# Font object for rendering text onto display surface.
-fnt = pygame.font.SysFont("Arial", 14)
+    # background color of the game pad   
+    client_display.fill( background_color)
 
-Player_ID = 0
-
-parser = argparse.ArgumentParser(description='Input client parameters.')
-# Example IP address used here; edit this line.
-parser.add_argument('serverIP', type=str, nargs='?', default="138.236.65.69")
-args = parser.parse_args()
-print "args:", args.serverIP
-
-# Initialize the state dictionary
-user_state = {}
-
-# Note, the connection can take place in the NetworkListener or here.
-# This "connection" is an instatiation of the EndPoint class that is done in the Connection.py file.
-# Note, if you do this here, you have to call the "DoConnect" method, not the "Connect" method that 
-# is indicated on the web site.
-#connection.DoConnect((args.serverIP, 4330))
-
-network_listener = NetworkListener((args.serverIP, 4330))
-
-framerate_limit = 100
-flip_timer = 0.0
-
-while True:
+    parser = argparse.ArgumentParser( description='Input client parameters.')
+    # Example IP address used here; edit this line.
+    parser.add_argument('serverIP', type=str, nargs='?', default="192.168.1.106")
+    args = parser.parse_args()
+    print("args:", args.serverIP)
+                                  
+    client = GameClient( host=args.serverIP, port=5000)
+    client.connect()
     
-    dt_s = float(client_clock.tick(framerate_limit) * 1e-3)
-    #client_clock.tick(framerate_limit)
-    
-    connection.Pump()
-    network_listener.Pump()    
-    
-    checkforUserInput(user_state)
-    if Player_ID != 0:
-        #print "user_state", user_state
-        connection.Send(user_state)
-    
-    flip_timer += dt_s
-    if (flip_timer > 0.2):
-        # Background
-        client_display.fill( network_listener.background_color)
+    pygame.display.set_caption(f"CLIENT {client.client_name} : send mouse and keyboard state")
+
+    # Initialize user state dictionary.
+    user_state = {'ID': client.id, 'mouseXY':(0,0), 'mouseB1':'U',
+                  'a':'U', 's':'U', 'd':'U', 'w':'U'}
+
+    framerate_limit = 120
+    fr_avg = RunningAvg(100, pygame)
+
+    while True:
+        dt_s = client_clock.tick(framerate_limit) * 1e-3
         
-        # Small rectangle to illustrate the client color that will appear on the server screen.
-        pygame.draw.rect(client_display, network_listener.client_color, pygame.Rect(50, 50, 60, 20), 3)
+        checkForUserInput( user_state)
         
-        # Small background rectangle for text
-        pygame.draw.rect(client_display, THECOLORS["black"], pygame.Rect(150, 50, 35, 20))
-        # Text to be displayed
-        fps_string = "%.0f" % client_clock.get_fps()
-        txt_surface = fnt.render(fps_string, True, THECOLORS["white"])
-        client_display.blit(txt_surface, [158, 51])
-    
+        client.send_state( user_state)
+        
+        # background
+        client_display.fill( background_color)
+        
+        fr_avg.update( client_clock.get_fps())
+        fr_avg.draw( client_display, 150, 50)
+        
+        if client.running:
+            # Small rectangle to illustrate the client color that will appear on the server screen.
+            pygame.draw.rect( client_display, client_colors[client.client_name], pygame.Rect(50, 50, 60, 20), 5)
+            
         pygame.display.flip()
-        flip_timer = 0.0
+    
+    
+if __name__ == "__main__":
+    main() 

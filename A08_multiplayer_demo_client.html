@@ -107,58 +107,27 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A08_multiplayer_demo_client.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Filename: A08_multiplayer_demo_client.py</span>
 
 <span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pygame</span>
 
 <span class="c1"># PyGame Constants</span>
-<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">K_ESCAPE</span><span class="p">,</span>
+    <span class="n">K_c</span><span class="p">,</span> <span class="n">K_1</span><span class="p">,</span> <span class="n">K_2</span><span class="p">,</span> <span class="n">K_3</span><span class="p">,</span>
+    <span class="n">K_a</span><span class="p">,</span> <span class="n">K_s</span><span class="p">,</span> <span class="n">K_d</span><span class="p">,</span> <span class="n">K_w</span><span class="p">,</span>
+    <span class="n">K_j</span><span class="p">,</span> <span class="n">K_k</span><span class="p">,</span> <span class="n">K_l</span><span class="p">,</span> <span class="n">K_i</span><span class="p">,</span> <span class="n">K_SPACE</span><span class="p">,</span>
+    <span class="n">K_LSHIFT</span><span class="p">,</span> <span class="n">K_t</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pygame.color</span> <span class="kn">import</span> <span class="n">THECOLORS</span>
 
-<span class="c1"># Network stuff. Note &quot;connection&quot; is a single instantiation.</span>
-<span class="kn">from</span> <span class="nn">PodSixNet.Connection</span> <span class="kn">import</span> <span class="n">connection</span><span class="p">,</span> <span class="n">ConnectionListener</span>
-
-<span class="c1"># Argument parsing...</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 
-<span class="c1">#=======================================================================</span>
-<span class="c1"># Classes       </span>
-<span class="c1">#=======================================================================</span>
-
-<span class="k">class</span> <span class="nc">NetworkListener</span><span class="p">(</span><span class="n">ConnectionListener</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Connect</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;C1&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">],</span>  <span class="s1">&#39;C2&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;tan&quot;</span><span class="p">],</span><span class="s1">&#39;C3&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">],</span><span class="s1">&#39;C4&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">],</span>
-                              <span class="s1">&#39;C5&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;pink&quot;</span><span class="p">],</span>   <span class="s1">&#39;C6&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">],</span><span class="s1">&#39;C7&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;coral&quot;</span><span class="p">],</span><span class="s1">&#39;C8&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;orangered1&quot;</span><span class="p">],</span>
-                              <span class="s1">&#39;C9&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;grey80&quot;</span><span class="p">],</span><span class="s1">&#39;C10&#39;</span><span class="p">:</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;rosybrown3&quot;</span><span class="p">]}</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;white&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_name</span> <span class="o">=</span> <span class="s1">&#39;C0&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">]</span>
-        
-    <span class="k">def</span> <span class="nf">Network_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">global</span> <span class="n">Player_ID</span><span class="p">,</span> <span class="n">user_state</span>
-        <span class="nb">print</span> <span class="s2">&quot;Network_hello:&quot;</span><span class="p">,</span> <span class="n">data</span>
-        
-        <span class="n">Player_ID</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;P_ID&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_name</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Player_ID</span><span class="p">)</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client_color</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_colors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">client_name</span><span class="p">]</span>
-        
-        <span class="c1"># Initialize user state dictionary.</span>
-        <span class="n">user_state</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;CN&#39;</span><span class="p">,</span>
-                      <span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="n">Player_ID</span><span class="p">,</span>
-                      <span class="s1">&#39;mouseXY&#39;</span><span class="p">:(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;mouseB1&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span>
-                      <span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span>
-                      <span class="s1">&#39;d&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">}</span>
-        
-        <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Client: GamePad #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Player_ID</span><span class="p">))</span> 
-        
-        
+<span class="kn">from</span> <span class="nn">A08_network</span> <span class="kn">import</span> <span class="n">GameClient</span><span class="p">,</span> <span class="n">RunningAvg</span><span class="p">,</span> <span class="n">setClientColors</span>
+             
 <span class="c1">#=======================================================================</span>
 <span class="c1"># Functions       </span>
 <span class="c1">#=======================================================================</span>
@@ -166,10 +135,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="k">def</span> <span class="nf">signoff</span><span class="p">(</span><span class="n">user_state</span><span class="p">):</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     
-<span class="k">def</span> <span class="nf">checkforUserInput</span><span class="p">(</span><span class="n">user_state</span><span class="p">):</span>
-    
-    <span class="c1"># Check the button status.</span>
-    <span class="p">(</span><span class="n">button1</span><span class="p">,</span> <span class="n">button2</span><span class="p">,</span> <span class="n">button3</span><span class="p">)</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>    
+<span class="k">def</span> <span class="nf">checkForUserInput</span><span class="p">(</span><span class="n">user_state</span><span class="p">):</span>
     
     <span class="c1"># Get all the events since the last call to get().</span>
     <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
@@ -179,11 +145,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">):</span>
                 <span class="n">signoff</span><span class="p">(</span><span class="n">user_state</span><span class="p">)</span>
             
-            <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_c</span><span class="p">):</span>
-                <span class="n">client_display</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">])</span>  
-            
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_1</span><span class="p">):</span>            
-                <span class="k">return</span> <span class="mi">1</span>           
+                <span class="k">return</span> <span class="mi">1</span>
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_2</span><span class="p">):</span>                          
                 <span class="k">return</span> <span class="mi">2</span>
             <span class="k">elif</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="o">==</span><span class="n">K_3</span><span class="p">):</span>
@@ -218,74 +181,63 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">user_state</span><span class="p">[</span><span class="s1">&#39;mouseXY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
 
 <span class="c1">#=======================================================================</span>
-<span class="c1"># Main program statements       </span>
+<span class="c1"># Main program</span>
 <span class="c1">#=======================================================================</span>
 
-<span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
-<span class="n">client_display</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span><span class="mi">400</span><span class="p">))</span>
+    <span class="n">background_color</span> <span class="o">=</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow&quot;</span><span class="p">]</span> 
+    <span class="n">client_colors</span> <span class="o">=</span> <span class="n">setClientColors</span><span class="p">()</span>
 
-<span class="c1"># Instantiate clock to help control the framerate.</span>
-<span class="n">client_clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+    <span class="n">client_display</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="mi">600</span><span class="p">,</span><span class="mi">400</span><span class="p">))</span>
 
-<span class="c1"># Background color of the game pad.   </span>
-<span class="n">client_display</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;grey&quot;</span><span class="p">])</span>
+    <span class="c1"># Instantiate clock to control the framerate.</span>
+    <span class="n">client_clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
 
-<span class="c1"># Font object for rendering text onto display surface.</span>
-<span class="n">fnt</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">font</span><span class="o">.</span><span class="n">SysFont</span><span class="p">(</span><span class="s2">&quot;Arial&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+    <span class="c1"># background color of the game pad   </span>
+    <span class="n">client_display</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span> <span class="n">background_color</span><span class="p">)</span>
 
-<span class="n">Player_ID</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Input client parameters.&#39;</span><span class="p">)</span>
-<span class="c1"># Example IP address used here; edit this line.</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;serverIP&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;138.236.65.69&quot;</span><span class="p">)</span>
-<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-<span class="nb">print</span> <span class="s2">&quot;args:&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">serverIP</span>
-
-<span class="c1"># Initialize the state dictionary</span>
-<span class="n">user_state</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="c1"># Note, the connection can take place in the NetworkListener or here.</span>
-<span class="c1"># This &quot;connection&quot; is an instatiation of the EndPoint class that is done in the Connection.py file.</span>
-<span class="c1"># Note, if you do this here, you have to call the &quot;DoConnect&quot; method, not the &quot;Connect&quot; method that </span>
-<span class="c1"># is indicated on the web site.</span>
-<span class="c1">#connection.DoConnect((args.serverIP, 4330))</span>
-
-<span class="n">network_listener</span> <span class="o">=</span> <span class="n">NetworkListener</span><span class="p">((</span><span class="n">args</span><span class="o">.</span><span class="n">serverIP</span><span class="p">,</span> <span class="mi">4330</span><span class="p">))</span>
-
-<span class="n">framerate_limit</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">flip_timer</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Input client parameters.&#39;</span><span class="p">)</span>
+    <span class="c1"># Example IP address used here; edit this line.</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;serverIP&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;192.168.1.106&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;args:&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">serverIP</span><span class="p">)</span>
+                                  
+    <span class="n">client</span> <span class="o">=</span> <span class="n">GameClient</span><span class="p">(</span> <span class="n">host</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">serverIP</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
     
-    <span class="n">dt_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">client_clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
-    <span class="c1">#client_clock.tick(framerate_limit)</span>
-    
-    <span class="n">connection</span><span class="o">.</span><span class="n">Pump</span><span class="p">()</span>
-    <span class="n">network_listener</span><span class="o">.</span><span class="n">Pump</span><span class="p">()</span>    
-    
-    <span class="n">checkforUserInput</span><span class="p">(</span><span class="n">user_state</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">Player_ID</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="c1">#print &quot;user_state&quot;, user_state</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">Send</span><span class="p">(</span><span class="n">user_state</span><span class="p">)</span>
-    
-    <span class="n">flip_timer</span> <span class="o">+=</span> <span class="n">dt_s</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">flip_timer</span> <span class="o">&gt;</span> <span class="mf">0.2</span><span class="p">):</span>
-        <span class="c1"># Background</span>
-        <span class="n">client_display</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span> <span class="n">network_listener</span><span class="o">.</span><span class="n">background_color</span><span class="p">)</span>
+    <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CLIENT </span><span class="si">{</span><span class="n">client</span><span class="o">.</span><span class="n">client_name</span><span class="si">}</span><span class="s2"> : send mouse and keyboard state&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Initialize user state dictionary.</span>
+    <span class="n">user_state</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;mouseXY&#39;</span><span class="p">:(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;mouseB1&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;a&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">}</span>
+
+    <span class="n">framerate_limit</span> <span class="o">=</span> <span class="mi">120</span>
+    <span class="n">fr_avg</span> <span class="o">=</span> <span class="n">RunningAvg</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">pygame</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">dt_s</span> <span class="o">=</span> <span class="n">client_clock</span><span class="o">.</span><span class="n">tick</span><span class="p">(</span><span class="n">framerate_limit</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>
         
-        <span class="c1"># Small rectangle to illustrate the client color that will appear on the server screen.</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">client_display</span><span class="p">,</span> <span class="n">network_listener</span><span class="o">.</span><span class="n">client_color</span><span class="p">,</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">checkForUserInput</span><span class="p">(</span> <span class="n">user_state</span><span class="p">)</span>
         
-        <span class="c1"># Small background rectangle for text</span>
-        <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">client_display</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">],</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        <span class="c1"># Text to be displayed</span>
-        <span class="n">fps_string</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%.0f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">client_clock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">()</span>
-        <span class="n">txt_surface</span> <span class="o">=</span> <span class="n">fnt</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">fps_string</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;white&quot;</span><span class="p">])</span>
-        <span class="n">client_display</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span><span class="n">txt_surface</span><span class="p">,</span> <span class="p">[</span><span class="mi">158</span><span class="p">,</span> <span class="mi">51</span><span class="p">])</span>
-    
+        <span class="n">client</span><span class="o">.</span><span class="n">send_state</span><span class="p">(</span> <span class="n">user_state</span><span class="p">)</span>
+        
+        <span class="c1"># background</span>
+        <span class="n">client_display</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span> <span class="n">background_color</span><span class="p">)</span>
+        
+        <span class="n">fr_avg</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="n">client_clock</span><span class="o">.</span><span class="n">get_fps</span><span class="p">())</span>
+        <span class="n">fr_avg</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span> <span class="n">client_display</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+            <span class="c1"># Small rectangle to illustrate the client color that will appear on the server screen.</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span> <span class="n">client_display</span><span class="p">,</span> <span class="n">client_colors</span><span class="p">[</span><span class="n">client</span><span class="o">.</span><span class="n">client_name</span><span class="p">],</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+            
         <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
-        <span class="n">flip_timer</span> <span class="o">=</span> <span class="mf">0.0</span>
+    
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span> 
 </pre></div>
 </body>
 </html>

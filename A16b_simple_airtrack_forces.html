@@ -107,8 +107,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A16b_simple_airtrack_forces.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Filename: A16b_simple_airtrack_forces_P3.py</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Air Track with point forces...</span>
@@ -148,19 +149,16 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="c1"># Continue the query</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-<span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
 
+<span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screensize_tuple</span><span class="p">,</span> <span class="n">world</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>          <span class="o">=</span> <span class="mf">10.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span>        <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span>        <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset</span>        <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">screenSize</span>        <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="o">*</span><span class="n">screensize_tuple</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rMouseDown</span>        <span class="o">=</span> <span class="kc">False</span>
-        <span class="c1"># self.textLine           = 30</span>
-        <span class="c1"># self.font               = None</span>
-        <span class="c1"># self.fps                = 0      </span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -227,74 +225,59 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="bp">self</span><span class="o">.</span><span class="n">mouseWorld</span> <span class="o">=</span> <span class="n">p</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">p</span>
-            
-    <span class="k">def</span> <span class="nf">CheckKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check the keys that are evaluated on every main loop iteration.</span>
-<span class="sd">        I.e., they aren&#39;t just evaluated when first pressed down</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">pump</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">get_pressed</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Keys</span><span class="o">.</span><span class="n">K_LEFT</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">-=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">keys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Keys</span><span class="o">.</span><span class="n">K_RIGHT</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">+=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Keys</span><span class="o">.</span><span class="n">K_UP</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">keys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Keys</span><span class="o">.</span><span class="n">K_DOWN</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">keys</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Keys</span><span class="o">.</span><span class="n">K_HOME</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">=</span> <span class="mf">1.0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">)</span>
-        
+                    
     <span class="k">def</span> <span class="nf">Keyboard_Event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">down</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">global</span> <span class="n">apply_jet_1_TF</span><span class="p">,</span> <span class="n">apply_jet_2_TF</span>
         <span class="k">if</span> <span class="n">down</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">key</span><span class="o">==</span><span class="n">K_z</span><span class="p">:</span>       <span class="c1"># Zoom in</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_z</span><span class="p">:</span>       <span class="c1"># Zoom in</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">key</span><span class="o">==</span><span class="n">K_x</span><span class="p">:</span>     <span class="c1"># Zoom out</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_x</span><span class="p">:</span>     <span class="c1"># Zoom out</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+            
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_UP</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_DOWN</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_RIGHT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">-=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_LEFT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_HOME</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>    <span class="o">=</span> <span class="mf">10.0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span>  <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset</span>  <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_f</span><span class="p">:</span>
-                <span class="c1"># Toggle the force.</span>
-                <span class="n">apply_jet_1_TF</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">apply_jet_1_TF</span>
-                <span class="c1">#print &quot;applying force 1&quot;</span>
+                <span class="n">apply_jet_1_TF</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;applying force 1&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_g</span><span class="p">:</span>
-                <span class="c1"># Toggle the force.</span>
-                <span class="n">apply_jet_2_TF</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">apply_jet_2_TF</span>
-                <span class="c1">#print &quot;applying force 2&quot;</span>
+                <span class="n">apply_jet_2_TF</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;applying force 2&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">pass</span>
         <span class="c1"># If up</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_f</span><span class="p">:</span>
-                <span class="c1"># Toggle the force.</span>
-                <span class="n">apply_jet_1_TF</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">apply_jet_1_TF</span>
+                <span class="n">apply_jet_1_TF</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="n">K_g</span><span class="p">:</span>
-                <span class="c1"># Toggle the force.</span>
-                <span class="n">apply_jet_2_TF</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">apply_jet_2_TF</span>
+                <span class="n">apply_jet_2_TF</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">pass</span>
     
-    <span class="k">def</span> <span class="nf">checkEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">CheckEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check for pygame events (mainly keyboard/mouse events).</span>
 <span class="sd">        Passes the events onto the GUI also.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># print &quot;checkEvents&quot;</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
-            <span class="c1"># print &quot;event.type = &quot;, event.type</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span> <span class="ow">or</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_ESCAPE</span><span class="p">):</span>
-                <span class="nb">print</span> <span class="s2">&quot;early bailout&quot;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;early bailout&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">Keyboard_Event</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">down</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYUP</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">Keyboard_Event</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">down</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
-                <span class="c1">#print &quot;in MouseButtonDown block&quot;</span>
                 <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertScreenToWorld</span><span class="p">(</span><span class="o">*</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># left</span>
                    <span class="bp">self</span><span class="o">.</span><span class="n">MouseDown</span><span class="p">(</span> <span class="n">p</span> <span class="p">)</span>
@@ -304,7 +287,6 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                     <span class="bp">self</span><span class="o">.</span><span class="n">rMouseDown</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">*=</span> <span class="mf">1.1</span>
-                    <span class="c1">#print &quot;self.viewZoom&quot;, self.viewZoom</span>
                 <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">/=</span> <span class="mf">1.1</span>
             <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">MOUSEBUTTONUP</span><span class="p">:</span>
@@ -314,11 +296,10 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">MouseUp</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">MOUSEMOTION</span><span class="p">:</span>
-                
                 <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertScreenToWorld</span><span class="p">(</span><span class="o">*</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">MouseMove</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rMouseDown</span><span class="p">:</span>
-                    <span class="nb">print</span> <span class="s2">&quot;in mousemotion block&quot;</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">event</span><span class="o">.</span><span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="c1">#print(f&quot;mouse motion: position=({event.pos[0]:4d},{event.pos[1]:4d}), change=({event.rel[0]:3d},{event.rel[1]:3d})&quot;)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">viewCenter</span> <span class="o">-=</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">event</span><span class="o">.</span><span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">1.0</span><span class="p">)</span>    <span class="c1">#... it was /5.0</span>
 
         <span class="k">return</span> <span class="kc">True</span>
@@ -345,46 +326,42 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewOffset</span><span class="o">.</span><span class="n">y</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flipY</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screenSize</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>  <span class="c1"># return tuple of integers</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>  <span class="c1"># return tuple of integers</span>
 
-    <span class="k">def</span> <span class="nf">drawMouseJoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">DrawMouseJoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="p">:</span>
-            <span class="n">p1_screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="o">.</span><span class="n">anchorB</span><span class="p">)</span>  <span class="c1">#The point on the object converted to screen coordinates.</span>
-            <span class="n">p2_screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>   <span class="c1">#The current mouse position converted to screen coordinates.</span>
+            <span class="n">p1_screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="o">.</span><span class="n">anchorB</span><span class="p">)</span>  <span class="c1"># point on the object converted to screen coordinates</span>
+            <span class="n">p2_screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mouseJoint</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>   <span class="c1"># current mouse position converted to screen coordinates</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">DrawPoint</span><span class="p">(</span><span class="n">p1_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointSize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;mouse_point&#39;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">DrawPoint</span><span class="p">(</span><span class="n">p2_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointSize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;mouse_point&#39;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">DrawSegment</span><span class="p">(</span><span class="n">p1_screen</span><span class="p">,</span> <span class="n">p2_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;joint_line&#39;</span><span class="p">])</span>
             
-    <span class="k">def</span> <span class="nf">drawForcePoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forcePoint_2d_m</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">DrawForcePoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">forcePoint_2d_m</span><span class="p">):</span>
         <span class="n">forcePoint_screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span> <span class="n">forcePoint_2d_m</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">DrawPoint</span><span class="p">(</span> <span class="n">forcePoint_screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointSize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="s1">&#39;force_point&#39;</span><span class="p">])</span>
             
-<span class="k">class</span> <span class="nc">DrawToScreen</span><span class="p">:</span>
 
+<span class="k">class</span> <span class="nc">DrawToScreen</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">viewZoom</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span> <span class="o">=</span> <span class="n">viewZoom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">screen</span>
     
     <span class="k">def</span> <span class="nf">DrawPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw a single point at point p given a pixel size and color.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Draw a single point at point p given a pixel size and color.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">DrawCircle</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">drawwidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">DrawSegment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw the line segment from p1-p2 with the specified color.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Draw the line segment from p1-p2 with the specified color.</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">aaline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">bytes</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">DrawCircle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">drawwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw a wireframe circle given the center, radius, axis of orientation and color.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Draw a wireframe circle.</span>
         <span class="n">radius</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewZoom</span>
-        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> <span class="n">radius</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">radius</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="n">radius</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">radius</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
 
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">bytes</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">drawwidth</span><span class="p">)</span>
 
@@ -393,20 +370,20 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="c1"># Some functions</span>
 <span class="c1">#=================================================================================</span>
     
-<span class="k">def</span> <span class="nf">AddCar</span><span class="p">(</span><span class="n">theWorld</span><span class="p">,</span> <span class="n">bodies</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">my_restitution</span><span class="o">=</span><span class="mf">1.00</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">AddCar</span><span class="p">(</span><span class="n">theWorld</span><span class="p">,</span> <span class="n">bodies</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="mf">1.00</span><span class="p">,</span> <span class="n">angDamp</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
     
-    <span class="c1"># Create a dynamic body</span>
-    <span class="n">dynamic_body</span> <span class="o">=</span> <span class="n">theWorld</span><span class="o">.</span><span class="n">CreateDynamicBody</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">b2Vec2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">linearVelocity</span><span class="o">=</span><span class="n">b2Vec2</span><span class="p">(</span><span class="n">vx</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="c1"># Create a dynamic body.</span>
+    <span class="n">dynamic_body</span> <span class="o">=</span> <span class="n">theWorld</span><span class="o">.</span><span class="n">CreateDynamicBody</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="n">b2Vec2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">linearVelocity</span><span class="o">=</span><span class="n">b2Vec2</span><span class="p">(</span><span class="n">vx</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">angularDamping</span><span class="o">=</span><span class="n">angDamp</span><span class="p">)</span>
     
     <span class="c1"># Add to the bodies list</span>
     <span class="n">bodies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">dynamic_body</span><span class="p">)</span>
     
-    <span class="c1"># And add a box fixture onto it (with a nonzero density, so it will move)</span>
-    <span class="n">dynamic_body</span><span class="o">.</span><span class="n">CreatePolygonFixture</span><span class="p">(</span><span class="n">box</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">density</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">friction</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">restitution</span><span class="o">=</span><span class="n">my_restitution</span><span class="p">)</span>
+    <span class="c1"># And add a box fixture onto the body.</span>
+    <span class="n">dynamic_body</span><span class="o">.</span><span class="n">CreatePolygonFixture</span><span class="p">(</span><span class="n">box</span><span class="o">=</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">density</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">friction</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span> <span class="n">restitution</span><span class="o">=</span><span class="n">rest</span><span class="p">)</span>
 
     <span class="c1"># Note the area used in the mass calc will be area = (2 * w) * (2 * h)</span>
     <span class="c1"># Then mass = density * area</span>
-    <span class="nb">print</span> <span class="s2">&quot;Mass data:&quot;</span><span class="p">,</span> <span class="n">dynamic_body</span><span class="o">.</span><span class="n">mass</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mass data:&quot;</span><span class="p">,</span> <span class="n">dynamic_body</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span>
 
 <span class="c1">#=================================================================================</span>
 <span class="c1"># Main program</span>
@@ -420,18 +397,17 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="c1"># --- pygame setup ---</span>
 <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 <span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">((</span><span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
-<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Simple pygame example&#39;</span><span class="p">)</span>
+<span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Simple pybox2d example&#39;</span><span class="p">)</span>
 <span class="n">clock</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
 
 <span class="c1"># --- pybox2d world setup ---</span>
 <span class="c1"># Create the world</span>
 <span class="n">world</span> <span class="o">=</span> <span class="n">b2World</span><span class="p">(</span><span class="n">gravity</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">),</span> <span class="n">doSleep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># Initialize the environment object (kind of like my own framework).</span>
-<span class="n">e</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">screenXY</span><span class="p">,</span> <span class="n">world</span><span class="p">)</span>
-<span class="c1">#Keys = TheKeys()</span>
+<span class="c1"># Initialize the environment object.</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">screenXY</span><span class="p">,</span> <span class="n">world</span><span class="p">)</span>
 
-<span class="c1"># List of bodies.</span>
+<span class="c1"># list of bodies</span>
 <span class="n">bodies</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="c1"># And a static body to be the base of the air track.</span>
@@ -455,14 +431,12 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="p">)</span>
 <span class="n">bodies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">air_track_bumper2</span><span class="p">)</span> 
     
-<span class="c1"># Add cars to the track</span>
+<span class="c1"># Add cars to the track.</span>
 <span class="n">x</span> <span class="o">=</span> <span class="mi">15</span>
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">x</span> <span class="o">+=</span> <span class="mi">5</span>
     <span class="n">vx</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">2</span>
-    <span class="c1">#vx = -6</span>
-    <span class="n">AddCar</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">bodies</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">my_restitution</span><span class="o">=</span><span class="mf">0.90</span><span class="p">)</span>
-
+    <span class="n">AddCar</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">bodies</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">rest</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">angDamp</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
 
 <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">b2_staticBody</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span>
@@ -476,10 +450,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="c1"># --- main game loop ---</span>
 <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
-
-    <span class="c1"># Use the Environment instance &quot;e&quot; to check events</span>
-    <span class="n">running</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">checkEvents</span><span class="p">()</span>
-    <span class="c1"># e.CheckKeys()</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">CheckEvents</span><span class="p">()</span>
 
     <span class="c1"># Apply forces</span>
     <span class="k">if</span> <span class="n">apply_jet_1_TF</span><span class="p">:</span>
@@ -514,19 +485,19 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">vertices_screen</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">vertex_object</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">vertices</span><span class="p">:</span>
                 <span class="n">vertex_world</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">transform</span> <span class="o">*</span> <span class="n">vertex_object</span>  <span class="c1"># Overload operation</span>
-                <span class="n">vertex_screen</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span> <span class="n">vertex_world</span><span class="p">)</span> <span class="c1"># This returns a tuple</span>
+                <span class="n">vertex_screen</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldtoScreen</span><span class="p">(</span> <span class="n">vertex_world</span><span class="p">)</span> <span class="c1"># This returns a tuple</span>
                 <span class="n">vertices_screen</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">vertex_screen</span><span class="p">)</span> <span class="c1"># Append to the list.</span>
             
             <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="n">body</span><span class="o">.</span><span class="n">type</span><span class="p">],</span> <span class="n">vertices_screen</span><span class="p">)</span>
 
     <span class="c1"># Draw mouse joint.</span>
-    <span class="n">e</span><span class="o">.</span><span class="n">drawMouseJoint</span><span class="p">()</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">DrawMouseJoint</span><span class="p">()</span>
     
     <span class="c1"># Draw force points.</span>
     <span class="k">if</span> <span class="n">apply_jet_1_TF</span><span class="p">:</span>
-        <span class="n">e</span><span class="o">.</span><span class="n">drawForcePoint</span><span class="p">(</span> <span class="n">force_point_1_2d_m</span><span class="p">)</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">DrawForcePoint</span><span class="p">(</span> <span class="n">force_point_1_2d_m</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">apply_jet_2_TF</span><span class="p">:</span>
-        <span class="n">e</span><span class="o">.</span><span class="n">drawForcePoint</span><span class="p">(</span> <span class="n">force_point_2_2d_m</span><span class="p">)</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">DrawForcePoint</span><span class="p">(</span> <span class="n">force_point_2_2d_m</span><span class="p">)</span>
 
     <span class="c1"># Flip the screen and try to keep at the target FPS</span>
     <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>

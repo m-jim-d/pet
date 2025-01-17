@@ -7,8 +7,7 @@ Licensed under the BSD license, see LICENSE for details.
 -->
 <html>
 <head>
-  <link rel='canonical' href='https://pet.triquence.org/A02.1_string_rendering_v1.html' />
-  <title>A02.1_string_rendering_v1</title>
+  <title></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <style type="text/css">
 /*
@@ -107,15 +106,16 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <body>
 <h2></h2>
 
-<div class="highlight"><pre><span></span><span class="c1"># Filename: A02.1_string_rendering_v1.py</span>
-<span class="c1"># Written by: James D. Miller</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+
+<span class="c1"># Filename: A02.1_string_rendering_v1.py</span>
 
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="k">def</span> <span class="nf">render_airtrack</span><span class="p">(</span><span class="n">x_px</span><span class="p">,</span> <span class="n">x_left_edge_px</span><span class="p">,</span> <span class="n">x_right_edge_px</span><span class="p">):</span>
     <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-    <span class="n">display_width_px</span> <span class="o">=</span> <span class="mi">125</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">display_width_px</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">display_width_px</span> <span class="o">=</span> <span class="mi">126</span> <span class="c1"># 126/7 = 18 meters</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">display_width_px</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">==</span> <span class="n">x_px</span><span class="p">):</span>
             <span class="n">string</span> <span class="o">+=</span> <span class="s1">&#39;*&#39;</span>
         <span class="k">elif</span> <span class="p">(</span><span class="n">j</span><span class="o">==</span><span class="n">x_left_edge_px</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">j</span><span class="o">==</span><span class="n">x_right_edge_px</span><span class="p">):</span>
@@ -125,7 +125,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="k">return</span> <span class="n">string</span>
 
 <span class="k">def</span> <span class="nf">m_to_px</span><span class="p">(</span><span class="n">x_m</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span> <span class="n">x_m</span> <span class="o">*</span> <span class="mf">7.0</span><span class="p">))</span>   <span class="c1"># pixels per meter.</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">x_m</span> <span class="o">*</span> <span class="mf">7.0</span><span class="p">)</span>   <span class="c1"># pixels per meter.</span>
     
 <span class="k">def</span> <span class="nf">x_fix_sticky</span><span class="p">(</span> <span class="n">x_m</span><span class="p">,</span> <span class="n">x_left_edge_m</span><span class="p">,</span> <span class="n">x_right_edge_m</span><span class="p">):</span>
     <span class="c1"># Simple stickiness correction. Move it back to the surface.</span>
@@ -134,18 +134,18 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="k">elif</span> <span class="p">(</span><span class="n">x_m</span> <span class="o">&gt;</span> <span class="n">x_right_edge_m</span><span class="p">):</span> 
         <span class="n">x_corrected_m</span> <span class="o">=</span> <span class="n">x_right_edge_m</span>  
     <span class="k">return</span> <span class="n">x_corrected_m</span>
-    
+        
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span> 
-    <span class="n">x_left_edge_m</span>   <span class="o">=</span>  <span class="mf">1.5</span>
+    <span class="n">x_left_edge_m</span>   <span class="o">=</span>  <span class="mf">0.5</span>
     <span class="n">x_right_edge_m</span>  <span class="o">=</span> <span class="mf">17.5</span>
     
     <span class="n">dt_s</span>   <span class="o">=</span>  <span class="mf">0.015</span>
     <span class="n">x_m</span>    <span class="o">=</span> <span class="mf">11.0</span>
-    <span class="n">v_mps</span>  <span class="o">=</span>  <span class="mf">17.0</span>   
-    <span class="n">a_mps2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>   
+    <span class="n">v_mps</span>  <span class="o">=</span> <span class="mf">17.0</span>
+    <span class="n">a_mps2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span>
     
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># Run until Ctrl+C</span>
             <span class="c1"># Update the velocity and position.</span>
             <span class="n">v_mps</span> <span class="o">+=</span>  <span class="n">a_mps2</span> <span class="o">*</span> <span class="n">dt_s</span>
             <span class="n">x_m</span>   <span class="o">+=</span>  <span class="n">v_mps</span>  <span class="o">*</span> <span class="n">dt_s</span>
@@ -156,11 +156,12 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                 <span class="n">x_m</span> <span class="o">=</span> <span class="n">x_fix_sticky</span><span class="p">(</span> <span class="n">x_m</span><span class="p">,</span> <span class="n">x_left_edge_m</span><span class="p">,</span> <span class="n">x_right_edge_m</span><span class="p">)</span>
                 
             <span class="n">display_string</span> <span class="o">=</span> <span class="n">render_airtrack</span><span class="p">(</span> <span class="n">m_to_px</span><span class="p">(</span> <span class="n">x_m</span><span class="p">),</span> <span class="n">m_to_px</span><span class="p">(</span> <span class="n">x_left_edge_m</span><span class="p">),</span> <span class="n">m_to_px</span><span class="p">(</span> <span class="n">x_right_edge_m</span><span class="p">))</span>
-            <span class="nb">print</span> <span class="n">display_string</span> <span class="o">+</span> <span class="s1">&#39; x =&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">x_m</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s1">&#39; v = &#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">v_mps</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">display_string</span><span class="si">}</span><span class="s2">x = </span><span class="si">{</span><span class="n">x_m</span><span class="si">:</span><span class="s2">4.1f</span><span class="si">}</span><span class="s2">   v = </span><span class="si">{</span><span class="n">v_mps</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt_s</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">break</span>
+            
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Simulation stopped by user (Ctrl+C)&quot;</span><span class="p">)</span>
 
 <span class="n">main</span><span class="p">()</span>
 </pre></div>

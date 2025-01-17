@@ -1,5 +1,6 @@
+#!/usr/bin/env python3
+
 # Filename: A09b_2D_vector_sandbox.py
-# Written by: James D. Miller
 
 import sys, os
 import pygame
@@ -8,11 +9,10 @@ import pygame
 from pygame.locals import *
 from pygame.color import THECOLORS
 
-# PyGame gui
-from pgu import gui
-
 # Import the vector class from a local module (in this same directory)
-from vec2d_jdm import Vec2D
+from A09_vec2d import Vec2D
+
+from A08_network import RunningAvg
 
 #=====================================================================
 # Classes
@@ -23,7 +23,7 @@ class Vectors_Add():
         self.color = theColor
         self.selectable = False
         self.radius_m = 0.10
-        self.radius_px = int(round(env.px_from_m( self.radius_m)))
+        self.radius_px = round(env.px_from_m( self.radius_m))
         
         if vectors_2d_m == None:
             self.vectors_2d_m = v_sb.vectors
@@ -60,12 +60,13 @@ class Vectors_Add():
             
             # Draw line segment
             line_points = [env.ConvertWorldToScreen(vec_A_2d_m), env.ConvertWorldToScreen(vec_B_2d_m)]
-            pygame.draw.aaline(game_window.surface, color, line_points[0], line_points[1], True)
+            #pygame.draw.aaline(game_window.surface, color, line_points[0], line_points[1], True)
+            pygame.draw.aaline(game_window.surface, color, line_points[0], line_points[1])
             
             # Draw circle.
-            self.radius_px = int(round(env.px_from_m( self.radius_m)))
+            self.radius_px = round(env.px_from_m( self.radius_m))
             if small_circle:
-                radius_px = int(round(self.radius_px/2.0))
+                radius_px = round(self.radius_px/2.0)
             else:    
                 radius_px = self.radius_px
             if radius_px < 1:
@@ -87,7 +88,8 @@ class Vectors_Add():
                         for point_2d_m in self.total_history_2d_m:
                             self.total_history_tuples_px.append( env.ConvertWorldToScreen( point_2d_m))
                         #pygame.draw.lines(game_window.surface, self.color, False, self.total_history_tuples_px, 1)
-                        pygame.draw.aalines(game_window.surface, self.color, False, self.total_history_tuples_px, True)
+                        #pygame.draw.aalines(game_window.surface, self.color, False, self.total_history_tuples_px, True)
+                        pygame.draw.aalines(game_window.surface, self.color, False, self.total_history_tuples_px)
                 else:
                     for point_2d_m in self.total_history_2d_m:
                         pygame.draw.circle(game_window.surface, self.color, env.ConvertWorldToScreen( point_2d_m), 1, 1)
@@ -131,7 +133,7 @@ class Visual_Vec2D( Vec2D):
                                        Vec2D( -1.00 * self.sf_x,  0.50 * self.sf_y), 
                                        Vec2D(  0.00 * self.sf_x,  0.00 * self.sf_y)]
         
-        self.rt_vertices_2d_px  = []                       
+        self.rt_vertices_2d_px  = []
         self.update()
         
     def update(self):
@@ -158,18 +160,18 @@ class Visual_Vec2D( Vec2D):
     
     def draw_selection_circle(self):
         # Draw circle.
-        radius_px = int(round(env.px_from_m( self.radius_m)))
+        radius_px = round(env.px_from_m( self.radius_m))
         if radius_px < 1:
             radius_px = 1
         
         pygame.draw.circle(game_window.surface, self.color, env.ConvertWorldToScreen(self), radius_px, 1)
         
     def draw_vector(self):
-        
         # Draw main body of the arrow: line from base point to end point.
         line_points = [env.ConvertWorldToScreen(self.base_2d_m), env.ConvertWorldToScreen(self + self.base_2d_m)]
-        pygame.draw.aaline(game_window.surface, self.color, line_points[0], line_points[1], True)
         #pygame.draw.line(game_window.surface, self.color, line_points[0], line_points[1], 2)
+        #pygame.draw.aaline(game_window.surface, self.color, line_points[0], line_points[1], True)
+        pygame.draw.aaline(game_window.surface, self.color, line_points[0], line_points[1])
         
         # Draw the arrowhead
         if self.length_squared() > 0:
@@ -266,7 +268,6 @@ class Environment:
     def __init__(self, screenSize_px, length_x_m):
         self.screenSize_px = Vec2D(screenSize_px)
         self.viewOffset_px = Vec2D(-self.screenSize_px.x/2,-self.screenSize_px.y/2)
-        self.viewCenter_px = Vec2D(0,0)
         self.viewZoom = 1
         self.viewZoom_rate = 0.01
     
@@ -275,8 +276,8 @@ class Environment:
         self.key_m = 'U'
         self.key_h = 'U'
     
-        self.px_to_m = length_x_m/float(self.screenSize_px.x)
-        self.m_to_px = (float(self.screenSize_px.x)/length_x_m)
+        self.px_to_m = length_x_m/self.screenSize_px.x
+        self.m_to_px = self.screenSize_px.x/length_x_m
         
         self.inhibit_screen_clears = False
         
@@ -290,15 +291,17 @@ class Environment:
         
         self.dt_s = 0
         self.freeze = False
+
+        self.fr_avg = RunningAvg(500, pygame, colorScheme='light')
     
     # Convert from meters to pixels 
     def px_from_m(self, dx_m):
         return dx_m * self.m_to_px * self.viewZoom
     
     # Convert from pixels to meters
-    # Note: still floating values here)
+    # Note: still floating values here
     def m_from_px(self, dx_px):
-        return float(dx_px) * self.px_to_m / self.viewZoom
+        return dx_px * self.px_to_m / self.viewZoom
     
     def control_zoom_and_view(self):
         if self.key_h == "D":
@@ -307,7 +310,6 @@ class Environment:
             self.viewZoom -= self.viewZoom_rate * self.viewZoom
     
     def ConvertScreenToWorld(self, point_2d_px):
-        #self.viewOffset_px = self.viewCenter_px
         x_m = (                       point_2d_px.x + self.viewOffset_px.x) / (self.m_to_px * self.viewZoom)
         y_m = (self.screenSize_px.y - point_2d_px.y + self.viewOffset_px.y) / (self.m_to_px * self.viewZoom)
         return Vec2D( x_m, y_m)
@@ -318,9 +320,6 @@ class Environment:
         In the class instance, we store a zoom factor, an offset indicating where
         the view extents start at, and the screen size (in pixels).
         """
-
-        # self.viewOffset = self.viewCenter - self.screenSize_px/2
-        #self.viewOffset = self.viewCenter_px
         x_px = (point_2d_m.x * self.m_to_px * self.viewZoom) - self.viewOffset_px.x
         y_px = (point_2d_m.y * self.m_to_px * self.viewZoom) - self.viewOffset_px.y
         y_px = self.screenSize_px.y - y_px
@@ -329,7 +328,6 @@ class Environment:
         return Vec2D(x_px, y_px, "int").tuple()
 
     def get_user_input(self):
-        
         # Get all the events since the last call to get().
         for event in pygame.event.get():
             if (event.type == pygame.QUIT): 
@@ -337,20 +335,20 @@ class Environment:
             elif (event.type == pygame.KEYDOWN):
                 if (event.key == K_ESCAPE):
                     sys.exit()
-                elif (event.key==K_KP1):            
+                elif (event.key==K_KP1):
                     return "1p"
-                elif (event.key==K_KP2):            
+                elif (event.key==K_KP2):
                     return "2p"
-                elif (event.key==K_KP3):            
+                elif (event.key==K_KP3):
                     return "3p"
-                elif (event.key==K_1):            
-                    return 1           
-                elif (event.key==K_2):                          
+                elif (event.key==K_1):
+                    return 1
+                elif (event.key==K_2):
                     return 2
                 elif (event.key==K_3):
-                    return 3           
+                    return 3
                 elif (event.key==K_4):
-                    return 4           
+                    return 4
                 elif (event.key==K_5):
                     return 5
                 elif (event.key==K_6):
@@ -385,7 +383,8 @@ class Environment:
                     self.key_m = 'D'
                 elif (event.key==K_h):
                     self.key_h = 'D'
-                
+                elif (event.key==K_q):
+                    env.viewZoom = 1.00
                 else:
                     return "nothing set up for this key"
             
@@ -520,7 +519,7 @@ def make_some_vectors(resetmode):
             v_sb.vectors.append( temp)
             v_sb.vectors[j-1].projection_target_2d_m = v_sb.vectors[0]
             
-        v_sb.total_vector_2d_m = Vectors_Add()        
+        v_sb.total_vector_2d_m = Vectors_Add()
         
     elif resetmode == 7:
         for j in range(1,141):
@@ -528,24 +527,10 @@ def make_some_vectors(resetmode):
             v_sb.vectors.append( temp)
             v_sb.vectors[j-1].projection_target_2d_m = v_sb.vectors[0]
             
-        v_sb.total_vector_2d_m = Vectors_Add()        
+        v_sb.total_vector_2d_m = Vectors_Add()
         
     else:
-        print "Nothing set up for this key."
-
-def display_number(numeric_value, font_object,  mode='FPS'):
-    if mode=='FPS':
-        # Small background rectangle for FPS text
-        pygame.draw.rect(game_window.surface, THECOLORS["white"], pygame.Rect(10, 10, 35, 20))
-        # The text
-        fps_string = "%.0f" % numeric_value
-        txt_surface = font_object.render(fps_string, True, THECOLORS["black"])
-        game_window.surface.blit(txt_surface, [18, 11])
-    elif mode=='gameTimer':
-        # The text
-        fps_string = "%.2f" % numeric_value
-        txt_surface = font_object.render(fps_string, True, THECOLORS["white"])
-        game_window.surface.blit(txt_surface, [600, 11])
+        print("Nothing set up for this key.")
     
 #============================================================
 # Main procedural script.
@@ -582,7 +567,7 @@ def main():
     framerate_limit = 480.0   # 480
 
     while True:
-        env.dt_s = float(myclock.tick( framerate_limit) * 1e-3)
+        env.dt_s = myclock.tick( framerate_limit) * 1e-3
         
         # Listen to the user: establish the state of the keyboard and mouse and determine if a new demo is called for.
         resetmode = env.get_user_input()
@@ -590,7 +575,7 @@ def main():
         # Reset the game based on local user control.
         if resetmode in ["1p","2p","3p",1,2,3,4,5,6,7,8,9,0]:
             demo_mode = resetmode
-            print resetmode
+            print(resetmode)
             # Delete all the objects in the sandbox. Cleaning out these list reference to these objects effectively
             # deletes the objects.
             v_sb.total_vector_2d_m = None
@@ -600,7 +585,7 @@ def main():
             game_window.clear()
             
             # Reinitialize the demo.
-            make_some_vectors( demo_mode)               
+            make_some_vectors( demo_mode)
                     
         # Control vector selection and mouse related movement.
         v_sb.updateSelectedVector()
@@ -613,14 +598,17 @@ def main():
             game_window.surface.fill((0,0,0))
 
         # Display FPS text.
-        display_number(1/env.dt_s, fnt_FPS, mode='FPS')
-        
+        env.fr_avg.update( myclock.get_fps())
+        env.fr_avg.draw( game_window.surface, 10, 10)
+
         # Draw axis for the vector sandbox.
         v_sb.draw()
         
-        # Draw vectors.
+        # Update and draw vectors (updates are in the draw methods)
+        # Do the total first; so it's on the bottom.
         if v_sb.total_vector_2d_m != None:
             v_sb.total_vector_2d_m.draw()    
+        # Then do the individual vectors.
         for eachvector in v_sb.vectors: 
             eachvector.draw()
         

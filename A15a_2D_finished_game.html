@@ -145,6 +145,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">coef_rest</span> <span class="o">=</span> <span class="mf">1.00</span>
     <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">time_s</span> <span class="o">=</span> <span class="mf">0.0</span>
 
+    <span class="c1"># Each demo will have a single variation unless specified below.</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">demo_variations</span><span class="p">[</span><span class="n">demo</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># Single variation</span>
+
     <span class="k">if</span> <span class="n">demo</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="c1">#    position       , r_m , density</span>
         <span class="n">Puck</span><span class="p">(</span><span class="n">Vec2D</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">),</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;orange&quot;</span><span class="p">])</span>
@@ -266,7 +269,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="n">Puck</span><span class="p">(</span> <span class="n">Vec2D</span><span class="p">(</span><span class="mf">9.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;cyan&quot;</span><span class="p">],</span> <span class="n">hit_limit</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">c_drag</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">show_health</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     
     <span class="k">elif</span> <span class="n">demo</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
-        <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">makeJello_variations</span><span class="p">()</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">throwJello_variations</span><span class="p">()</span>
 
     <span class="k">elif</span> <span class="n">demo</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
         <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">coef_rest</span> <span class="o">=</span> <span class="mf">1.00</span>
@@ -289,7 +292,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nothing set up for this key.&quot;</span><span class="p">)</span>
 
 <span class="c1">#============================================================</span>
-<span class="c1"># Main procedural script.</span>
+<span class="c1"># main procedural script</span>
 <span class="c1">#============================================================</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
@@ -298,7 +301,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
     <span class="n">game_loop</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">demo_index</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 
 <span class="c1">#============================================================</span>
-<span class="c1"># Run main().  </span>
+<span class="c1"># Start everything.</span>
 <span class="c1">#============================================================</span>
         
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>

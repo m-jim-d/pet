@@ -116,12 +116,12 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="sd">This module defines the physical objects that can exist in the simulation:</span>
 
 <span class="sd">Classes:</span>
-<span class="sd">    Wall: Static boundary objects with collision detection</span>
-<span class="sd">    Puck: Dynamic objects with physics properties (mass, velocity, etc.)</span>
-<span class="sd">    Spring: Elastic connections between pucks with customizable properties</span>
-<span class="sd">    RotatingTube: Base class for rotatable attachments (Jet/Gun)</span>
-<span class="sd">    Jet: Propulsion system that can be attached to pucks</span>
-<span class="sd">    Gun: Weapon system that can be mounted on pucks</span>
+<span class="sd">    Wall: Static boundary objects with collision detection  </span>
+<span class="sd">    Puck: Dynamic objects with physics properties (mass, velocity, etc.)  </span>
+<span class="sd">    Spring: Elastic connections between pucks with customizable properties  </span>
+<span class="sd">    RotatingTube: Base class for rotatable attachments (Jet/Gun)  </span>
+<span class="sd">    Jet: Propulsion system that can be attached to pucks  </span>
+<span class="sd">    Gun: Weapon system that can be mounted on pucks  </span>
 
 <span class="sd">Walls and Puck supports Box2D integration for advanced physics simulation when enabled.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -258,6 +258,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
         <span class="bp">self</span><span class="o">.</span><span class="n">b2d_body</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">pin</span> <span class="o">=</span> <span class="n">pin</span>
         <span class="c1"># Add puck to the lists of pucks, controlled pucks, and target pucks.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pin</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s1">&#39;box2d&#39;</span><span class="p">):</span>
@@ -322,6 +323,15 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="c1"># Rotational speed.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotation_speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2d_body</span><span class="o">.</span><span class="n">angularVelocity</span>
     
+    <span class="k">def</span> <span class="nf">set_pos_and_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos_2d_m</span><span class="p">,</span> <span class="n">vel_2d_m</span><span class="o">=</span><span class="n">Vec2D</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="c1"># Update our vectors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_2d_m</span> <span class="o">=</span> <span class="n">pos_2d_m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vel_2d_mps</span> <span class="o">=</span> <span class="n">vel_2d_m</span>
+        
+        <span class="c1"># Update Box2D body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2d_body</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="n">pos_2d_m</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pos_2d_m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b2d_body</span><span class="o">.</span><span class="n">linearVelocity</span> <span class="o">=</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="n">vel_2d_m</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">vel_2d_m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s1">&#39;box2d&#39;</span><span class="p">):</span>
             <span class="c1"># Remove the puck from the dictionary.</span>
@@ -390,12 +400,14 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="c1"># Draw main puck body.</span>
             <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span> <span class="n">g</span><span class="o">.</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">puck_color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_2d_px</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_px</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">zoomLineThickness</span><span class="p">(</span><span class="n">puck_border_thickness</span><span class="p">))</span>
             
-            <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s1">&#39;box2d&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">engine</span> <span class="o">==</span> <span class="s1">&#39;box2d&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pin</span><span class="p">):</span>
                 <span class="c1"># If it&#39;s not a bullet and not a rectangle, draw a spoke to indicate rotational orientation.</span>
                 <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">bullet</span> <span class="o">==</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rect_fixture</span><span class="o">==</span><span class="kc">False</span><span class="p">)):</span>
-                    <span class="c1"># Shorten the spoke by a fraction of the thickness so that its end (and the blocky rendering) is hidden in the border.</span>
+                    <span class="c1"># Shorten the spoke by a fraction of the thickness so that its end</span>
+                    <span class="c1"># (and the blocky rendering) is hidden in the border.</span>
                     <span class="n">reduction_m</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">px_to_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_thickness_px</span> <span class="o">*</span> <span class="mf">0.50</span>
-                    <span class="c1"># Position the outer-edge point right from the center (r_m, 0), so spoke will look like it&#39;s at zero angle.</span>
+                    <span class="c1"># Position the outer-edge point right from the center (r_m, 0), so</span>
+                    <span class="c1"># spoke will look like it&#39;s at zero angle.</span>
                     <span class="n">point_on_radius_b2d_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b2d_body</span><span class="o">.</span><span class="n">GetWorldPoint</span><span class="p">(</span> <span class="n">b2Vec2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_m</span> <span class="o">-</span> <span class="n">reduction_m</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
                     <span class="n">point_on_radius_2d_m</span> <span class="o">=</span> <span class="n">Vec2D</span><span class="p">(</span> <span class="n">point_on_radius_b2d_m</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point_on_radius_b2d_m</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
                     <span class="n">point_on_radius_2d_px</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span> <span class="n">point_on_radius_2d_m</span><span class="p">)</span>
@@ -470,7 +482,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="k">return</span> <span class="n">vertices_2d_px</span>
         
     <span class="k">def</span> <span class="nf">draw_tube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line_thickness</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-        <span class="c1"># Draw the tube on the game-window surface. Establish the base_point as the center of the puck.</span>
+        <span class="c1"># Draw the tube on the game-window surface. Establish the base_point as the center</span>
+        <span class="c1"># of the puck.</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> 
                             <span class="bp">self</span><span class="o">.</span><span class="n">convert_from_world_to_screen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tube_vertices_2d_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">puck</span><span class="o">.</span><span class="n">pos_2d_m</span><span class="p">),</span> <span class="n">g</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">zoomLineThickness</span><span class="p">(</span><span class="n">line_thickness</span><span class="p">))</span>
 
@@ -521,10 +534,10 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">current_jet_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction_2d_m</span><span class="o">.</span><span class="n">get_angle</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rotate_everything</span><span class="p">(</span><span class="n">puck_velocity_angle</span> <span class="o">-</span> <span class="n">current_jet_angle</span><span class="p">)</span>
             
-            <span class="c1"># Reset this so it doesn&#39;t keep flipping. Just want it to flip the</span>
-            <span class="c1"># direction once but not keep flipping.</span>
-            <span class="c1"># This first line is enough to keep the local client from flipping again because</span>
-            <span class="c1"># the local keyboard doesn&#39;t keep sending the &quot;D&quot; event if the key is held down.</span>
+            <span class="c1"># Reset this so it doesn&#39;t keep flipping. Just want it to flip the direction</span>
+            <span class="c1"># once but not keep flipping. This first line is enough to keep the local</span>
+            <span class="c1"># client from flipping again because the local keyboard doesn&#39;t keep sending</span>
+            <span class="c1"># the &quot;D&quot; event if the key is held down.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">key_s</span> <span class="o">=</span> <span class="s2">&quot;U&quot;</span>
             <span class="c1"># This second one is also needed for the network clients because they keep</span>
             <span class="c1"># sending the &quot;D&quot; until they release the key.</span>
@@ -549,8 +562,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="c1"># Draw the jet tube.        </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_tube</span><span class="p">(</span><span class="n">line_thickness</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         
-        <span class="c1"># Draw a little nose cone on the other side of the puck from the jet. This is a visual aid</span>
-        <span class="c1"># to help the player see the direction the puck will go when the jet is on.</span>
+        <span class="c1"># Draw a little nose cone on the other side of the puck from the jet. This is a</span>
+        <span class="c1"># visual aid to help the player see the direction the puck will go when the jet is</span>
+        <span class="c1"># on.</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow1&quot;</span><span class="p">],</span> 
                             <span class="bp">self</span><span class="o">.</span><span class="n">convert_from_world_to_screen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nose_vertices_2d_m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">puck</span><span class="o">.</span><span class="n">pos_2d_m</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
         
@@ -607,10 +621,10 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="n">current_gun_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction_2d_m</span><span class="o">.</span><span class="n">get_angle</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rotate_everything</span><span class="p">(</span><span class="n">puck_velocity_angle</span> <span class="o">-</span> <span class="n">current_gun_angle</span><span class="p">)</span>
             
-            <span class="c1"># Reset this so it doesn&#39;t keep flipping. Just want it to flip the</span>
-            <span class="c1"># direction once but not keep flipping.</span>
-            <span class="c1"># This first line is enough to keep the local client from flipping again because</span>
-            <span class="c1"># the local keyboard doesn&#39;t keep sending the &quot;D&quot; event if the key is held down.</span>
+            <span class="c1"># Reset this so it doesn&#39;t keep flipping. Just want it to flip the direction</span>
+            <span class="c1"># once but not keep flipping. This first line is enough to keep the local</span>
+            <span class="c1"># client from flipping again because the local keyboard doesn&#39;t keep sending</span>
+            <span class="c1"># the &quot;D&quot; event if the key is held down.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">key_k</span> <span class="o">=</span> <span class="s2">&quot;U&quot;</span>
             <span class="c1"># This second one is also needed for the network clients because they keep</span>
             <span class="c1"># sending the &quot;D&quot; until they release the key.</span>
@@ -651,28 +665,31 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
             <span class="bp">self</span><span class="o">.</span><span class="n">gun_recharge_start_time_s</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">time_s</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gun_recharging</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bullet_count</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="c1"># At the beginning of the charging period, find a new target. This gives a human player an indication</span>
-            <span class="c1"># of what the drone is targeting. And since this is at the beginning of the gun charging period, it gives</span>
-            <span class="c1"># the player some time for evasive maneuvers.</span>
+            <span class="c1"># At the beginning of the charging period, find a new target. This gives a</span>
+            <span class="c1"># human player an indication of what the drone is targeting. And since this is</span>
+            <span class="c1"># at the beginning of the gun charging period, it gives the player some time</span>
+            <span class="c1"># for evasive maneuvers.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">drone</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">findNewTarget</span><span class="p">()</span>
     
         <span class="c1"># If recharged.</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gun_recharging</span> <span class="ow">and</span> <span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">time_s</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gun_recharge_start_time_s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">gun_recharge_wait_s</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gun_recharging</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="c1"># If the puck the drone is aiming at has been destroyed, find a new target before starting to shoot.</span>
+            <span class="c1"># If the puck the drone is aiming at has been destroyed, find a new target</span>
+            <span class="c1"># before starting to shoot.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">drone</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetPuck</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">air_table</span><span class="o">.</span><span class="n">target_pucks</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">findNewTarget</span><span class="p">()</span>
                 
     <span class="k">def</span> <span class="nf">fire_gun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">bullet_radius_m</span> <span class="o">=</span> <span class="mf">0.05</span>
-        <span class="c1"># Set the initial position of the bullet so that it clears (doesn&#39;t collide with) the host puck.</span>
+        <span class="c1"># Set the initial position of the bullet so that it clears (doesn&#39;t collide with)</span>
+        <span class="c1"># the host puck.</span>
         <span class="n">initial_position_2d_m</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puck</span><span class="o">.</span><span class="n">pos_2d_m</span> <span class="o">+</span>
                                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction_2d_m</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">puck</span><span class="o">.</span><span class="n">radius_m</span> <span class="o">+</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">bullet_radius_m</span><span class="p">))</span> <span class="p">)</span>
         
-        <span class="c1"># Relative velocity of the bullet: the bullet velocity as seen from the host puck. This is the</span>
-        <span class="c1"># speed of the bullet relative to the motion of the host puck (host velocity BEFORE the firing of </span>
-        <span class="c1"># the bullet).</span>
+        <span class="c1"># Relative velocity of the bullet: the bullet velocity as seen from the host puck.</span>
+        <span class="c1"># This is the speed of the bullet relative to the motion of the host puck (host</span>
+        <span class="c1"># velocity BEFORE the firing of the bullet).</span>
         <span class="n">bullet_relative_vel_2d_mps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction_2d_m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bullet_speed_mps</span>
         
         <span class="c1"># Absolute velocity of the bullet</span>
@@ -731,16 +748,16 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                                    
                                    
 <span class="k">class</span> <span class="nc">Spring</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">length_m</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">strength_Npm</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;yellow&quot;</span><span class="p">],</span> <span class="n">width_m</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span> <span class="n">c_damp</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c_drag</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">length_m</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">strength_Npm</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pin_radius_m</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s2">&quot;dodgerblue&quot;</span><span class="p">],</span> <span class="n">width_m</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span> <span class="n">c_damp</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c_drag</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
         
-        <span class="c1"># Optionally this spring can have one end pinned to a vector point. Do this by passing in p2 as a vector.</span>
+        <span class="c1"># Optionally this spring can have one end pinned to a vector point. Do this by</span>
+        <span class="c1"># passing in p2 as a vector.</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">p2</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;Vec2D&#39;</span><span class="p">):</span>
-            <span class="c1"># Create a point puck at the pinning location.</span>
-            <span class="c1"># The location of this point puck will never change because</span>
-            <span class="c1"># it is not in the pucks list that is processed by the</span>
-            <span class="c1"># physics engine.</span>
-            <span class="n">p2</span> <span class="o">=</span> <span class="n">Puck</span><span class="p">(</span> <span class="n">p2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">p2</span><span class="o">.</span><span class="n">vel_2d_mps</span> <span class="o">=</span> <span class="n">Vec2D</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
+            <span class="c1"># Create a point puck at the pinning location. The location of this point puck</span>
+            <span class="c1"># will never change because it is not in the pucks list that is processed by</span>
+            <span class="c1"># the physics engine.</span>
+            <span class="n">p2</span> <span class="o">=</span> <span class="n">Puck</span><span class="p">(</span> <span class="n">p2</span><span class="p">,</span> <span class="n">pin_radius_m</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">pin</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">border_px</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">THECOLORS</span><span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">])</span>
             <span class="n">length_m</span> <span class="o">=</span> <span class="mf">0.0</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span>
@@ -789,10 +806,11 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="c1"># Net force by both spring and damper</span>
         <span class="n">SprDamp_force_2d_N</span> <span class="o">=</span> <span class="n">spring_force_on_1_2d_N</span> <span class="o">-</span> <span class="n">damper_force_on_1_N</span>
         
-        <span class="c1"># This force acts in opposite directions for each of the two pucks. Notice the &quot;+=&quot; here, this</span>
-        <span class="c1"># is an aggregate across all the springs. This aggregate MUST be reset (zeroed) after the movements are</span>
-        <span class="c1"># calculated. So by the time you&#39;ve looped through all the springs, you get the NET force, on each puck,</span>
-        <span class="c1"># applied by all the individual springs.</span>
+        <span class="c1"># This force acts in opposite directions for each of the two pucks. Notice the</span>
+        <span class="c1"># &quot;+=&quot; here, this is an aggregate across all the springs. This aggregate MUST be</span>
+        <span class="c1"># reset (zeroed) after the movements are calculated. So by the time you&#39;ve looped</span>
+        <span class="c1"># through all the springs, you get the NET force, on each puck, applied by all the</span>
+        <span class="c1"># individual springs.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p1</span><span class="o">.</span><span class="n">SprDamp_force_2d_N</span> <span class="o">+=</span> <span class="n">SprDamp_force_2d_N</span> <span class="o">*</span> <span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="o">.</span><span class="n">SprDamp_force_2d_N</span> <span class="o">+=</span> <span class="n">SprDamp_force_2d_N</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         
@@ -811,9 +829,9 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
         <span class="k">return</span> <span class="n">width_m</span>
     
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Change the width to indicate the stretch or compression in the spring. Note, it&#39;s good to </span>
-        <span class="c1"># do this outside of the main calc loop (using the rendering timer). No need to do all this each</span>
-        <span class="c1"># time step.</span>
+        <span class="c1"># Change the width to indicate the stretch or compression in the spring. Note,</span>
+        <span class="c1"># it&#39;s good to do this outside of the main calc loop (using the rendering timer).</span>
+        <span class="c1"># No need to do all this each time step.</span>
         
         <span class="n">width_m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width_to_draw_m</span><span class="p">()</span>
         
@@ -836,6 +854,8 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
                                                                        <span class="n">g</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">ConvertWorldToScreen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="o">.</span><span class="n">pos_2d_m</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">game_window</span><span class="o">.</span><span class="n">surface</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spring_vertices_2d_px</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="o">.</span><span class="n">pin</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">p2</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </body>
 </html>

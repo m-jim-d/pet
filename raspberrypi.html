@@ -327,6 +327,7 @@
 		conda create -n physics -c conda-forge python=3.11 pygame box2d-py
 		conda activate physics
 		pip install pygame-pgu
+		pip install python-xlib
 		</code></pre>
 
 		<p>This installs:</p>
@@ -335,6 +336,7 @@
 			<li>Pygame for graphics</li>
 			<li>Box2D for physics simulation</li>
 			<li>PGU for GUI elements</li>
+			<li>python-xlib package for updating window captions</li>
 		</ul>
 
 		<h3>Verifying the Installation</h3>
@@ -362,13 +364,14 @@
 		<h3>Notes</h3>
 		<div class="note">
 			<ul class="install">
+				<li>Installation of Box2D uses box2d-py from the conda-forge channel (ARM compatibility)</li>
 				<li>box2d-py works with Python 3.12, but pgu has compatibility issues.</li>
-				<li>Installation uses conda-forge channel for best ARM compatibility</li>
 				<li>The box2d-py distribution of Box2D does not support the framework or the example files in the
 					pybox2d_framework_P3 directory of the repository.
 					To try the example files (and A16a_BodyTypes.py), use Windows. Follow the installation for pybox2d on the
-					main PET page.
-				</li>
+					main PET page.</li>
+				<li>The pygame display.set_caption method did not work under the Linux on my RaspberryPi. So using x_window method, set_wm_name, 
+					if using Linux (requires python-xlib package). See the update_caption method of my GameWindow class.</li>
 			</ul>
 		</div>
 		<p>

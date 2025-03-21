@@ -70,8 +70,8 @@
          <tr>
             <td colspan="2" class="indent">
                <!-- https://youtu.be/Hwfn1fX0kh0 https://youtu.be/oP2nA-wWCK4   old one: u2-8P7MKbNo -->
-               <div class="video-container" data-videoID="u2-8P7MKbNo">
-                  <img class="frameCapture" src="screenshots/firstVideo_550w.png" width="550" height="498">
+               <div class="video-container" data-videoID="WgFWOtJQ3c8">
+                  <img class="frameCapture" src="screenshots/a16c-overview-550-v2.png" width="550" height="499">
                </div>
                <!-- this next hidden element is used for logging the video usage -->
                <p style="display:none"><strong class="title_2">Using Pybox2d in Our Framework (1st on PET)</strong></p>
@@ -1100,39 +1100,41 @@
          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
       </div>
 
-      https://youtu.be/AQyb8pl0dv8      u2-8P7MKbNo
+      https://youtu.be/AQyb8pl0dv8      u2-8P7MKbNo  WgFWOtJQ3c8
       -->
-               <div class="video-container" data-videoID="u2-8P7MKbNo">
-                  <img class="frameCapture" src="screenshots/firstVideo_550w.png" width="550" height="498">
+               <div class="video-container" data-videoID="WgFWOtJQ3c8">
+                  <img class="frameCapture" src="screenshots/a16c-overview-550-v2.png" width="550" height="499">
                </div>
                <p><strong class="title_2">Using Pybox2d in Our Framework</strong><br>
 
                   no PDF / <a href="A16c_2D_B2D_serverN.html" target="_blank">Server
                      code</a>
                   / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>
-               <p>Finally, here is an integration of the Box2D engine into our
-                  own 2D framework. This is like taking the engine out of our Honda
-                  Civic and replacing it with a 426 Hemi. This opens the door to non-spherical
-                  object collisions, object rotation, torque (and rotational drag),
-                  surface friction, and true settling behaviors.</p>
-               <p>The basic idea here is that we define an interface between our
-                  air-table framework and the Box2D engine using force points. So
-                  we keep all the force generating objects such as springs and cursor-tethers
-                  and communicate their forces to the Box2D world. Then we let the engine
-                  take care of collisions and object motion and let it inform our
-                  rendering functionality as to the state/position of the objects.</p>
-               <p>A few notes on the interface: gun and jet controls are the same
-                  as before. The "t" key will torque a selected object. Shift-t will
-                  torque it the other way. The "f" key still freezes the translational
-                  motion, but now there is also the "r" key which will stop the rotation
-                  of all the objects in the world. Cursor tethers attach, by default,
-                  to the center of mass of the object, but with the shift key down,
-                  you can attach cursor tether anywhere on the object. The "h" and
-                  "n" keys zoom the view in and out; if the control key is down, mouse
-                  movement acts to pan the view. Various demos are initiated as usual
-                  with the keyboard number keys (i.e. above the letters). In this
-                  video I have one network client, a laptop, connected (red cursor);
-                  the regular cursor is controlled by the server.</p>
+
+               <p>Finally, here is an integration of the Box2D physics engine into our own 2D framework. This is like taking the engine out of
+                  a Honda Civic and replacing it with a 426 Hemi. This opens the door to non-spherical object collisions, object
+                  rotation, torque (and rotational drag), surface friction, and true settling behaviors.</p>
+               
+               <p>Here we define a force-point interface between our air-table framework and the Box2D (pybox2d) engine.
+                  All the force generating objects, such as springs and cursor-tethers, communicate (apply) their forces
+                  to the pucks in the Box2D world. Then we let Box2D take care of collisions and motion and it informs our
+                  rendering functionality as to the state/position of the pucks.</p>
+               
+               <p>A few notes on the interface: shield, gun, and jet controls for Puck Popper are the same as before. The "t" key will
+                  torque a selected object. Shift-t will torque it the other way. The "f" key still freezes all translational motion,
+                  but now there is also "shift-f" which will stop all rotational. Cursor tethers attach, by default, to the center of
+                  mass of the object, but with the shift key down, you can attach cursor tether anywhere on the object. Use the "x" key
+                  to delete a selected puck. The "h" and "n" keys zoom the view in and out at the cursor. If the control key is down,
+                  mouse movement acts to pan the view. Various demos are initiated as usual with the keyboard number keys (above the
+                  letters). Variations of the demos are selected with the left and right arrow keys.</p>
+               
+               <p>In most of this video I have one network client connected (a Raspberry Pi running A10_2D_baseline_client.py). On the
+                  host computer's screen, the client's light maroon cursor is displayed, controlled with my left hand and the RPi's
+                  mouse. The green cursor is controlled by the mouse of the host computer (the server, running A16c_2D_B2D_serverN.py).
+                  I've disconnected the client (closed its pygame window) to play solo in the Puck Popper games (demo #7). Of course,
+                  you can play with multiple players. Each player (client) will see their controllable puck rendered on the host at the
+                  start of the game.</p>
+               
                <p>Many of the features of this final topic are demonstrated on the
                   <a href="https://triquence.org">Springs &amp; Pucks</a> page using a live HTML-5 Canvas.
                </p>
@@ -1145,7 +1147,7 @@
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <div class="video-container" data-videoID="dPE-Yi3g3LA">
-                  <img class="frameCapture" src="screenshots/three-puck-collision-550.png" width="550" height="503">
+                  <img class="frameCapture" src="screenshots/three-puck-collision-550-v2.png" width="550" height="503">
                </div>
                <p><strong class="title_2">A Physics Story from Our Framework</strong><br>
                   no PDF

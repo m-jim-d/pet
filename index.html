@@ -170,8 +170,8 @@
                </p>
 
                <p>From a web browser, download a copy of the github
-                  repository for these python files. Look for the green &quot;code&quot; button, click
-                  it and use the &quot;Download ZIP&quot; option.</p>
+                  repository for these python files. Look for the green "code" button, click
+                  it and use the "Download ZIP" option.</p>
 
                <p>Code repository: <a href="https://github.com/m-jim-d/pet-code" target="_blank">https://github.com/m-jim-d/pet-code</a></p>
                
@@ -999,20 +999,21 @@
 
                <p>Keyboard commands for playing with reversibility: </p>
                <p>
-                  &quot;<strong>z</strong>&quot; enables the Perfect Kiss algorithm. This
-                  also set each puck to be elastic; coefficient of restitution
-                  is set to 1.0.<br>&quot;<strong>r</strong>&quot; reverses the velocity of each
-                  puck.<br>&quot;<strong>shift-r</strong>&quot; reverses the direction of the timestep.
-                  Note
-                  time reversal differs from velocity reversal in that spring
-                  losses, dampers, will gain energy, generally behaving
-                  unstable. So if you intend to use the mouse, velocity
-                  reversal, &quot;r&quot;, works best.<br>&quot;<strong>shift-p</strong>&quot; clamps the framerate at
-                  the current value and
-                  then steps the engine in equal interval steps (inverse of
-                  the clamped rate). The clamped framerate value is shown in
-                  parentheses.<br>&quot;<strong>e</strong>&quot; sets all collisions to be elastic; useful for
-                  testing without Perfect Kissing.<br>&quot;<strong>t</strong>&quot; starts and stops a general timer.
+                  "<strong>z</strong>" enables the Perfect Kiss algorithm. This
+                  also sets each puck to be elastic, coefficient of restitution is 1.0.
+
+                  <br>"<strong>r</strong>" reverses the velocity of each puck.
+
+                  <br>"<strong>shift-r</strong>" reverses the direction of the timestep.
+                  Note that time reversal differs from velocity reversal in that spring
+                  losses, dampers, will gain energy, generally unstable. 
+                  There is compensation for the mouse-cursor spring. So you can select with the mouse in 
+                  this time-reversal mode. However, there is no general compensation for springs. 
+                  Time reversal is blocked in demos with springs (like jello).
+
+                  <br>"<strong>shift-p</strong>" clamps the framerate at
+                  the current value and then steps the engine in equal interval steps (inverse of
+                  the clamped rate). When clamped, the framerate value is shown with a yellow background.
                </p>
             </td>
          </tr>

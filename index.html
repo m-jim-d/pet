@@ -793,9 +793,9 @@
          </tr>
          <tr>
             <td bgcolor="#ffffff" colspan="2" class="indent">
-               <!-- -->
-               <div class="video-container" data-videoID="81PO3o2_grQ">
-                  <img class="frameCapture" src="screenshots/gameFeatures-cropped.png" width="550" height="498">
+               <!--81PO3o2_grQ https://youtu.be/vQxoyHqSfzs -->
+               <div class="video-container" data-videoID="vQxoyHqSfzs">
+                  <img class="frameCapture" src="screenshots/pp-client-550.png" width="550" height="503">
                </div>
                <p><strong class="title_2"><a name="jello"></a>Final Game Features<br></strong>
 
@@ -810,47 +810,78 @@
                   / <a href="A15_environment.html" target="_blank">environment</a>
                   / <a href="A15_globals.html" target="_blank">globals</a>
                </p>
-               <p>This assignment adds features to make a playable game. For example,
-                  a hit counter (a hit by another player makes your puck flash red)
-                  is the basis for establishing the health of each player. Health,
-                  or rather the lack of it, is illustrated with an expanding red circle.
+               <p>This assignment adds features to make a playable game:</p>
+               
+               <p>A hit counter is the basis for establishing the health of each player.
+                  A hit by another player makes your puck flash red.
+                  Health, or rather the lack of it, is illustrated with an expanding red circle.
                   Too many hits and your puck pops (hence the name of the game: Puck
-                  Popper). Shields (hold down the space bar) prevent bullets from
-                  hitting your puck; when shields are up, you can't fire. The "s"
-                  and "k" keys are used to flip the tube directions into an orientation
+                  Popper).</p>
+               
+               <p>Shields (hold down the space bar) prevent bullets from
+                  hitting your puck; when shields are up, you can't shoot the gun.</p>
+               
+               <p>The "a","d", and "w" keys orient and fire the jet.
+                  The "j","l", and "i" keys orient and shoot the gun.
+                  The "s" and "k" keys are used to flip the tube directions into an orientation
                   opposing the current motion of the puck; this can be useful in breaking
-                  (stopping). The "a","d", and "w" keys orient and fire the jet; the
-                  "j","l", and "i" keys orient and fire the gun. The "f" and "g" keys
-                  can add an interesting dimension to the game by the local user (user
-                  on the server computer); try it.<br><br>
-
-                  The jello simulation that's shown in a few of the other videos
-                  has been turned into a game here (shown in the second half of this
-                  video). You scramble the jello (this starts the timer) for your
-                  opponent then press the "p" key to freeze the physics engine and
-                  the corresponding timer on the screen. When your opponent is ready
-                  to try and straighten out the jello, they press the "p" key again.
-                  That resets and starts the timer and physics engine. When the jello
-                  is straightened (no puck collisions), the timer will stop. A useful
-                  tool to use in the straightening is repeated use of the "f" key.
-                  This momentarily sets the velocity of each puck to zero. Low score
-                  (time) wins. Players take turns.
-               </p>
-               <p>The video shows me playing Puck Popper solo with something heavy
-                  sitting on the "i" key of my laptop. So the red player is pretty
-                  much a sitting duck in the corner. But you get the idea of the shields,
-                  health circles, and the popping pucks. I also do one round of Jello
-                  Madness and got a de-tangling time of 22.15 seconds (a big part
-                  of this is to really make a mess of it for the other guy). Jello
-                  Madness requires an I5 processor or better; this will crash (become
-                  unstable) on slower machines.
-               </p>
+                  (stopping) and bull-fighting maneuvers.</p>
+               
+               <p>The "f" and "g" keys can add an interesting dimension to the game by the local user (host
+                  on the server computer); try it.</p>
+               
+               <p>The video shows me playing Puck Popper solo against some drones.
+                  They don't have shields and only move in recoil to their shooting.
+                  They randomly target all other pucks.
+                  You'll see shields, health circles, and the popping pucks.</p>
+               
                <p>Notice the links to the module files. This is the end of the progression that led to the
                   basic-game server file. From here, the server files will correspond to their physics engines:
                   circular (A15a), perfect-kiss (A15c), and box2d (A16c). These three server files will
                   be similar but different in that their demos will reflect their engine.
                   So, this is incentive to refactor the code, find common ground, and put shared functionality into
-                  modules. From here, the server files will have these modules as dependencies.
+                  modules. From here, the server files will have these modules as dependencies.</p>
+            </td>
+         </tr>
+
+         <tr>
+            <td class="minorsection" colspan="2">&nbsp;</td>
+         </tr>
+         <tr>
+            <td bgcolor="#ffffff" colspan="2" class="indent">
+               <!-- https://youtu.be/LGA_csBD84Y -->
+               <div class="video-container" data-videoID="LGA_csBD84Y">
+                  <img class="frameCapture" src="screenshots/strong-guy-550.png" width="550" height="503">
+               </div>
+               <p><strong class="title_2"><a name="jello"></a>The Jello Matrix<br></strong>
+                  <a href="A15a_2D_finished_game.html" target="_blank">Server code</a>
+                  / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a><br>
+               </p>
+               <p>
+                  You may have noticed in demo #8 that if you tangle the jello (pucks have sustained contact), the tangle timer runs.
+                  This feature of the jello simulation has been used to make a game (referred to in the J-term class as Jello Madness). 
+               </p>
+               <p>
+                  The first step in the game is to tangle the jello for your opponent then press the "p" key to freeze the physics engine. 
+                  When your opponent is ready to try and detangle the jello, they press the "p" key again.
+                  That resets and starts the timer and physics engine.
+                  When the jello is detangled (no puck collisions), the timer will stop. 
+                  Low score (time) wins.
+                  Players take turns.
+               </p>
+               <p>
+                  Here are two tips for tangling and detangling:
+                  The "f" key momentarily sets the speed of each puck to zero, stopping the jello.
+                  The right mouse button enlists a very firm cursor spring for grabbing pucks in the jello.
+               </p>
+               <p>
+                  I play one solo round of the 4x3 version of Jello Madness (the name used in the J-term course). 
+                  A big part of the game is to really make a mess of it for the other guy.
+               </p>
+               <p>
+                  The jello simulation requires an I5 processor or better; it will become unstable on slower machines.
+                  The Box2D engine (the A16c script in the section below) offers somewhat more stability in the Jello simulations.
+                  This is further enhanced if using equal interval time steps (shift-p).
                </p>
             </td>
          </tr>

@@ -117,9 +117,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="kn">from</span> <span class="nn">A09_vec2d</span> <span class="kn">import</span> <span class="n">Vec2D</span>
 <span class="kn">from</span> <span class="nn">A15_air_table_objects</span> <span class="kn">import</span> <span class="n">Puck</span><span class="p">,</span> <span class="n">Spring</span>
 <span class="kn">from</span> <span class="nn">A15_game_loop</span> <span class="kn">import</span> <span class="n">GameLoop</span>
-
 <span class="kn">from</span> <span class="nn">A15a_2D_finished_game</span> <span class="kn">import</span> <span class="n">two_drone_special__circular</span><span class="p">,</span> <span class="n">no_drone_custom1__circular</span>
-
 <span class="kn">import</span> <span class="nn">A15_globals</span> <span class="k">as</span> <span class="nn">g</span>
 
 <span class="c1">#===========================================================</span>
@@ -297,8 +295,7 @@ body .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 <span class="c1">#============================================================</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">g</span><span class="o">.</span><span class="n">make_some_pucks</span> <span class="o">=</span> <span class="n">make_some_pucks</span>
-    <span class="n">game_loop</span> <span class="o">=</span> <span class="n">GameLoop</span><span class="p">(</span><span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;circular-perfectKiss&quot;</span><span class="p">,</span> <span class="n">window_width_px</span><span class="o">=</span><span class="mi">900</span><span class="p">)</span>
+    <span class="n">game_loop</span> <span class="o">=</span> <span class="n">GameLoop</span><span class="p">(</span><span class="n">engine_type</span><span class="o">=</span><span class="s2">&quot;circular-perfectKiss&quot;</span><span class="p">,</span> <span class="n">window_width_px</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span> <span class="n">make_some_pucks</span><span class="o">=</span><span class="n">make_some_pucks</span><span class="p">)</span>
     <span class="n">game_loop</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">demo_index</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 
 <span class="c1">#============================================================</span>

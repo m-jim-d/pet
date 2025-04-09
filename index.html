@@ -838,35 +838,30 @@
                </p>
                <p>This assignment adds features to make a playable game:</p>
                
-               <p>A hit counter is the basis for establishing the health of each player.
-                  A hit by another player makes your puck flash red.
-                  Health, or rather the lack of it, is illustrated with an expanding red circle.
-                  Too many hits and your puck pops (hence the name of the game: Puck
-                  Popper).</p>
+               <ul style="margin-left: 0px; padding-left: 20px;">
+                  <li>A hit counter is the basis for establishing the health of each player.
+                     A hit by another player makes your puck flash red.
+                     Health, or rather the lack of it, is illustrated with an expanding red circle.
+                     Too many hits and your puck pops (Puck Popper).</li>
+                  <li>Shields (space bar) prevent bullets from
+                     hitting your puck; when shields are up, you can't shoot the gun.</li>
+                  <li>The "a","d", and "w" keys orient and fire the jet.
+                     The "j","l", and "i" keys orient and shoot the gun.
+                     The "s" and "k" keys are used to flip the tube direction, opposing the current motion of the puck; 
+                     this can be useful in breaking (stopping) and bull-fighting maneuvers.</li>
+                  <li>The "f" and "g" keys can add an interesting dimension to the game (available to the local user, host
+                     on the server computer).</li>
+               </ul>
                
-               <p>Shields (hold down the space bar) prevent bullets from
-                  hitting your puck; when shields are up, you can't shoot the gun.</p>
-               
-               <p>The "a","d", and "w" keys orient and fire the jet.
-                  The "j","l", and "i" keys orient and shoot the gun.
-                  The "s" and "k" keys are used to flip the tube directions into an orientation
-                  opposing the current motion of the puck; this can be useful in breaking
-                  (stopping) and bull-fighting maneuvers.</p>
-               
-               <p>The "f" and "g" keys can add an interesting dimension to the game by the local user (host
-                  on the server computer); try it.</p>
-               
-               <p>The video shows me playing Puck Popper solo against some drones.
-                  They don't have shields and only move in recoil to their shooting.
-                  They randomly target all other pucks.
+               <p>The video shows me playing Puck Popper solo.
+                  The drones don't have shields and move only in recoil to shooting.
+                  They randomly target other pucks.
                   You'll see shields, health circles, and the popping pucks.</p>
                
-               <p>Notice the links to the module files. This is the end of the progression that led to the
-                  basic-game server file. From here, the server files will correspond to their physics engines:
-                  circular (A15a), perfect-kiss (A15c), and box2d (A16c). These three server files will
-                  be similar but different in that their demos will reflect their engine.
-                  So, this is incentive to refactor the code, find common ground, and put shared functionality into
-                  modules. From here, the server files will have these modules as dependencies.</p>
+               <p>This is a new baseline for the modular script files.
+                  From here, the server files will correspond with one of the three physics engines:
+                  circular (A15a), perfect-kiss (A15c), and box2d (A16c). 
+                  The demos in these server files will highlight the features of their engine.</p>
             </td>
          </tr>
 

@@ -720,6 +720,8 @@
                   by the rotation methods in the vector class. This tube class will
                   be the base class for representing both jet and turret tubes.
                </p>
+               <p>Rotate the tubes using the "a" and "d" keys.
+               </p>
                <p>The A11_m files in this section are incremental relative to the A10_m files in the previous section.
                   In a similar way, the files in the next three sections (A12_m, A13_m, and A14_m), will 
                   build on files used in prior sections. This makes use of Python's features for inheritance and importing
@@ -751,8 +753,11 @@
                   is used to represent the jet's exhaust flame. The video shows the
                   local client and a network client controlling (rotating) tubes on
                   the two pucks. Python inheritance is introduced in this exercise:
-                  jet-tube is derived from the tube base class.</p>
-            </td>
+                  jet-tube is derived from the tube base class.
+               </p>
+               <p>Rotate the jet tube using the "a" and "d" keys. Display the jet flame with the "w" key.
+               </p>
+               </td>
          </tr>
 
          <tr>
@@ -778,7 +783,10 @@
                <p>The "w" key turns on the jet forces that are applied to the host
                   puck along the direction of the jet-tube axis. This jet-force vector
                   is added to the puck_forces_2d_N (net-force-on-puck) vector and
-                  processed in the Euler's method calculations.</p>
+                  processed in the Euler's method calculations.
+               </p>
+               <p>Rotate the jet tube using the "a" and "d" keys. Apply the jet-thrust force with the "w" key.
+               </p>
                <p>The video show a cursor tether restraining a puck under continuously
                   applied jet forces while the jet tube is turned at a constant rate.</p>
             </td>
@@ -809,6 +817,8 @@
                   calculations in the game loop). Bullet clean-up is implemented by
                   assigning a birth time to each fired bullet. Bullet objects older
                   than 3 seconds are deleted.
+               </p>
+               <p>Rotate the gun tube using the "j" and "l" keys. Shoot the gun with the "i" key.
                </p>
             </td>
          </tr>
@@ -845,10 +855,10 @@
                      Too many hits and your puck pops (Puck Popper).</li>
                   <li>Shields (space bar) prevent bullets from
                      hitting your puck; when shields are up, you can't shoot the gun.</li>
-                  <li>The "a","d", and "w" keys orient and fire the jet.
-                     The "j","l", and "i" keys orient and shoot the gun.
-                     The "s" and "k" keys are used to flip the tube direction, opposing the current motion of the puck; 
-                     this can be useful in breaking (stopping) and bull-fighting maneuvers.</li>
+                  <li>The a-d-w keys orient and fire the jet.
+                     The j-l-i keys orient and shoot the gun.
+                     "s" and "k" are added here to the jet and gun key groups. They flip the tube direction, opposing the current motion of the puck; 
+                     useful in breaking (stopping) and bull-fighting maneuvers.</li>
                   <li>The "f" and "g" keys can add an interesting dimension to the game (available to the local user, host
                      on the server computer).</li>
                </ul>
@@ -1129,7 +1139,7 @@
                <div class="video-container" data-videoID="yEG9lp0wCZc">
                   <img class="frameCapture" src="screenshots/seven-pinned-pucks-550.png" width="550" height="498">
                </div>
-               <p><strong class="title_2">The Backstory</strong><br>
+               <p><strong class="title_2">Odds and Evens</strong><br>
                   no PDF
                   / <a href="A16c_2D_B2D_serverN.html" target="_blank">Server code</a>
                   / <a href="A10_2D_baseline_client.html" target="_blank">Client code</a></p>

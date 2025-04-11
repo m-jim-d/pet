@@ -72,6 +72,17 @@
 		</ol>
 		<p><strong class="title_2">Revisions</strong></p>
 		<ul>
+			<li>April, 2025
+				<ul>
+					<li>Refactored the A10-A14 scripts (modules pattern is similar to that used in A15a, A15c, and A16c). 
+						The new scripts have _m_ in their name and are more incremental, better for highlighting features as they are added.
+					</li>
+					<li>The A15_pool_shots.py module offers two pool-shot setup functions: pool_line_of_balls and pool_trick_shot. 
+						These are used by both the A10-A14 and A15a-A15c-A16c script groups. The line-of-balls demo is useful for 
+						demonstrating reversibility with the perfect-kiss engine.
+					</li>
+				</ul>
+			</li>
 			<li>March, 2025
 				<ul>
 					<li>Demos in the A15a, A15c, and A16c scripts may now have variations that can be stepped through (and started) using the left and
@@ -80,15 +91,16 @@
 					</li>
 					<li>New demos and variations on the A16c (Box2D engine) script</li>
 						<ul>
-							<li>Demo #5: pinned-pucks in contact on a regular polygon. The old #5 has
-								been displace to be a variant of #6.
-							</li>
 							<li>Demos #2 and #3: pucks pulled into contact with springs, an illustration of
 								conservation of angular momentum.
 							</li>
-							<li>Demos #4: this enlists the new "Wall" class to make a better 
+							<li>Demo #4: this enlists the new "Wall" class to make a better 
 								multi-puck-under-gravity demonstration (not quite an hour glass). 
 							</li>
+							<li>Demo #5: pinned-pucks in contact on a regular polygon. The old #5 has
+								been displace to be a variant of #6.
+							</li>
+							<li>Demo #0: three variations added: pyramid target, line of pucks, and a circle of pucks.</li>
 						</ul>
 					<li>New demos #8 and #9, and their variations, are on the final scripts (A15a, A15c, and A16c).
 						These involve throwing the Jello grid and target practice by the drones.

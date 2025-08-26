@@ -659,8 +659,8 @@
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
-               <div class="video-container" data-videoID="w0TSMIwPnb8">
-                  <img class="frameCapture" src="screenshots/2D_framework_550w.png" width="550" height="499">
+               <div class="video-container" data-videoID="Miu9KWA37Fs">
+                  <img class="frameCapture" src="screenshots/2D_framework_V2_550.png" width="550" height="499">
                </div>
                <p><strong class="title_2">2D-Physics Engine Framework</strong><br>
 
@@ -679,21 +679,35 @@
                   <a href="A15_pool_shots.html" target="_blank">pool</a>
                   
                </p>
+
                <p>This assignment merges the 1D engine with the 2D vector class
-                  and the multiplayer module. The spring class is also introduced
-                  here. There are drawings in the PDF that explain 2D collisions,
-                  stickiness corrections, and the client-server relationship.</p>
-               <p>The video shows two cursors, one from the local client and the
-                  other from a network client on a laptop. Left and right hands are
-                  working the two cursors. It's surprisingly natural (we've got two
-                  hands). One section of the video shows the two cursors' tethers
-                  pulling two balls together and watching the transition from stable
-                  to unstable as the cursors cross each other; once unstable, the
-                  balls flip their positions to get back to stability. Stickiness
-                  behavior is toggled on/off with ctrl-shift-p; the black background
-                  turns grey when the stickiness corrections are off.</p>
-               <p>The client script is used here and with the following
-                  assignments (except the first two in the Box2D section).</p>
+               and the multiplayer module. The spring class is also introduced
+               here. The drawings in the PDF help explain 2D collisions,
+               stickiness corrections, and the client-server relationship.</p>
+
+               <p>The number keys start the ten demos (0-9). The left/right
+               arrow keys select the variations of each demo. For example, in
+               demo #0, each variation starts with a different number of pucks
+               (4 to 2000).</p>
+
+               <p>The video shows two cursors, one from the local client (the
+               host computer) and the other from a network client (Raspberry
+               Pi). Left and right hands are working the two cursors. It's
+               surprisingly natural (we've got two hands). The client script
+               used here is also used with the following assignments.</p>
+               
+               <p>The non-colliding pucks in demo #0 (03:02) do not interact
+               with each other, but do bounce off the walls. The "shift-e" keys
+               toggle the frame eraser, helping to show the path of the pucks.
+               The "g" key toggles gravity on/off. The "f" key momentarily
+               freezes the pucks.
+               </p>
+
+               <p>One section of the video (at 6:26) shows the cursors pulling
+               two pucks together and watching the transition from stable to
+               unstable. Then (at 6:52), stickiness behavior is toggled
+               on/off with ctrl-shift-p; the black background turns grey when
+               the stickiness corrections are off.</p>
             </td>
          </tr>
 

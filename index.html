@@ -267,21 +267,17 @@
                <summary title="click to open">Another pybox2d:</summary>
                <div style="background-color: #c8d0c8; padding: 1px 10px 5px 10px; border-radius: 5px">
                <p>
-                  Here is a version of <a
-                  href="https://github.com/m-jim-d/pybox2d"
-                  target="_blank">pybox2d</a> that allows the velocity threshold
-                  parameter to be changed, setting
-                  b2Globals.b2_velocityThreshold at runtime. Setting this to
-                  zero is useful for applications like pool games where there is
-                  no gravity and no stack of objects to settle. This threshold
-                  can be used to keep low-velocity objects from sticking to
-                  walls. Note that A16c_2D_B2D_serverN.py, A15_environment.py,
-                  and A15_air_table.py accommodate both this modified version
-                  and the original pybox2d. You can uninstall the original, then
-                  install this modified version. The example command (python
-                  wheel) below is for Windows, Python 3.11. MacOS and Linux
-                  wheels are available in the release.
+                  A modified version of <a href="https://github.com/m-jim-d/pybox2d" target="_blank">pybox2d</a> 
+                  exposes the velocity threshold parameter (<code>b2Globals.b2_velocityThreshold</code>) at runtime. 
+                  Setting this to zero prevents low-velocity objects from sticking to walls—useful for 
+                  top-down games like pool where gravity isn't a factor and objects don't need to settle into stacks.
                </p>
+               <p>
+                  The files A16c_2D_B2D_serverN.py, A15_environment.py, and A15_air_table.py work with both 
+                  the original and modified pybox2d. To switch, uninstall the original and install the modified 
+                  wheel. The example command below is for Windows with Python 3.11; macOS and Linux wheels 
+                  are also available in the release.
+               </p>               
                <pre><code class="language-bash">
                   conda remove pybox2d
                   pip install https://github.com/m-jim-d/pybox2d/releases/download/v2.3.10/box2d-2.3.10-cp311-cp311-win_amd64.whl

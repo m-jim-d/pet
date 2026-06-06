@@ -12,7 +12,7 @@ A video walkthrough and tutorial website for developing 2D game-physics engines 
 
 This site originated as course material for a January-term class at Gustavus Adolphus College. It combines lecture-style exposition with live demonstrations, offering a self-guided path through physics-engine development. The companion code repository contains all the executable Python scripts and modules referenced here:
 
-**[m-jim-d/pet-code](https://github.com/m-jim-d/pet-code?tab=readme-ov-file#readme)** — installation instructions, file descriptions, and the assignment progression from A01 through A16.
+**[m-jim-d/pet-code](https://github.com/m-jim-d/pet-code?tab=readme-ov-file#readme)** — file descriptions and the assignment progression from A01 through A16.
 
 ## Site structure
 

@@ -105,8 +105,20 @@ div.links {
 strong {
 	color: black;
 }
-strong.title_2 {
+strong.title_2,
+h3.title_2 {
 	font-size: 130%;
+}
+h3.title_2 {
+   margin: 1em 0;
+   font-weight: bold;
+}
+h2.sectionbreak {
+   display: inline;
+   margin: 0;
+   font-size: 105%;
+   font-weight: bold;
+   color: black;
 }
 
 

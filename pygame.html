@@ -4,9 +4,9 @@
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="jterm course for developing a simple physics engine in python">
+   <meta name="description" content="A J-term course on developing a simple 2D physics engine in Python with Pygame: 1D and 2D air-table demos, Pybox2d stacking, bullet streams, and ray-cast box cutting.">
 
-   <title>Game Physics with Pygame</title>   	
+   <title>Game Physics with Pygame — J-Term Course</title>
    
    <link rel="canonical" href="https://pet.triquence.org/pygame" />
 
@@ -29,9 +29,23 @@
      },
      "inLanguage": "en"
    }
-   </script>   
+   </script>
 
-   <link href="physics_engine.css" rel="stylesheet" type="text/css">  
+   <!-- Structured data for the videos embedded on this page -->
+   <script type="application/ld+json">
+   {
+      "@context": "https://schema.org",
+      "@graph": [
+         {"@type": "VideoObject", "name": "1D-Physics Air Track", "embedUrl": "https://www.youtube.com/embed/o1RUsLtvQwM", "thumbnailUrl": "https://pet.triquence.org/screenshots/hollow-cars-b.png", "description": "1D collision detection, gravity and mouse-tether forces, and user interactions in Pygame."},
+         {"@type": "VideoObject", "name": "2D-Physics Air Table", "embedUrl": "https://www.youtube.com/embed/u6yTyjECvD8", "thumbnailUrl": "https://pet.triquence.org/screenshots/2D-promo-550.png", "description": "The 1D exercise extended with a 2D vector class, spring and damper forces, and collision detection."},
+         {"@type": "VideoObject", "name": "Pybox2d Guns and Stacking", "embedUrl": "https://www.youtube.com/embed/DTHrmPV2wEw", "thumbnailUrl": "https://pet.triquence.org/screenshots/gunsAndStacking-550.png", "description": "Pybox2d models non-spherical objects with contact forces, stacking, and settling."},
+         {"@type": "VideoObject", "name": "Vertical Bullet Stream", "embedUrl": "https://www.youtube.com/embed/FQ3gRdZNNgE", "thumbnailUrl": "https://pet.triquence.org/screenshots/verticalBulletStream-550.png", "description": "A vertical stream of rectangles collapses onto itself like a fluid, plus a cursor-gun demo."},
+         {"@type": "VideoObject", "name": "Box Cutter", "embedUrl": "https://www.youtube.com/embed/CoXPuyLHbgU", "thumbnailUrl": "https://pet.triquence.org/screenshots/boxCutter-550.png", "description": "A laser box cutter based on Box2D ray casting; polygons are segmented at intersection points."}
+      ]
+   }
+   </script>
+
+   <link href="physics_engine.css?v=3" rel="stylesheet" type="text/css">  
    <link href="dialog.css?v=4" rel="stylesheet" type="text/css">
    
    <style type="text/css">
@@ -45,7 +59,7 @@
    <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">   
    <script src="jquery-3.7.1.min.js?v=3"></script>
    <script src="utilities.js?v=45"></script>
-   <script src="pageStuff.js?v=45"></script>
+   <script src="pageStuff.js?v=46"></script>
 
    <!-- The navigation menu -->
    <script>      
@@ -100,18 +114,11 @@ Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, cli
 <table>
   <tr>
   <td>
-   <!-- 1D-promo.png -->
-   <!--
-   <div class="video-container">
-      <iframe loading="lazy" width="550" height="250" src="https://www.youtube.com/embed/o1RUsLtvQwM?rel=0" frameborder="0" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-   </div>
-   -->
    <div class="video-container" data-videoID="o1RUsLtvQwM">
-      <img class="frameCapture" src="screenshots/hollow-cars-b.png" width="550" height="201">
+      <img class="frameCapture" src="screenshots/hollow-cars-b.png" width="550" height="201" alt="1D-Physics Air Track">
    </div>
 
-   <p><strong class='title_2'>1D-Physics Air Track</strong></p>
+   <h3 class="title_2">1D-Physics Air Track</h3>
    <p>
    This first video demonstrates 1D collision detection, modeling of 
    forces by gravity and mouse tethers, and user interactions. We use 
@@ -124,17 +131,10 @@ Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, cli
   
   <tr>
   <td>
-  <!-- 2D-promo.png -->
-   <!--
-   <div class="video-container">
-      <iframe loading="lazy" width="550" height="565" src="https://www.youtube.com/embed/u6yTyjECvD8?rel=0" frameborder="0" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-   </div>
-   -->
    <div class="video-container" data-videoID="u6yTyjECvD8">
-      <img class="frameCapture" src="screenshots/2D-promo-550.png" width="550" height="564">
+      <img class="frameCapture" src="screenshots/2D-promo-550.png" width="550" height="564" alt="2D-Physics Air Table">
    </div>
-  <p><strong class='title_2'>2D-Physics Air Table</strong></p>
+  <h3 class="title_2">2D-Physics Air Table</h3>
   
   <p>
    Much of the algorithmic content of the 1D exercise is extended here 
@@ -152,16 +152,10 @@ Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, cli
   
   <tr>
   <td>
-   <!-- gunsAndStacking.png 
-   <div class="video-container">
-      <iframe loading="lazy" width="550" height="460" src="https://www.youtube.com/embed/DTHrmPV2wEw?rel=0" frameborder="0" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-   </div>
-   -->
    <div class="video-container" data-videoID="DTHrmPV2wEw">
-      <img class="frameCapture" src="screenshots/gunsAndStacking-550.png" width="550" height="461">
+      <img class="frameCapture" src="screenshots/gunsAndStacking-550.png" width="550" height="461" alt="Pybox2d Guns and Stacking">
    </div>
-  <p><strong class='title_2'>Pybox2d Guns and Stacking</strong></p>
+  <h3 class="title_2">Pybox2d Guns and Stacking</h3>
   <p>
    Here, the pybox2d port of the Box2D physics engine (of Angry 
    Birds fame) does the computational heavy lifting. This illustrates 
@@ -173,16 +167,10 @@ Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, cli
   
   <tr>
   <td>
-  <!-- verticalBulletStream.png 
-   <div class="video-container">
-      <iframe loading="lazy" width="550" height="460" src="https://www.youtube.com/embed/FQ3gRdZNNgE?rel=0" frameborder="0" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-   </div>
-   -->
    <div class="video-container" data-videoID="FQ3gRdZNNgE">
-      <img class="frameCapture" src="screenshots/verticalBulletStream-550.png" width="550" height="461">
+      <img class="frameCapture" src="screenshots/verticalBulletStream-550.png" width="550" height="461" alt="Vertical Bullet Stream">
    </div>
-  <p><strong class='title_2'>Vertical Bullet Stream</strong></p>
+  <h3 class="title_2">Vertical Bullet Stream</h3>
   <p>
    A short clip showing a vertical stream of rectangles collapsing onto 
    itself. It acts like a fluid. Also a brief demo of a cursor gun.</p> 
@@ -191,16 +179,10 @@ Click to <a id="cookieLink" href="#">manage</a> cookies. If you accept them, cli
   
   <tr>
   <td>
-   <!-- boxCutter.png 
-   <div class="video-container">
-      <iframe loading="lazy" width="550" height="460" src="https://www.youtube.com/embed/CoXPuyLHbgU?rel=0" frameborder="0" 
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>      
-   </div>
-   -->
    <div class="video-container" data-videoID="CoXPuyLHbgU">
-      <img class="frameCapture" src="screenshots/boxCutter-550.png" width="550" height="461">
+      <img class="frameCapture" src="screenshots/boxCutter-550.png" width="550" height="461" alt="Box Cutter">
    </div>
-  <p><strong class='title_2'>Box Cutter</strong></p>
+  <h3 class="title_2">Box Cutter</h3>
   <p>
    This demo shows a laser box cutter based on the ray casting feature of 
    Box2D. Polygons are segmented based on the intersection points of the 

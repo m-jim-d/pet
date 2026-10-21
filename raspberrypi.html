@@ -5,13 +5,28 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="simple physics engines for raspberry pi">
+	<meta name="description" content="Running Python physics engines on a Raspberry Pi: a Volumio music server story, performance video, and Miniconda/Pygame/Pybox2d installation instructions.">
 
-	<title>P.E.T./Raspberry Pi</title>
+	<title>Music, Physics Engines, and the Raspberry Pi</title>
 
 	<link rel="canonical" href="https://pet.triquence.org/raspberrypi" />
 
-	<link href="physics_engine.css" rel="stylesheet" type="text/css">
+	<!-- This Open Graph tag controls how a link is displayed if posted on social media -->
+	<meta property="og:image" content="https://pet.triquence.org/screenshots/RPi-cropped.png">
+
+	<!-- Structured data for the video embedded on this page -->
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "VideoObject",
+		"name": "Fast enough for a physics engine?",
+		"embedUrl": "https://www.youtube.com/embed/DjifBSJNLBI",
+		"thumbnailUrl": "https://pet.triquence.org/screenshots/RPi-cropped.png",
+		"description": "A Raspberry Pi 2 running the Pybox2d air-table physics demo, recorded from the RPi's display."
+	}
+	</script>
+
+	<link href="physics_engine.css?v=3" rel="stylesheet" type="text/css">
 	<link href="dialog.css?v=4" rel="stylesheet" type="text/css">
 
 	<link href="prism.css" rel="stylesheet">
@@ -42,7 +57,7 @@
 	<link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
 	<script src="jquery-3.7.1.min.js?v=3"></script>
 	<script src="utilities.js?v=45"></script>
-	<script src="pageStuff.js?v=3"></script>
+	<script src="pageStuff.js?v=4"></script>
 
 	<!-- The navigation menu -->
 	<script>
@@ -86,9 +101,9 @@
 					href="index.html?pygame">P.E.T.</a>)</span>
 		</div>
 		<p>You're welcome to scroll down to the <a class="scroll-link" data-scroll-target="physics"
-				href="#">physics-engine</a> section if you
+				href="#physics">physics-engine</a> section if you
 			like. There you will find a video and&nbsp;<a class="scroll-link" data-scroll-target="installation"
-				href="#">installation</a>
+				href="#installation">installation</a>
 			instructions for the Raspberry Pi (RPi).
 			(This tale is related to the
 			scripts and videos presented on the
@@ -150,9 +165,11 @@
 			hardware host for Volumio.</p>
 
 		<div class="video-container" data-videoID="DjifBSJNLBI">
-			<img class="frameCapture" src="screenshots/RPi-cropped.png" width="600" height="425">
+			<img class="frameCapture" src="screenshots/RPi-cropped.png" width="600" height="425" alt="Raspberry Pi running a physics engine demo">
 		</div>
-		<p><h2><a name="physics"></a>Fast enough for a physics engine?</h2></p>
+		<!-- this next hidden element is used for logging the video usage -->
+		<h3 class="title_2" style="display:none">Fast enough for a physics engine?</h3>
+		<h2 id="physics">Fast enough for a physics engine?</h2>
 
 		<p>It seemed like only seconds after I put down my cash on the RPi-1-B+ that
 			the new and improved RPi-2 was announced. Wow, a promising six-fold
@@ -175,7 +192,7 @@
 			installed.
 			(Note: to run the A06, A07, or A16 scripts, you'll need to
 			follow the <a class="scroll-link" data-scroll-target="installation"
-			href="#">installation</a> instructions for the Conda environment in the following
+			href="#installation">installation</a> instructions for the Conda environment in the following
 			section.)</p>
 		<p>From a web browser on your RPi, download a copy of the github
 			repository for these python files. Look for the green &quot;code&quot; button, click
@@ -195,7 +212,7 @@
 		<p>Note that a wildcard character (*) is helpful for typing these long filenames. For example, the second
 			line can be typed using the much shorter command:</p>
 		<pre><code class="language-bash">python A15a*</code></pre>
-		<p><a name="controlsSummary"></a>Now it's time to use your keyboard and mouse to interact with objects in
+		<p id="controlsSummary">Now it's time to use your keyboard and mouse to interact with objects in
 			the Pygame window.</p>
 		
 		<details>
@@ -278,7 +295,7 @@
 			message and give the gift of learning to its parishioners and neighbors in
 			its area.</p>
 		
-		<h2><a name="installation"></a>Installation</h2>
+		<h2 id="installation">Installation</h2>
 		<p>This guide walks through installing Miniconda and the physics/graphics packages on a Raspberry Pi 5:</p>
 		<ul>
 			<li>Python 3.11

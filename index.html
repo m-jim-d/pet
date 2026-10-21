@@ -5,9 +5,9 @@
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content="developing simple physics engines with python">
+   <meta name="description" content="A tutorial for developing simple 2D physics engines with Python: collision detection, spring forces, multiplayer networking, and Pybox2D, with video walkthroughs for each topic.">
 
-   <title>Physics Engine Tutorial</title>
+   <title>Physics Engine Tutorial — 2D Game Physics with Python</title>
 
    <link rel="canonical" href="https://pet.triquence.org/" />
 
@@ -30,9 +30,43 @@
      },
      "inLanguage": "en"
    }
-   </script>   
+   </script>
 
-   <link href="physics_engine.css?v=2" rel="stylesheet" type="text/css">
+   <!-- Structured data for the videos embedded on this page -->
+   <script type="application/ld+json">
+   {
+      "@context": "https://schema.org",
+      "@graph": [
+         {"@type": "VideoObject", "name": "Using Pybox2d in Our Framework", "embedUrl": "https://www.youtube.com/embed/A_G3tQQLJXE", "thumbnailUrl": "https://pet.triquence.org/screenshots/a16c-overview-550-v2.png", "description": "Overview of the Pybox2d-based physics engine framework built in this tutorial."},
+         {"@type": "VideoObject", "name": "Pygame", "embedUrl": "https://www.youtube.com/embed/RyZaQYYgglw", "thumbnailUrl": "https://pet.triquence.org/screenshots/pygameDrawing_550w.png", "description": "First assignment: display window and event handling in Pygame."},
+         {"@type": "VideoObject", "name": "A Pure-Python Physics Engine", "embedUrl": "https://www.youtube.com/embed/sLDOgXG27No", "thumbnailUrl": "https://pet.triquence.org/screenshots/purePython_550w.png", "description": "A physics engine written in pure Python, demonstrated on an air track."},
+         {"@type": "VideoObject", "name": "1D-Physics Engine Framework", "embedUrl": "https://www.youtube.com/embed/53NsBPRrHUk", "thumbnailUrl": "https://pet.triquence.org/screenshots/1d-framework.png", "description": "The framework for the 1D physics engine assignments."},
+         {"@type": "VideoObject", "name": "Wall Collisions, Gravity, and Stickiness", "embedUrl": "https://www.youtube.com/embed/4WrtW3DBfZM", "thumbnailUrl": "https://pet.triquence.org/screenshots/wall-collisions.png", "description": "Adding wall collisions, gravity, and sticky contacts to the engine."},
+         {"@type": "VideoObject", "name": "Car-Car Collisions and Stickiness", "embedUrl": "https://www.youtube.com/embed/8cJDiRcHsLo", "thumbnailUrl": "https://pet.triquence.org/screenshots/car-car-collisions.png", "description": "Collision detection and response between cars on the air track."},
+         {"@type": "VideoObject", "name": "Cursor Tethers", "embedUrl": "https://www.youtube.com/embed/r-ihjKNH86U", "thumbnailUrl": "https://pet.triquence.org/screenshots/cursor-tethers.png", "description": "Grab and move cars using mouse-driven cursor tethers."},
+         {"@type": "VideoObject", "name": "Gui Controls", "embedUrl": "https://www.youtube.com/embed/hImkAaGWQ-4", "thumbnailUrl": "https://pet.triquence.org/screenshots/1d-with-gui.png", "description": "GUI controls added to the 1D engine for live parameter adjustment."},
+         {"@type": "VideoObject", "name": "Hollow Cars and Demos", "embedUrl": "https://www.youtube.com/embed/oBJlfGduAZA", "thumbnailUrl": "https://pet.triquence.org/screenshots/hollow-cars.png", "description": "Hollow-car shapes and additional demos of the engine."},
+         {"@type": "VideoObject", "name": "Counting to Pi", "embedUrl": "https://www.youtube.com/embed/YmVOG8uD4pg", "thumbnailUrl": "https://pet.triquence.org/screenshots/pi-2-cropped.png", "description": "Galperin's collision-counting method for digits of pi, in the 1D engine."},
+         {"@type": "VideoObject", "name": "Server (host) and Clients", "embedUrl": "https://www.youtube.com/embed/8qi1EQs9USU", "thumbnailUrl": "https://pet.triquence.org/screenshots/multiplayer-demo.png", "description": "Multiplayer networking: a server host with multiple client connections."},
+         {"@type": "VideoObject", "name": "The Vector Class Module", "embedUrl": "https://www.youtube.com/embed/d54VGC95sjQ", "thumbnailUrl": "https://pet.triquence.org/screenshots/vectorSandBox_550w.png", "description": "A 2D vector class with a sandbox for testing vector operations."},
+         {"@type": "VideoObject", "name": "2D-Physics Engine Framework", "embedUrl": "https://www.youtube.com/embed/Miu9KWA37Fs", "thumbnailUrl": "https://pet.triquence.org/screenshots/2D_framework_V2_550.png", "description": "The framework extended to full 2D physics on an air table."},
+         {"@type": "VideoObject", "name": "Rotating Tubes", "embedUrl": "https://www.youtube.com/embed/jc7IFmR8R48", "thumbnailUrl": "https://pet.triquence.org/screenshots/rotatingTubes_550w.png", "description": "Rotating tube objects modeled in the 2D engine."},
+         {"@type": "VideoObject", "name": "Rotating Tubes and Jets on Client Puck", "embedUrl": "https://www.youtube.com/embed/XIxGaZvdOaE", "thumbnailUrl": "https://pet.triquence.org/screenshots/tubesAndJets-cropped.png", "description": "Rotating tubes with jet forces applied to client-controlled pucks."},
+         {"@type": "VideoObject", "name": "Jet Forces", "embedUrl": "https://www.youtube.com/embed/-LyL246nq94", "thumbnailUrl": "https://pet.triquence.org/screenshots/jetForces-cropped.png", "description": "Jet propulsion forces on pucks in the 2D engine."},
+         {"@type": "VideoObject", "name": "Gun and Impulse Forces", "embedUrl": "https://www.youtube.com/embed/pcxxD5I0leI", "thumbnailUrl": "https://pet.triquence.org/screenshots/gunAndImpulse-cropped.png", "description": "Shooting projectiles: gun recoil and impulse forces."},
+         {"@type": "VideoObject", "name": "Final Game Features", "embedUrl": "https://www.youtube.com/embed/vQxoyHqSfzs", "thumbnailUrl": "https://pet.triquence.org/screenshots/pp-client-550.png", "description": "Final features of the completed 2D game built in the course."},
+         {"@type": "VideoObject", "name": "The Jello Matrix", "embedUrl": "https://www.youtube.com/embed/LGA_csBD84Y", "thumbnailUrl": "https://pet.triquence.org/screenshots/strong-guy-550.png", "description": "A matrix of spring-connected pucks behaving like jello."},
+         {"@type": "VideoObject", "name": "Perfect Kiss", "embedUrl": "https://www.youtube.com/embed/aO8QEWOlxHk", "thumbnailUrl": "https://pet.triquence.org/screenshots/perfectKiss-cropped.png", "description": "Ideal contact-normal collision calculations between balls."},
+         {"@type": "VideoObject", "name": "Playing Catch with Perfect Kiss", "embedUrl": "https://www.youtube.com/embed/6Uftmwnvc34", "thumbnailUrl": "https://pet.triquence.org/screenshots/playing-catch-cropped.png", "description": "A game of catch built on perfect-kiss collision physics."},
+         {"@type": "VideoObject", "name": "Pybox2d Framework Example", "embedUrl": "https://www.youtube.com/embed/A8PydtjE2BM", "thumbnailUrl": "https://pet.triquence.org/screenshots/pybox2dWithFramework_550w.png", "description": "The tutorial's framework applied to a Pybox2d example."},
+         {"@type": "VideoObject", "name": "Pybox2d Without the Framework", "embedUrl": "https://www.youtube.com/embed/NqGfp82ZGEU", "thumbnailUrl": "https://pet.triquence.org/screenshots/box2d-forces.png", "description": "Using Pybox2d directly, without the tutorial framework."},
+         {"@type": "VideoObject", "name": "A Physics Story", "embedUrl": "https://www.youtube.com/embed/dPE-Yi3g3LA", "thumbnailUrl": "https://pet.triquence.org/screenshots/three-puck-collision-550-v2.png", "description": "A three-puck collision story told through the physics engine."},
+         {"@type": "VideoObject", "name": "Odds and Evens", "embedUrl": "https://www.youtube.com/embed/yEG9lp0wCZc", "thumbnailUrl": "https://pet.triquence.org/screenshots/seven-pinned-pucks-550.png", "description": "Odd and even puck systems pinned and driven into motion."}
+      ]
+   }
+   </script>
+
+   <link href="physics_engine.css?v=3" rel="stylesheet" type="text/css">
    <link href="dialog.css?v=4" rel="stylesheet" type="text/css">
 
 	<link href="prism.css" rel="stylesheet">
@@ -42,7 +76,7 @@
    <link href="sitemap.css?v=20" rel="stylesheet" type="text/css">
    <script src="jquery-3.7.1.min.js?v=3"></script>
    <script src="utilities.js?v=45"></script>
-   <script src="pageStuff.js?v=45"></script>
+   <script src="pageStuff.js?v=46"></script>
 
    <!-- The navigation menu -->
    <script>
@@ -92,10 +126,10 @@
             <td colspan="2" class="indent">
                <!--  -->
                <div class="video-container" data-videoID="A_G3tQQLJXE">
-                  <img class="frameCapture" src="screenshots/a16c-overview-550-v2.png" width="550" height="499">
+                  <img class="frameCapture" src="screenshots/a16c-overview-550-v2.png" alt="Using Pybox2d in Our Framework" width="550" height="499">
                </div>
                <!-- this next hidden element is used for logging the video usage -->
-               <p style="display:none"><strong class="title_2">Using Pybox2d in Our Framework (1st on PET)</strong></p>
+               <h3 class="title_2" style="display:none">Using Pybox2d in Our Framework (1st on PET)</h3>
 
                <p>This sequence of topics reflects a J-term course given at
                   <a href="https://gustavus.edu/" target="_blank">Gustavus Adolphus</a> College.
@@ -126,11 +160,11 @@
                <p>This tutorial emphasizes the following:</p>
                <ul>
                   <li>This is a progression starting from very basic <a class="scroll-link" data-scroll-target="pygame"
-                        href="#">Pygame</a>
-                     ideas, through <a class="scroll-link" data-scroll-target="one-d" href="#">1D</a> and <a
-                        class="scroll-link" data-scroll-target="two-d" href="#">2D</a> (pure
+                        href="#pygame">Pygame</a>
+                     ideas, through <a class="scroll-link" data-scroll-target="one-d" href="#one-d">1D</a> and <a
+                        class="scroll-link" data-scroll-target="two-d" href="#two-d">2D</a> (pure
                      Python) physics engines, ending with an application of the
-                     <a class="scroll-link" data-scroll-target="box2d" href="#">Box2D</a> physics engine.
+                     <a class="scroll-link" data-scroll-target="box2d" href="#box2d">Box2D</a> physics engine.
                   </li>
                   <li>There is a physics instructor behind this. So, there are
                      references to things like:
@@ -141,7 +175,7 @@
                      and object-penetration correction (anti-stickiness). Students need only
                      have experience with vectors.
                   </li>
-                  <li><a class="scroll-link" data-scroll-target="multiplayerdemo" href="#">Multiplayer</a> networking
+                  <li><a class="scroll-link" data-scroll-target="multiplayerdemo" href="#multiplayerdemo">Multiplayer</a> networking
                      supports tournament play.</li>
                   <li>This content is aimed at students of a January-term class.
                      <a href="pe_tutorial_revhistory.html">Much</a> has to be absorbed in
@@ -183,12 +217,11 @@
          </tr>
 
          <tr>
-            <td class="sectionbreak" colspan="2"><strong>First steps</strong></td>
+            <td class="sectionbreak" colspan="2"><h2 class="sectionbreak">First steps</h2></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" colspan="2" class="indent">
-               <p><strong class="title_2">Installation of the Working Environment:</strong>
-               </p>
+               <h3 class="title_2">Installation of the Working Environment:</h3>
 
                <p>From a web browser, download a copy of the github
                   repository for these python files. Look for the green "code" button, click
@@ -312,7 +345,8 @@
 
          <tr>
             <td bgcolor="#ffffff" colspan="2" class="indent">
-               <p><strong class="title_2">Window's Command Window (cmd) and the Notepad++ Editor:</strong><br>
+               <h3 class="title_2">Window's Command Window (cmd) and the Notepad++ Editor:</h3>
+               <p>
                   <a href="A00_editor_cmd.pdf" target="_blank">PDF</a> / (No code)
                </p>
                <p>This pdf is a small collection of useful Windows and Notepad++ tips
@@ -321,7 +355,8 @@
                   Python and HTML, were done in VS Code within
                   <a href="https://devin.ai/desktop" target="_blank">Devin Desktop</a>,
                   AI assisted by Claude.<br><br></p>
-               <p><strong class="title_2"><a name="RPi"></a>Installation on Linux and the Raspberry Pi:</strong><br>
+               <h3 class="title_2" id="RPi">Installation on Linux and the Raspberry Pi:</h3>
+               <p>
                   <a href="raspberrypi.html">RPi story and install</a><br>
                </p>
                <p>This <a href="raspberrypi.html">page</a> describes my adventures
@@ -340,10 +375,10 @@
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <div class="video-container" data-videoID="RyZaQYYgglw">
-                  <img class="frameCapture" src="screenshots/pygameDrawing_550w.png" width="550" height="336">
+                  <img class="frameCapture" src="screenshots/pygameDrawing_550w.png" alt="Pygame" width="550" height="336">
                </div>
-               <p><a name="pygame"></a><strong class="title_2">Pygame</strong><br>
-
+               <h3 class="title_2" id="pygame">Pygame</h3>
+               <p>
                   <a href="A01_game_loop_and_events.pdf" target="_blank">PDF</a> /
                   <a href="A01_game_loop_and_events.html" target="_blank">Code</a>
                </p>
@@ -367,17 +402,17 @@
          </tr>
 
          <tr>
-            <td class="sectionbreak" colspan="2"><a name="one-d"></a><strong>1D</strong></td>
+            <td class="sectionbreak" colspan="2"><h2 class="sectionbreak" id="one-d">1D</h2></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="sLDOgXG27No">
-                  <img class="frameCapture" src="screenshots/purePython_550w.png" width="550" height="462">
+                  <img class="frameCapture" src="screenshots/purePython_550w.png" alt="A Pure-Python Physics Engine" width="550" height="462">
                </div>
-               <p><strong class="title_2">A Pure-Python Physics Engine</strong>
-
-                  <br><a href="A02.1_sr_walkthrough.html">Code discussion</a>
+               <h3 class="title_2">A Pure-Python Physics Engine</h3>
+               <p>
+                  <a href="A02.1_sr_walkthrough.html">Code discussion</a>
                   / <a href="A02a_string_rendering.html" target="_blank">Code
                      #1</a>
                   / <a href="A02b_string_rendering_long.html" target="_blank">Code
@@ -412,10 +447,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="53NsBPRrHUk">
-                  <img class="frameCapture" src="screenshots/1d-framework.png" width="550" height="286">
+                  <img class="frameCapture" src="screenshots/1d-framework.png" alt="1D-Physics Engine Framework" width="550" height="286">
                </div>
-               <p><a name="1D-FrameWork"></a><strong class="title_2">1D-Physics Engine Framework</strong><br>
-
+               <h3 class="title_2" id="1D-FrameWork">1D-Physics Engine Framework</h3>
+               <p>
                   <a href="A02_air_track_framework.pdf" target="_blank">PDF</a> /
                   <a href="A02_air_track_framework.html" target="_blank">Code</a>
                </p>
@@ -442,10 +477,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="4WrtW3DBfZM">
-                  <img class="frameCapture" src="screenshots/wall-collisions.png" width="550" height="286">
+                  <img class="frameCapture" src="screenshots/wall-collisions.png" alt="Wall Collisions, Gravity, and Stickiness" width="550" height="286">
                </div>
-               <p><strong class="title_2">Wall Collisions, Gravity, and Stickiness</strong><br>
-
+               <h3 class="title_2">Wall Collisions, Gravity, and Stickiness</h3>
+               <p>
                   <a href="A03_air_track_g_wallCollisions.pdf" target="_blank">PDF</a>
                   / <a href="A03_air_track_g_wallCollisions.html" target="_blank">
                      Code</a>
@@ -472,10 +507,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="8cJDiRcHsLo">
-                  <img class="frameCapture" src="screenshots/car-car-collisions.png" width="550" height="286">
+                  <img class="frameCapture" src="screenshots/car-car-collisions.png" alt="Car-Car Collisions and Stickiness" width="550" height="286">
                </div>
-               <p><strong class="title_2">Car-Car Collisions and Stickiness</strong><br>
-
+               <h3 class="title_2">Car-Car Collisions and Stickiness</h3>
+               <p>
                   <a href="A04_air_track_carCollisions.pdf" target="_blank">PDF</a>
                   / <a href="A04_air_track_carCollisions.html" target="_blank">Code</a>
                </p>
@@ -505,10 +540,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="r-ihjKNH86U">
-                  <img class="frameCapture" src="screenshots/cursor-tethers.png" width="550" height="295">
+                  <img class="frameCapture" src="screenshots/cursor-tethers.png" alt="Cursor Tethers" width="550" height="295">
                </div>
-               <p><strong class="title_2">Cursor Tethers</strong><br>
-
+               <h3 class="title_2">Cursor Tethers</h3>
+               <p>
                   <a href="A05_air_track_cursorTethers.pdf" target="_blank">PDF</a>
                   / <a href="A05_air_track_cursorTethers.html" target="_blank">Code</a>
                </p>
@@ -538,10 +573,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="hImkAaGWQ-4">
-                  <img class="frameCapture" src="screenshots/1d-with-gui.png" width="550" height="280">
+                  <img class="frameCapture" src="screenshots/1d-with-gui.png" alt="Gui Controls" width="550" height="280">
                </div>
-               <p><strong class="title_2">Gui Controls</strong><br>
-
+               <h3 class="title_2">Gui Controls</h3>
+               <p>
                   <a href="A06_air_track_gui_controls.pdf" target="_blank">PDF</a>
                   / <a href="A06_air_track_gui_controls.html" target="_blank">Code</a>
                </p>
@@ -560,10 +595,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="oBJlfGduAZA">
-                  <img class="frameCapture" src="screenshots/hollow-cars.png" width="550" height="303">
+                  <img class="frameCapture" src="screenshots/hollow-cars.png" alt="Hollow Cars and Demos" width="550" height="303">
                </div>
-               <p><a name="hollow-cars"></a><strong class="title_2">Hollow Cars and Demos</strong><br>
-
+               <h3 class="title_2" id="hollow-cars">Hollow Cars and Demos</h3>
+               <p>
                   <a href="A07_air_track_hollow_cars.pdf" target="_blank">PDF</a>
                   / <a href="A07_air_track_hollow_cars.html" target="_blank">Code</a>
                </p>
@@ -582,10 +617,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="YmVOG8uD4pg">
-                  <img class="frameCapture" src="screenshots/pi-2-cropped.png" width="550" height="403">
+                  <img class="frameCapture" src="screenshots/pi-2-cropped.png" alt="Counting to Pi" width="550" height="403">
                </div>
-               <p><strong class="title_2">Counting to pi</strong><br>
-
+               <h3 class="title_2">Counting to pi</h3>
+               <p>
                   <a href="A07_air_track_hollow_cars.html" target="_blank">Code</a>
                </p>
 
@@ -617,15 +652,15 @@
          </tr>
 
          <tr>
-            <td class="sectionbreak" colspan="2"><a name="multiplayerdemo"></a><strong>Multiplayer</strong></td>
+            <td class="sectionbreak" colspan="2"><h2 class="sectionbreak" id="multiplayerdemo">Multiplayer</h2></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <div class="video-container" data-videoID="8qi1EQs9USU">
-                  <img class="frameCapture" src="screenshots/multiplayer-demo.png" width="550" height="332">
+                  <img class="frameCapture" src="screenshots/multiplayer-demo.png" alt="Server (host) and Clients" width="550" height="332">
                </div>
-               <p><a name="multi"></a><strong class="title_2">Server (host) and Clients</strong>
-                  <br>
+               <h3 class="title_2" id="multi">Server (host) and Clients</h3>
+               <p>
                   <a href="A08_multiplayer_demo_server.html" target="_blank">Server</a>
                   <a href="A08_multiplayer_demo_client.html" target="_blank">Client</a>
                   <a href="A08_network.html" target="_blank">network module</a>
@@ -645,7 +680,7 @@
                <p>Please note that this particular client script works only for this demo.
                   The network module developed here is used (required) by all the server and client scripts.</p>
                <p>The multiplayer techniques introduced here are applied in the
-                  <a class="scroll-link" data-scroll-target="2D-framework" href="#">2D-Physics</a> Engine Framework
+                  <a class="scroll-link" data-scroll-target="2D-framework" href="#2D-framework">2D-Physics</a> Engine Framework
                   topic below.
                </p>
             </td>
@@ -653,19 +688,18 @@
 
          <tr>
             <td class="sectionbreak" colspan="2">
-               <a name="two-d"></a>
-               <a name="vector-sandbox"></a>
-               <strong>2D</strong>
+               <h2 class="sectionbreak" id="two-d">2D</h2>
+               <a id="vector-sandbox"></a>
             </td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="d54VGC95sjQ">
-                  <img class="frameCapture" src="screenshots/vectorSandBox_550w.png" width="550" height="499">
+                  <img class="frameCapture" src="screenshots/vectorSandBox_550w.png" alt="The Vector Class Module" width="550" height="499">
                </div>
-               <p><strong class="title_2">The Vector Class Module</strong><br>
-
+               <h3 class="title_2">The Vector Class Module</h3>
+               <p>
                   <a href="A09_2D_vector_class.pdf" target="_blank">PDF</a> /
                   <a href="A09_vec2d.html" target="_blank">module</a>
                   <a href="A09_2D_vector_class_testing.html" target="_blank">test script</a>
@@ -695,19 +729,18 @@
          </tr>
 
          <tr>
-            <td class="minorsection" colspan="2">&nbsp;
-               <a name="2D-framework"></a>
-               <a name="2D-physics"></a>
+            <td class="minorsection" colspan="2" id="2D-framework">&nbsp;
+               <a id="2D-physics"></a>
             </td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="Miu9KWA37Fs">
-                  <img class="frameCapture" src="screenshots/2D_framework_V2_550.png" width="550" height="499">
+                  <img class="frameCapture" src="screenshots/2D_framework_V2_550.png" alt="2D-Physics Engine Framework" width="550" height="499">
                </div>
-               <p><strong class="title_2">2D-Physics Engine Framework</strong><br>
-
+               <h3 class="title_2">2D-Physics Engine Framework</h3>
+               <p>
                   <a href="A10_2D_baseline.pdf" target="_blank">PDF</a>
                   / <a href="A10_m_server_baseline.html" target="_blank">Server</a>
                   <a href="A10_2D_baseline_client.html" target="_blank">Client</a><br>
@@ -762,10 +795,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="jc7IFmR8R48">
-                  <img class="frameCapture" src="screenshots/rotatingTubes_550w.png" width="550" height="499">
+                  <img class="frameCapture" src="screenshots/rotatingTubes_550w.png" alt="Rotating Tubes" width="550" height="499">
                </div>
-               <p><strong class="title_2">Rotating Tubes<br></strong>
-
+               <h3 class="title_2">Rotating Tubes</h3>
+               <p>
                   <a href="A11_2D_rotating_tubes.pdf" target="_blank">PDF</a>
                   / <a href="A11_m_air_table_objects.html" target="_blank">table objects</a>
                   <a href="A11_m_server_rawtubes.html" target="_blank">Server</a>
@@ -793,10 +826,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="XIxGaZvdOaE">
-                  <img class="frameCapture" src="screenshots/tubesAndJets-cropped.png" width="550" height="499">
+                  <img class="frameCapture" src="screenshots/tubesAndJets-cropped.png" alt="Rotating Tubes and Jets on Client Puck" width="550" height="499">
                </div>
-               <p><strong class="title_2">Rotating Tubes and Jets on Client Puck</strong><br>
-
+               <h3 class="title_2">Rotating Tubes and Jets on Client Puck</h3>
+               <p>
                   <a href="A12_2D_tube_jet.pdf" target="_blank">PDF</a>
                   / <a href="A12_m_air_table_objects.html" target="_blank">table objects</a>
                   <a href="A12_m_server_jet.html" target="_blank">Server</a>
@@ -822,10 +855,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="-LyL246nq94">
-                  <img class="frameCapture" src="screenshots/jetForces-cropped.png" width="550" height="497">
+                  <img class="frameCapture" src="screenshots/jetForces-cropped.png" alt="Jet Forces" width="550" height="497">
                </div>
-               <p><strong class="title_2">Jet Forces</strong><br>
-
+               <h3 class="title_2">Jet Forces</h3>
+               <p>
                   <a href="A13_2D_jet_forces.pdf" target="_blank">PDF</a>
                   / <a href="A13_m_air_table_objects.html" target="_blank">table objects</a>
                   <a href="A13_m_server_jet_forces.html" target="_blank">Server</a>
@@ -854,10 +887,10 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="pcxxD5I0leI">
-                  <img class="frameCapture" src="screenshots/gunAndImpulse-cropped.png" width="550" height="497">
+                  <img class="frameCapture" src="screenshots/gunAndImpulse-cropped.png" alt="Gun and Impulse Forces" width="550" height="497">
                </div>
-               <p><strong class="title_2">Gun and Impulse Forces</strong><br>
-
+               <h3 class="title_2">Gun and Impulse Forces</h3>
+               <p>
                   <a href="A14_2D_gun.pdf" target="_blank">PDF</a>
                   / <a href="A14_m_air_table_objects.html" target="_blank">table objects</a>
                   <a href="A14_m_server_gun.html" target="_blank">Server</a>
@@ -885,10 +918,10 @@
             <td bgcolor="#ffffff" colspan="2" class="indent">
                <!--81PO3o2_grQ https://youtu.be/vQxoyHqSfzs -->
                <div class="video-container" data-videoID="vQxoyHqSfzs">
-                  <img class="frameCapture" src="screenshots/pp-client-550.png" width="550" height="503">
+                  <img class="frameCapture" src="screenshots/pp-client-550.png" alt="Final Game Features" width="550" height="503">
                </div>
-               <p><strong class="title_2"><a name="jello"></a>Final Game Features</strong><br>
-
+               <h3 class="title_2" id="jello">Final Game Features</h3>
+               <p>
                   <a href="A15_2D_final_features.pdf" target="_blank">PDF-1</a>
                   <a href="A15_2D_spring_class_help.pdf" target="_blank">PDF-2</a>
                   / <a href="A15a_2D_finished_game.html" target="_blank">Server</a>
@@ -941,10 +974,10 @@
             <td bgcolor="#ffffff" colspan="2" class="indent">
                <!-- https://youtu.be/LGA_csBD84Y -->
                <div class="video-container" data-videoID="LGA_csBD84Y">
-                  <img class="frameCapture" src="screenshots/strong-guy-550.png" width="550" height="503">
+                  <img class="frameCapture" src="screenshots/strong-guy-550.png" alt="The Jello Matrix" width="550" height="503">
                </div>
-               <p><strong class="title_2"><a name="jello"></a>The Jello Matrix</strong>
-                  <br>
+               <h3 class="title_2">The Jello Matrix</h3>
+               <p>
                   <a href="A15a_2D_finished_game.html" target="_blank">Server</a>
                   <a href="A10_2D_baseline_client.html" target="_blank">Client</a><br>
                </p>
@@ -978,16 +1011,16 @@
          </tr>
 
          <tr>
-            <td class="minorsection" colspan="2">&nbsp;<strong class="title_2"><a name="perfect-kiss"></a></strong></td>
+            <td class="minorsection" colspan="2" id="perfect-kiss">&nbsp;</td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="aO8QEWOlxHk">
-                  <img class="frameCapture" src="screenshots/perfectKiss-cropped.png" width="550" height="498">
+                  <img class="frameCapture" src="screenshots/perfectKiss-cropped.png" alt="Perfect Kiss" width="550" height="498">
                </div>
-               <p><strong class="title_2">Perfect Kiss</strong><br>
-
+               <h3 class="title_2">Perfect Kiss</h3>
+               <p>
                   <a href="A15c_2D_perfect_kiss.pdf" target="_blank">PDF</a> /
                   <a href="A15c_2D_perfect_kiss_serverN.html" target="_blank">Server</a>
                   <a href="A10_2D_baseline_client.html" target="_blank">Client</a>
@@ -1016,9 +1049,9 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="6Uftmwnvc34">
-                  <img class="frameCapture" src="screenshots/playing-catch-cropped.png" width="550" height="644">
+                  <img class="frameCapture" src="screenshots/playing-catch-cropped.png" alt="Playing Catch with Perfect Kiss" width="550" height="644">
                </div>
-               <p><strong class="title_2">Playing Catch with Perfect Kiss</strong></p>
+               <h3 class="title_2">Playing Catch with Perfect Kiss</h3>
 
                <p>The ideal collisions of the previous topic support reversibility in our 2D framework.
                   This means an ordered set of pucks can be disordered through a series of collisions and then
@@ -1055,16 +1088,16 @@
          </tr>
 
          <tr>
-            <td class="sectionbreak" colspan="2"><a name="box2d"></a><strong>Box2D</strong></td>
+            <td class="sectionbreak" colspan="2"><h2 class="sectionbreak" id="box2d">Box2D</h2></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="A8PydtjE2BM">
-                  <img class="frameCapture" src="screenshots/pybox2dWithFramework_550w.png" width="550" height="460">
+                  <img class="frameCapture" src="screenshots/pybox2dWithFramework_550w.png" alt="Pybox2d Framework Example" width="550" height="460">
                </div>
-               <p><strong class="title_2">Pybox2d Framework Example</strong><br>
-
+               <h3 class="title_2">Pybox2d Framework Example</h3>
+               <p>
                   no PDF / <a href="A16a_BodyTypes.html" target="_blank">
                      Code</a></p>
                <p>This script is based on the test_BodyTypes.py file in the examples
@@ -1091,10 +1124,11 @@
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="NqGfp82ZGEU">
-                  <img class="frameCapture" src="screenshots/box2d-forces.png" width="550" height="320">
+                  <img class="frameCapture" src="screenshots/box2d-forces.png" alt="Pybox2d Without the Framework" width="550" height="320">
                </div>
 
-               <p><strong class="title_2">Pybox2d Without the Framework</strong><br>
+               <h3 class="title_2">Pybox2d Without the Framework</h3>
+               <p>
                   no PDF /
                   <a href="A16b_simple_airtrack_forces.html" target="_blank">Code</a>
                </p>
@@ -1117,16 +1151,16 @@
          </tr>
 
          <tr>
-            <td class="minorsection" colspan="2"><a name="in-our-framework"></a></td>
+            <td class="minorsection" colspan="2" id="in-our-framework"></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <!-- -->
                <div class="video-container" data-videoID="A_G3tQQLJXE">
-                  <img class="frameCapture" src="screenshots/a16c-overview-550-v2.png" width="550" height="499">
+                  <img class="frameCapture" src="screenshots/a16c-overview-550-v2.png" alt="Using Pybox2d in Our Framework" width="550" height="499">
                </div>
-               <p><strong class="title_2">Using Pybox2d in the Air Table</strong>
-                  <br>
+               <h3 class="title_2">Using Pybox2d in the Air Table</h3>
+               <p>
                   <a href="A16c_2D_B2D_serverN.html" target="_blank">Server</a>
                   <a href="A10_2D_baseline_client.html" target="_blank">Client</a></p>
 
@@ -1167,15 +1201,15 @@
          </tr>
          
          <tr>
-            <td class="minorsection" colspan="2"><a name="the-story"></a></td>
+            <td class="minorsection" colspan="2" id="the-story"></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <div class="video-container" data-videoID="dPE-Yi3g3LA">
-                  <img class="frameCapture" src="screenshots/three-puck-collision-550-v2.png" width="550" height="503">
+                  <img class="frameCapture" src="screenshots/three-puck-collision-550-v2.png" alt="A Physics Story" width="550" height="503">
                </div>
-               <p><strong class="title_2">A Physics Story</strong>
-                  <br>
+               <h3 class="title_2">A Physics Story</h3>
+               <p>
                   <a href="A16c_2D_B2D_serverN.html" target="_blank">Server</a>
                   <a href="A10_2D_baseline_client.html" target="_blank">Client</a></p>
                <p>
@@ -1190,15 +1224,15 @@
          
          <!-- https://youtu.be/yEG9lp0wCZc -->
          <tr>
-            <td class="minorsection" colspan="2"><a name="the-back-story"></a></td>
+            <td class="minorsection" colspan="2" id="the-back-story"></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" class="indent" colspan="2">
                <div class="video-container" data-videoID="yEG9lp0wCZc">
-                  <img class="frameCapture" src="screenshots/seven-pinned-pucks-550.png" width="550" height="498">
+                  <img class="frameCapture" src="screenshots/seven-pinned-pucks-550.png" alt="Odds and Evens" width="550" height="498">
                </div>
-               <p><strong class="title_2">Odds and Evens</strong>
-                  <br>
+               <h3 class="title_2">Odds and Evens</h3>
+               <p>
                   <a href="A16c_2D_B2D_serverN.html" target="_blank">Server</a>
                   <a href="A10_2D_baseline_client.html" target="_blank">Client</a></p>
                <p>
@@ -1209,11 +1243,12 @@
          </tr>
 
          <tr bgcolor="#cccccc">
-            <td class="sectionbreak" colspan="2"><strong>Let's play</strong></td>
+            <td class="sectionbreak" colspan="2"><h2 class="sectionbreak">Let's play</h2></td>
          </tr>
          <tr>
             <td bgcolor="#ffffff" colspan="2" class="indent">
-               <p><strong class="title_2">The Tournament</strong><br>
+               <h3 class="title_2">The Tournament</h3>
+               <p>
                   <a href="A17_tournament.pdf" target="_blank">PDF</a> / (No code)
                </p>
                <p>There were many impressive entries by the students...</p>
